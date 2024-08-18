@@ -27,7 +27,6 @@ const subTitle: string =
 
 // Testimonial data that will be rendered in the component
 const testimonials = [
-  // First testimonial data
   {
     content:
       " \"Since switching to ScrewFast's hardware tools, the efficiency on our construction sites has skyrocketed. The durability of the hex bolts and precision of the machine screws are simply unmatched. It's refreshing to work with a company that truly understands the daily demands of the industry.\" ",
@@ -37,7 +36,6 @@ const testimonials = [
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80",
     avatarAlt: "Image Description",
   },
-  // Second testimonial data
   {
     content:
       " \"As an interior designer, I'm always looking for high-quality materials and tools that help bring my visions to life. ScrewFast's mixed screws assortment has been a game-changer for my projects, providing the perfect blend of quality and variety. The outstanding customer support was just the cherry on top!\" ",
@@ -47,7 +45,6 @@ const testimonials = [
       "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1376&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80",
     avatarAlt: "Image Description",
   },
-  // Third testimonial data
   {
     content:
       " \"I’ve been a professional carpenter for over 15 years, and I can sincerely say that ScrewFast’s tap bolts and nuts are some of the best I've used. They grip like no other, and I have full confidence in every joint and fixture. Plus, the service is impeccable – they truly care about my project's success.\" ",
@@ -80,41 +77,75 @@ const pageTitle: string = `Products | ${SITE.title}`;
     "inLanguage": "en-US"
   }}
 >
-  <div
-    class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full"
-  >
+  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
     <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
       <div class="flex items-center gap-12">
-        <h1
-          class="text-balance text-2xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 md:text-4xl md:leading-tight"
-        >
+        <h1 class="text-balance text-2xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 md:text-4xl md:leading-tight">
           {title}
         </h1>
-        {
-          subTitle && (
-            <p class="hidden max-w-screen-sm text-pretty text-neutral-600 dark:text-neutral-400 md:block">
-              {subTitle}
-            </p>
-          )
-        }
+        {subTitle && (
+          <p class="hidden max-w-screen-sm text-pretty text-neutral-600 dark:text-neutral-400 md:block">
+            {subTitle}
+          </p>
+        )}
       </div>
       <PrimaryCTA title="Customer Stories" url="#testimonials" noArrow={true} />
     </div>
-    <!--Displaying products in alternating styles. Alternative product gets different card styling.-->
-    <!--Maps through all product entries and displays them with either CardSmall or CardWide based on their position.-->
-    <section class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
-      {
-        product.map((product, index) => {
-          const position = index % 4;
-          if (position === 0 || position === 3) {
-            return <CardSmall product={product} />;
-          } else {
-            return <CardWide product={product} />;
-          }
-        })
-      }
+    
+    <!-- Category Tabs -->
+    <div class="mb-4 border-b border-neutral-200 dark:border-neutral-700">
+      <div class="flex space-x-4">
+        <!-- First Category Tabs -->
+        <div class="flex-1">
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 1</button>
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 2</button>
+        </div>
+        <!-- Second Category Tabs -->
+        <div class="flex-1">
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 1</button>
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 2</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Dropdowns -->
+    <div class="mb-4 flex space-x-4">
+      <!-- Dropdown 1: Filter by Type -->
+      <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+        <option value="">Filter by Type</option>
+        <option value="type1">Type 1</option>
+        <option value="type2">Type 2</option>
+        <option value="type3">Type 3</option>
+      </select>
+      
+      <!-- Dropdown 2: Filter by Material -->
+      <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+        <option value="">Filter by Material</option>
+        <option value="material1">Material 1</option>
+        <option value="material2">Material 2</option>
+        <option value="material3">Material 3</option>
+      </select>
+      
+      <!-- Dropdown 3: Filter by Size -->
+      <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+        <option value="">Filter by Size</option>
+        <option value="size1">Size 1</option>
+        <option value="size2">Size 2</option>
+        <option value="size3">Size 3</option>
+      </select>
+    </div>
+
+    <!-- Displaying products -->
+    <section id="product-list" class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
+      {product.map((product, index) => {
+        const position = index % 4;
+        return position === 0 || position === 3
+          ? <CardSmall product={product} />
+          : <CardWide product={product} />;
+      })}
     </section>
   </div>
+  
   <!--Features statistics section-->
   <FeaturesStatsAlt
     title="Why Choose ScrewFast?"
@@ -125,9 +156,58 @@ const pageTitle: string = `Products | ${SITE.title}`;
       "Customer support dedicated to your project's success.",
     ]}
   />
+  
   <!--Testimonials section-->
   <TestimonialsSectionAlt
     title="What Our Customers Say"
     testimonials={testimonials}
   />
 </MainLayout>
+
+<!-- Add JavaScript to handle dropdown filtering -->
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterType = document.getElementById('filter-type');
+    const filterMaterial = document.getElementById('filter-material');
+    const filterSize = document.getElementById('filter-size');
+    const productList = document.getElementById('product-list');
+
+    // Example product data structure for demonstration purposes
+    const productData = { /* Your product data here */ };
+
+    const filterProducts = () => {
+      const type = filterType.value;
+      const material = filterMaterial.value;
+      const size = filterSize.value;
+
+      // Filtering logic here
+      const filteredProducts = productData.filter(product => {
+        return (!type || product.type === type) &&
+               (!material || product.material === material) &&
+               (!size || product.size === size);
+      });
+
+      // Update the product list with filtered products
+      productList.innerHTML = ''; // Clear existing products
+      filteredProducts.forEach(product => {
+        const card = createProductCard(product); // Implement this function based on your card structure
+        productList.appendChild(card);
+      });
+    };
+
+    // Add event listeners to dropdowns
+    [filterType, filterMaterial, filterSize].forEach(dropdown => {
+      dropdown.addEventListener('change', filterProducts);
+    });
+  });
+
+  // Function to create product card
+  function createProductCard(product) {
+    // Create the card HTML element based on your card structure
+    // This function needs to be implemented according to your card layout
+    // For demonstration, let's assume it returns a div element
+    const card = document.createElement('div');
+    card.innerHTML = `<div class="card">${product.name}</div>`; // Example card structure
+    return card;
+  }
+</script>

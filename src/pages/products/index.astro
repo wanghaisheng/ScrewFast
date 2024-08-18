@@ -1,5 +1,4 @@
 ---
-// Importing necessary components
 import MainLayout from "@/layouts/MainLayout.astro";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
 import CardSmall from "@components/ui/cards/CardSmall.astro";
@@ -7,12 +6,10 @@ import CardWide from "@components/ui/cards/CardWide.astro";
 import FeaturesStatsAlt from "@components/sections/features/FeaturesStatsAlt.astro";
 import TestimonialsSectionAlt from "@components/sections/testimonials/TestimonialsSectionAlt.astro";
 
-// Importing necessary functions from Astro
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import { SITE } from "@data/constants";
 
-// Fetching all the product related content and sorting it by main.id
 const product: CollectionEntry<"products">[] = (
   await getCollection("products")
 ).sort(
@@ -20,12 +17,10 @@ const product: CollectionEntry<"products">[] = (
     a.data.main.id - b.data.main.id,
 );
 
-// Define variables for page content
 const title: string = "Products";
 const subTitle: string =
   "Explore the durability and precision of ScrewFast tools, designed for both professionals and enthusiasts. Each of our products is crafted with precision and built to last, ensuring you have the right tool for every job.";
 
-// Testimonial data that will be rendered in the component
 const testimonials = [
   {
     content:
@@ -92,47 +87,44 @@ const pageTitle: string = `Products | ${SITE.title}`;
       <PrimaryCTA title="Customer Stories" url="#testimonials" noArrow={true} />
     </div>
     
-    <!-- Category Tabs -->
-    <div class="mb-4 border-b border-neutral-200 dark:border-neutral-700">
-      <div class="flex space-x-4">
-        <!-- First Category Tabs -->
-        <div class="flex-1">
+    <!-- Category Tabs and Filter Dropdowns -->
+    <div class="flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 mb-4">
+      <!-- Category Tabs -->
+      <div class="flex-1">
+        <div class="flex space-x-4">
           <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 1</button>
           <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 2</button>
         </div>
-        <!-- Second Category Tabs -->
-        <div class="flex-1">
-          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 1</button>
-          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 2</button>
+      </div>
+
+      <!-- Filter Dropdowns -->
+      <div class="flex-1 lg:text-right">
+        <div class="flex space-x-4">
+          <!-- Dropdown 1: Filter by Type -->
+          <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Type</option>
+            <option value="type1">Type 1</option>
+            <option value="type2">Type 2</option>
+            <option value="type3">Type 3</option>
+          </select>
+          
+          <!-- Dropdown 2: Filter by Material -->
+          <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Material</option>
+            <option value="material1">Material 1</option>
+            <option value="material2">Material 2</option>
+            <option value="material3">Material 3</option>
+          </select>
+          
+          <!-- Dropdown 3: Filter by Size -->
+          <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Size</option>
+            <option value="size1">Size 1</option>
+            <option value="size2">Size 2</option>
+            <option value="size3">Size 3</option>
+          </select>
         </div>
       </div>
-    </div>
-
-    <!-- Filter Dropdowns -->
-    <div class="mb-4 flex space-x-4">
-      <!-- Dropdown 1: Filter by Type -->
-      <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-        <option value="">Filter by Type</option>
-        <option value="type1">Type 1</option>
-        <option value="type2">Type 2</option>
-        <option value="type3">Type 3</option>
-      </select>
-      
-      <!-- Dropdown 2: Filter by Material -->
-      <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-        <option value="">Filter by Material</option>
-        <option value="material1">Material 1</option>
-        <option value="material2">Material 2</option>
-        <option value="material3">Material 3</option>
-      </select>
-      
-      <!-- Dropdown 3: Filter by Size -->
-      <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-        <option value="">Filter by Size</option>
-        <option value="size1">Size 1</option>
-        <option value="size2">Size 2</option>
-        <option value="size3">Size 3</option>
-      </select>
     </div>
 
     <!-- Displaying products -->
@@ -210,4 +202,79 @@ const pageTitle: string = `Products | ${SITE.title}`;
     card.innerHTML = `<div class="card">${product.name}</div>`; // Example card structure
     return card;
   }
+</script>
+
+<!-- Floating button for mobile filter -->
+<style>
+  .floating-filter-button {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+
+  .filter-dropdowns {
+    display: none;
+    position: fixed;
+    top: 2rem;
+    right: 1rem;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 1000;
+  }
+
+  .filter-dropdowns.show {
+    display: block;
+  }
+</style>
+<div id="floating-filter-button" class="floating-filter-button">
+  <span>Filters</span>
+</div>
+<div id="filter-dropdowns" class="filter-dropdowns">
+  <!-- Dropdown 1: Filter by Type -->
+  <select id="mobile-filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+    <option value="">Filter by Type</option>
+    <option value="type1">Type 1</option>
+    <option value="type2">Type 2</option>
+    <option value="type3">Type 3</option>
+  </select>
+  
+  <!-- Dropdown 2: Filter by Material -->
+  <select id="mobile-filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+    <option value="">Filter by Material</option>
+    <option value="material1">Material 1</option>
+    <option value="material2">Material 2</option>
+    <option value="material3">Material 3</option>
+  </select>
+  
+  <!-- Dropdown 3: Filter by Size -->
+  <select id="mobile-filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+    <option value="">Filter by Size</option>
+    <option value="size1">Size 1</option>
+    <option value="size2">Size 2</option>
+    <option value="size3">Size 3</option>
+  </select>
+</div>
+
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    const floatingButton = document.getElementById('floating-filter-button');
+    const filterDropdowns = document.getElementById('filter-dropdowns');
+
+    floatingButton.addEventListener('click', () => {
+      filterDropdowns.classList.toggle('show');
+    });
+  });
 </script>

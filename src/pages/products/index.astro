@@ -1,9 +1,7 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
-import CardSmall from "@components/ui/cards/CardSmall.astro";
 import CardWide from "@components/ui/cards/CardWide.astro";
-import FeaturesStatsAlt from "@components/sections/features/FeaturesStatsAlt.astro";
 import TestimonialsSectionAlt from "@components/sections/testimonials/TestimonialsSectionAlt.astro";
 
 import { getCollection } from "astro:content";
@@ -72,41 +70,41 @@ const pageTitle: string = `Products | ${SITE.title}`;
     "inLanguage": "en-US"
   }}
 >
-  <!-- Category Tabs and Filter Dropdowns -->
-  <div class="flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 mb-8"> <!-- Increased bottom margin here -->
-    <!-- First Category Tabs and Filter Dropdowns -->
-    <div class="flex-1 flex items-center gap-4">
-      <div class="flex space-x-4">
-        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 1</button>
-        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 2</button>
-      </div>
-      <div class="flex flex-grow justify-end space-x-4">
-        <!-- Filter Dropdowns -->
-        <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-          <option value="">Filter by Type</option>
-          <option value="type1">Type 1</option>
-          <option value="type2">Type 2</option>
-          <option value="type3">Type 3</option>
-        </select>
-        
-        <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-          <option value="">Filter by Material</option>
-          <option value="material1">Material 1</option>
-          <option value="material2">Material 2</option>
-          <option value="material3">Material 3</option>
-        </select>
-        
-        <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-          <option value="">Filter by Size</option>
-          <option value="size1">Size 1</option>
-          <option value="size2">Size 2</option>
-          <option value="size3">Size 3</option>
-        </select>
+
+    <!-- Category Tabs and Filter Dropdowns -->
+    <div class="category-tabs-container flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 mb-4">
+      <div class="flex-1 flex items-center gap-4">
+        <div class="flex space-x-4">
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 1</button>
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 2</button>
+        </div>
+        <div class="flex flex-grow justify-end space-x-4">
+          <!-- Filter Dropdowns -->
+          <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Type</option>
+            <option value="type1">Type 1</option>
+            <option value="type2">Type 2</option>
+            <option value="type3">Type 3</option>
+          </select>
+          
+          <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Material</option>
+            <option value="material1">Material 1</option>
+            <option value="material2">Material 2</option>
+            <option value="material3">Material 3</option>
+          </select>
+          
+          <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Size</option>
+            <option value="size1">Size 1</option>
+            <option value="size2">Size 2</option>
+            <option value="size3">Size 3</option>
+          </select>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <div class="product-list-container mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
     <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
       <div class="flex items-center gap-12">
         <h1 class="text-balance text-2xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 md:text-4xl md:leading-tight">
@@ -121,56 +119,76 @@ const pageTitle: string = `Products | ${SITE.title}`;
       <PrimaryCTA title="Customer Stories" url="#testimonials" noArrow={true} />
     </div>
 
-    <!-- Adjusted Category Links -->
-    <div class="qaAX1 mt-12"> <!-- Increased margin-top here -->
-      <div class="jiBXB">
-        <div class="GOfXh kq7dZ PpgG3">
-          <a title="More category 1" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category1">Category 1</a>
-        </div>
-        <div class="GOfXh kq7dZ PpgG3">
-          <a title="More category 2" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category2">Category 2</a>
-        </div>
-        <div class="GOfXh kq7dZ PpgG3">
-          <a title="More category 3" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category3">Category 3</a>
-        </div>
-        <div class="GOfXh kq7dZ PpgG3">
-          <a title="More category 4" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category4">Category 4</a>
-        </div>
-        <div class="GOfXh kq7dZ PpgG3">
-          <a title="More category 5" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category5">Category 5</a>
-        </div>
+    <!-- Category Links Section -->
+    <div class="category-links-container mb-4">
+      <div class="flex flex-wrap gap-4">
+        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category1">Category 1</a>
+        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category2">Category 2</a>
+        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category3">Category 3</a>
+        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category4">Category 4</a>
+        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category5">Category 5</a>
       </div>
     </div>
 
-    <div class="py-4">
-      <div class="relative">
-        <div class="relative overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-50 shadow-sm dark:border-neutral-700 dark:bg-neutral-800">
-          <div class="p-4 sm:p-6 md:p-8">
-            <div class="grid gap-4 md:grid-cols-2">
-              {product.map((item) => (
-                <CardWide
-                  key={item.data.main.id}
-                  title={item.data.main.title}
-                  description={item.data.main.description}
-                  price={item.data.main.price}
-                  image={item.data.main.image}
-                  link={`/products/${item.slug}`}
-                />
-              ))}
-            </div>
-          </div>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {product.map((item) => (
+        <div key={item.data.main.id} class="card-container">
+          <CardWide
+            image={item.data.main.image}
+            alt={item.data.main.alt}
+            title={item.data.main.title}
+            description={item.data.main.description}
+            price={item.data.main.price}
+            link={`/products/${item.slug}`}
+          />
         </div>
-      </div>
-    </div>
-
-    <!-- Testimonials Section -->
-    <div class="py-4">
-      <TestimonialsSectionAlt testimonials={testimonials} />
-    </div>
-
-    <!-- Features Section -->
-    <div class="py-4">
-      <FeaturesStatsAlt />
+      ))}
     </div>
   </div>
+
+  <!-- Floating button for mobile filter -->
+  <div id="floating-filter-button" class="fixed bottom-4 right-4 bg-primary text-white py-2 px-4 rounded-full shadow-lg">
+    <span>Filters</span>
+  </div>
+
+  <TestimonialsSectionAlt testimonials={testimonials} />
+
 </MainLayout>
+
+<style>
+  /* Add spacing below the category tabs */
+  .category-tabs-container {
+    margin-bottom: 1.5rem; /* Adjust spacing as needed */
+  }
+
+  /* Add spacing above the product list */
+  .product-list-container {
+    margin-top: 1.5rem; /* Adjust spacing as needed */
+  }
+
+  /* Adjust spacing around filter dropdowns */
+  .filter-dropdowns {
+    margin-top: 1rem; /* Ensure there's space above dropdowns */
+  }
+
+  /* Ensure spacing for floating button to not overlap with other content */
+  .floating-filter-button {
+    bottom: 1rem; /* Adjust positioning from the bottom as needed */
+    right: 1rem; /* Adjust positioning from the right as needed */
+  }
+
+  /* Adjust spacing for category items */
+  .category-links-container {
+    margin-top: 2rem; /* Add spacing between menu and category items */
+  }
+
+  /* Ensure proper spacing around individual category items */
+  .category-link {
+    margin-bottom: 1rem; /* Add spacing between each category item */
+  }
+
+  /* Adjust button spacing */
+  button {
+    margin: 0 0.5rem; /* Adjust button spacing if needed */
+  }
+</style>

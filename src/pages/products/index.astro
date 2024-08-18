@@ -51,9 +51,8 @@ const testimonials = [
   },
 ];
 
-const pageTitle: string = Products | ${SITE.title};
+const pageTitle: string = `Products | ${SITE.title}`;
 ---
-
 
 <MainLayout
   title={pageTitle}
@@ -87,53 +86,39 @@ const pageTitle: string = Products | ${SITE.title};
       </div>
       <PrimaryCTA title="Customer Stories" url="#testimonials" noArrow={true} />
     </div>
-
+    
     <!-- Category Tabs and Filter Dropdowns -->
-    <div class="flex flex-col-reverse lg:flex-row gap-4 lg:gap-8 mb-4">
-      <!-- First Level Category Tabs -->
-      <div class="flex-1">
+    <div class="flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 mb-4">
+      <!-- First Category Tabs and Filter Dropdowns -->
+      <div class="flex-1 flex items-center gap-4">
         <div class="flex space-x-4">
           <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 1</button>
           <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 2</button>
         </div>
+        <div class="flex flex-grow justify-end space-x-4">
+          <!-- Filter Dropdowns -->
+          <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Type</option>
+            <option value="type1">Type 1</option>
+            <option value="type2">Type 2</option>
+            <option value="type3">Type 3</option>
+          </select>
+          
+          <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Material</option>
+            <option value="material1">Material 1</option>
+            <option value="material2">Material 2</option>
+            <option value="material3">Material 3</option>
+          </select>
+          
+          <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Size</option>
+            <option value="size1">Size 1</option>
+            <option value="size2">Size 2</option>
+            <option value="size3">Size 3</option>
+          </select>
+        </div>
       </div>
-
-      <!-- Second Level Category Tabs -->
-      <div class="flex-1 lg:flex lg:justify-end">
-        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">
-          <span>&lt;</span> Subcategory 1
-        </button>
-        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">
-          Subcategory 2 <span>&gt;</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Filter Dropdowns -->
-    <div class="flex mb-4 space-x-4">
-      <!-- Dropdown 1: Filter by Type -->
-      <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-        <option value="">Filter by Type</option>
-        <option value="type1">Type 1</option>
-        <option value="type2">Type 2</option>
-        <option value="type3">Type 3</option>
-      </select>
-      
-      <!-- Dropdown 2: Filter by Material -->
-      <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-        <option value="">Filter by Material</option>
-        <option value="material1">Material 1</option>
-        <option value="material2">Material 2</option>
-        <option value="material3">Material 3</option>
-      </select>
-      
-      <!-- Dropdown 3: Filter by Size -->
-      <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-        <option value="">Filter by Size</option>
-        <option value="size1">Size 1</option>
-        <option value="size2">Size 2</option>
-        <option value="size3">Size 3</option>
-      </select>
     </div>
 
     <!-- Displaying products -->
@@ -145,6 +130,16 @@ const pageTitle: string = Products | ${SITE.title};
           : <CardWide product={product} />;
       })}
     </section>
+    
+    <!-- Second Category Tabs with Navigation -->
+    <div class="mt-8 flex items-center justify-between">
+      <button id="prev-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
+      <div class="flex space-x-4">
+        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category A</button>
+        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category B</button>
+      </div>
+      <button id="next-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
+    </div>
   </div>
   
   <!--Features statistics section-->
@@ -173,6 +168,7 @@ const pageTitle: string = Products | ${SITE.title};
     const filterSize = document.getElementById('filter-size');
     const productList = document.getElementById('product-list');
 
+    // Example product data structure for demonstration purposes
     const productData = { /* Your product data here */ };
 
     const filterProducts = () => {
@@ -180,27 +176,34 @@ const pageTitle: string = Products | ${SITE.title};
       const material = filterMaterial.value;
       const size = filterSize.value;
 
+      // Filtering logic here
       const filteredProducts = productData.filter(product => {
         return (!type || product.type === type) &&
                (!material || product.material === material) &&
                (!size || product.size === size);
       });
 
-      productList.innerHTML = '';
+      // Update the product list with filtered products
+      productList.innerHTML = ''; // Clear existing products
       filteredProducts.forEach(product => {
-        const card = createProductCard(product);
+        const card = createProductCard(product); // Implement this function based on your card structure
         productList.appendChild(card);
       });
     };
 
+    // Add event listeners to dropdowns
     [filterType, filterMaterial, filterSize].forEach(dropdown => {
       dropdown.addEventListener('change', filterProducts);
     });
   });
 
+  // Function to create product card
   function createProductCard(product) {
+    // Create the card HTML element based on your card structure
+    // This function needs to be implemented according to your card layout
+    // For demonstration, let's assume it returns a div element
     const card = document.createElement('div');
-    card.innerHTML = `<div class="card">${product.name}</div>`;
+    card.innerHTML = `<div class="card">${product.name}</div>`; // Example card structure
     return card;
   }
 </script>
@@ -234,8 +237,6 @@ const pageTitle: string = Products | ${SITE.title};
     border-radius: 0.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     z-index: 1000;
-    padding: 1rem;
-    max-width: 16rem;
   }
 
   .filter-dropdowns.show {
@@ -246,6 +247,7 @@ const pageTitle: string = Products | ${SITE.title};
   <span>Filters</span>
 </div>
 <div id="filter-dropdowns" class="filter-dropdowns">
+  <!-- Dropdown 1: Filter by Type -->
   <select id="mobile-filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
     <option value="">Filter by Type</option>
     <option value="type1">Type 1</option>
@@ -253,6 +255,7 @@ const pageTitle: string = Products | ${SITE.title};
     <option value="type3">Type 3</option>
   </select>
   
+  <!-- Dropdown 2: Filter by Material -->
   <select id="mobile-filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
     <option value="">Filter by Material</option>
     <option value="material1">Material 1</option>
@@ -260,6 +263,7 @@ const pageTitle: string = Products | ${SITE.title};
     <option value="material3">Material 3</option>
   </select>
   
+  <!-- Dropdown 3: Filter by Size -->
   <select id="mobile-filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
     <option value="">Filter by Size</option>
     <option value="size1">Size 1</option>

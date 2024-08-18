@@ -73,94 +73,103 @@ const pageTitle: string = `Products | ${SITE.title}`;
   }}
 >
   
-  <!-- Add space before category tabs and filter dropdowns -->
-  <div class="mb-8">
-    <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
-      <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
-        <div class="flex items-center gap-12">
-          <h1 class="text-balance text-2xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 md:text-4xl md:leading-tight">
-            {title}
-          </h1>
-          {subTitle && (
-            <p class="hidden max-w-screen-sm text-pretty text-neutral-600 dark:text-neutral-400 md:block">
-              {subTitle}
-            </p>
-          )}
-        </div>
-        <PrimaryCTA title="Customer Stories" url="#testimonials" noArrow={true} />
+  <!-- Page Heading and Primary CTA -->
+  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+    <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
+      <div class="flex items-center gap-12">
+        <h1 class="text-balance text-2xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 md:text-4xl md:leading-tight">
+          {title}
+        </h1>
+        {subTitle && (
+          <p class="hidden max-w-screen-sm text-pretty text-neutral-600 dark:text-neutral-400 md:block">
+            {subTitle}
+          </p>
+        )}
       </div>
+      <PrimaryCTA title="Customer Stories" url="#testimonials" noArrow={true} />
+    </div>
 
-      <!-- Category Tabs and Filter Dropdowns -->
-      <div class="flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 mb-4">
-        <div class="flex-1 flex items-center gap-4">
-          <div class="flex space-x-4">
-            <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 1</button>
-            <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 2</button>
-          </div>
-          <div class="flex flex-grow justify-end space-x-4">
-            <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-              <option value="">Filter by Type</option>
-              <option value="type1">Type 1</option>
-              <option value="type2">Type 2</option>
-              <option value="type3">Type 3</option>
-            </select>
+    <!-- Button group for mobile filters -->
+    <div class="mb-4 flex flex-wrap gap-4">
+      <button id="mobile-filter-toggle" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300 bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-600 rounded-lg shadow-sm hover:bg-neutral-200 dark:hover:bg-neutral-700">
+        Show Filters
+      </button>
+    </div>
 
-            <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-              <option value="">Filter by Material</option>
-              <option value="material1">Material 1</option>
-              <option value="material2">Material 2</option>
-              <option value="material3">Material 3</option>
-            </select>
-
-            <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-              <option value="">Filter by Size</option>
-              <option value="size1">Size 1</option>
-              <option value="size2">Size 2</option>
-              <option value="size3">Size 3</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Displaying products -->
-      <section id="product-list" class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
-        {product.map((product, index) => {
-          const position = index % 4;
-          return position === 0 || position === 3
-            ? <CardSmall product={product} />
-            : <CardWide product={product} />;
-        })}
-      </section>
-
-      <!-- Second Category Tabs with Navigation -->
-      <div class="mt-8 flex items-center justify-between">
-        <button id="prev-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
+    <!-- Category Tabs and Filter Dropdowns -->
+    <div class="flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 mb-4">
+      <div class="flex-1 flex items-center gap-4">
         <div class="flex space-x-4">
-          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category A</button>
-          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category B</button>
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 1</button>
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 2</button>
         </div>
-        <button id="next-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
+        <div class="flex flex-grow justify-end space-x-4">
+          <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Type</option>
+            <option value="type1">Type 1</option>
+            <option value="type2">Type 2</option>
+            <option value="type3">Type 3</option>
+          </select>
+
+          <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Material</option>
+            <option value="material1">Material 1</option>
+            <option value="material2">Material 2</option>
+            <option value="material3">Material 3</option>
+          </select>
+
+          <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+            <option value="">Filter by Size</option>
+            <option value="size1">Size 1</option>
+            <option value="size2">Size 2</option>
+            <option value="size3">Size 3</option>
+          </select>
+        </div>
       </div>
     </div>
 
-    <!-- Features statistics section -->
+    <!-- Displaying products -->
+    <section id="product-list" class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
+      {product.map((product, index) => {
+        const position = index % 4;
+        return position === 0 || position === 3
+          ? <CardSmall product={product} />
+          : <CardWide product={product} />;
+      })}
+    </section>
+
+    <!-- Second Category Tabs with Navigation -->
+    <div class="mt-8 flex items-center justify-between">
+      <button id="prev-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
+      <div class="flex space-x-4">
+        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category A</button>
+        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category B</button>
+      </div>
+      <button id="next-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
     <FeaturesStatsAlt
-      title="Why Choose ScrewFast?"
-      subTitle="Transform your ideas into tangible results with ScrewFast tools. Whether you're starting with a sketch on a napkin or diving into a comprehensive construction project, our tools are engineered to help you build with confidence."
+      title="Build with Confidence"
+      description="Whether you're starting with a sketch on a napkin or diving into a comprehensive construction project, our tools are engineered to help you build with confidence."
       benefits={[
         "Robust and reliable tools for long-lasting performance.",
         "Innovative solutions tailored to modern construction needs.",
         "Customer support dedicated to your project's success.",
       ]}
     />
+  </div>
 
-    <!-- Testimonials section -->
+  <!-- Testimonials Section -->
+  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
     <TestimonialsSectionAlt
       title="What Our Customers Say"
       testimonials={testimonials}
     />
   </div>
-  
+
   <!-- Floating button for mobile filter -->
   <style>
     .floating-filter-button {
@@ -194,49 +203,6 @@ const pageTitle: string = `Products | ${SITE.title}`;
 
     .filter-dropdowns.show {
       display: block;
-    }
-    .qaAX1 {
-      margin-top: 1rem;
-    }
-
-    .jiBXB {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .GOfXh {
-      flex: 1 1 auto;
-    }
-
-    .kq7dZ {
-      /* Add any additional styling needed */
-    }
-
-    .PpgG3 {
-      /* Add any additional styling needed */
-    }
-
-    .oZXL2 {
-      padding: 0.5rem 1rem;
-      font-size: 0.875rem;
-      text-decoration: none;
-      color: #007bff;
-      border-radius: 0.25rem;
-      background-color: #f8f9fa;
-      transition: background-color 0.2s;
-    }
-
-    .oZXL2:hover {
-      background-color: #e2e6ea;
-    }
-
-    .uoMSP {
-      /* Add any additional styling needed */
-    }
-
-    .jhw7y {
-      /* Add any additional styling needed */
     }
   </style>
   <div id="floating-filter-button" class="floating-filter-button">
@@ -272,8 +238,13 @@ const pageTitle: string = `Products | ${SITE.title}`;
     document.addEventListener('DOMContentLoaded', () => {
       const floatingButton = document.getElementById('floating-filter-button');
       const filterDropdowns = document.getElementById('filter-dropdowns');
+      const mobileFilterToggle = document.getElementById('mobile-filter-toggle');
 
       floatingButton.addEventListener('click', () => {
+        filterDropdowns.classList.toggle('show');
+      });
+
+      mobileFilterToggle.addEventListener('click', () => {
         filterDropdowns.classList.toggle('show');
       });
     });

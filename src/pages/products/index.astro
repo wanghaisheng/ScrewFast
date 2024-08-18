@@ -1,7 +1,9 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
+import CardSmall from "@components/ui/cards/CardSmall.astro";
 import CardWide from "@components/ui/cards/CardWide.astro";
+import FeaturesStatsAlt from "@components/sections/features/FeaturesStatsAlt.astro";
 import TestimonialsSectionAlt from "@components/sections/testimonials/TestimonialsSectionAlt.astro";
 
 import { getCollection } from "astro:content";
@@ -71,8 +73,10 @@ const pageTitle: string = `Products | ${SITE.title}`;
   }}
 >
 
+    
     <!-- Category Tabs and Filter Dropdowns -->
-    <div class="category-tabs-container flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 mb-4">
+    <div class="flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 mb-4">
+      <!-- First Category Tabs and Filter Dropdowns -->
       <div class="flex-1 flex items-center gap-4">
         <div class="flex space-x-4">
           <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 1</button>
@@ -104,7 +108,7 @@ const pageTitle: string = `Products | ${SITE.title}`;
       </div>
     </div>
 
-  <div class="product-list-container mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
     <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
       <div class="flex items-center gap-12">
         <h1 class="text-balance text-2xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 md:text-4xl md:leading-tight">
@@ -119,76 +123,187 @@ const pageTitle: string = `Products | ${SITE.title}`;
       <PrimaryCTA title="Customer Stories" url="#testimonials" noArrow={true} />
     </div>
 
-    <!-- Category Links Section -->
-    <div class="category-links-container mb-4">
-      <div class="flex flex-wrap gap-4">
-        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category1">Category 1</a>
-        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category2">Category 2</a>
-        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category3">Category 3</a>
-        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category4">Category 4</a>
-        <a class="category-link py-2 px-4 bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:text-neutral-200 rounded-md" href="/s/categories/category5">Category 5</a>
+<div class="qaAX1">
+  <div class="jiBXB">
+    <div class="GOfXh kq7dZ PpgG3">
+      <a title="More category 1" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category1">Category 1</a>
+    </div>
+    <div class="GOfXh kq7dZ PpgG3">
+      <a title="More category 2" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category2">Category 2</a>
+    </div>
+    <div class="GOfXh kq7dZ PpgG3">
+      <a title="More category 3" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category3">Category 3</a>
+    </div>
+    <div class="GOfXh kq7dZ PpgG3">
+      <a title="More category 4" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category4">Category 4</a>
+    </div>
+    <div class="GOfXh kq7dZ PpgG3">
+      <a title="More category 5" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category5">Category 5</a>
+    </div>
+    <div class="GOfXh kq7dZ PpgG3">
+      <a title="More category 6" class="oZXL2 R6ToQ uoMSP jhw7y" href="/s/categories/category6">Category 6</a>
+    </div>
+  </div>
+</div>
+
+    <!-- Displaying products -->
+    <section id="product-list" class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
+      {product.map((product, index) => {
+        const position = index % 4;
+        return position === 0 || position === 3
+          ? <CardSmall product={product} />
+          : <CardWide product={product} />;
+      })}
+    </section>
+    
+    <!-- Second Category Tabs with Navigation -->
+    <div class="mt-8 flex items-center justify-between">
+      <button id="prev-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
+      <div class="flex space-x-4">
+        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category A</button>
+        <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category B</button>
       </div>
-    </div>
-
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {product.map((item) => (
-        <div key={item.data.main.id} class="card-container">
-          <CardWide
-            image={item.data.main.image}
-            alt={item.data.main.alt}
-            title={item.data.main.title}
-            description={item.data.main.description}
-            price={item.data.main.price}
-            link={`/products/${item.slug}`}
-          />
-        </div>
-      ))}
+      <button id="next-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
     </div>
   </div>
-
-  <!-- Floating button for mobile filter -->
-  <div id="floating-filter-button" class="fixed bottom-4 right-4 bg-primary text-white py-2 px-4 rounded-full shadow-lg">
-    <span>Filters</span>
-  </div>
-
-  <TestimonialsSectionAlt testimonials={testimonials} />
-
+  
+  <!--Features statistics section-->
+  <FeaturesStatsAlt
+    title="Why Choose ScrewFast?"
+    subTitle="Transform your ideas into tangible results with ScrewFast tools. Whether you're starting with a sketch on a napkin or diving into a comprehensive construction project, our tools are engineered to help you build with confidence."
+    benefits={[
+      "Robust and reliable tools for long-lasting performance.",
+      "Innovative solutions tailored to modern construction needs.",
+      "Customer support dedicated to your project's success.",
+    ]}
+  />
+  
+  <!--Testimonials section-->
+  <TestimonialsSectionAlt
+    title="What Our Customers Say"
+    testimonials={testimonials}
+  />
 </MainLayout>
 
+<!-- Add JavaScript to handle dropdown filtering -->
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterType = document.getElementById('filter-type');
+    const filterMaterial = document.getElementById('filter-material');
+    const filterSize = document.getElementById('filter-size');
+    const productList = document.getElementById('product-list');
+
+    // Example product data structure for demonstration purposes
+    const productData = { /* Your product data here */ };
+
+    const filterProducts = () => {
+      const type = filterType.value;
+      const material = filterMaterial.value;
+      const size = filterSize.value;
+
+      // Filtering logic here
+      const filteredProducts = productData.filter(product => {
+        return (!type || product.type === type) &&
+               (!material || product.material === material) &&
+               (!size || product.size === size);
+      });
+
+      // Update the product list with filtered products
+      productList.innerHTML = ''; // Clear existing products
+      filteredProducts.forEach(product => {
+        const card = createProductCard(product); // Implement this function based on your card structure
+        productList.appendChild(card);
+      });
+    };
+
+    // Add event listeners to dropdowns
+    [filterType, filterMaterial, filterSize].forEach(dropdown => {
+      dropdown.addEventListener('change', filterProducts);
+    });
+  });
+
+  // Function to create product card
+  function createProductCard(product) {
+    // Create the card HTML element based on your card structure
+    // This function needs to be implemented according to your card layout
+    // For demonstration, let's assume it returns a div element
+    const card = document.createElement('div');
+    card.innerHTML = `<div class="card">${product.name}</div>`; // Example card structure
+    return card;
+  }
+</script>
+
+<!-- Floating button for mobile filter -->
 <style>
-  /* Add spacing below the category tabs */
-  .category-tabs-container {
-    margin-bottom: 1.5rem; /* Adjust spacing as needed */
-  }
-
-  /* Add spacing above the product list */
-  .product-list-container {
-    margin-top: 1.5rem; /* Adjust spacing as needed */
-  }
-
-  /* Adjust spacing around filter dropdowns */
-  .filter-dropdowns {
-    margin-top: 1rem; /* Ensure there's space above dropdowns */
-  }
-
-  /* Ensure spacing for floating button to not overlap with other content */
   .floating-filter-button {
-    bottom: 1rem; /* Adjust positioning from the bottom as needed */
-    right: 1rem; /* Adjust positioning from the right as needed */
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
   }
 
-  /* Adjust spacing for category items */
-  .category-links-container {
-    margin-top: 2rem; /* Add spacing between menu and category items */
+  .filter-dropdowns {
+    display: none;
+    position: fixed;
+    top: 2rem;
+    right: 1rem;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 1000;
   }
 
-  /* Ensure proper spacing around individual category items */
-  .category-link {
-    margin-bottom: 1rem; /* Add spacing between each category item */
-  }
-
-  /* Adjust button spacing */
-  button {
-    margin: 0 0.5rem; /* Adjust button spacing if needed */
+  .filter-dropdowns.show {
+    display: block;
   }
 </style>
+<div id="floating-filter-button" class="floating-filter-button">
+  <span>Filters</span>
+</div>
+<div id="filter-dropdowns" class="filter-dropdowns">
+  <!-- Dropdown 1: Filter by Type -->
+  <select id="mobile-filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+    <option value="">Filter by Type</option>
+    <option value="type1">Type 1</option>
+    <option value="type2">Type 2</option>
+    <option value="type3">Type 3</option>
+  </select>
+  
+  <!-- Dropdown 2: Filter by Material -->
+  <select id="mobile-filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+    <option value="">Filter by Material</option>
+    <option value="material1">Material 1</option>
+    <option value="material2">Material 2</option>
+    <option value="material3">Material 3</option>
+  </select>
+  
+  <!-- Dropdown 3: Filter by Size -->
+  <select id="mobile-filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+    <option value="">Filter by Size</option>
+    <option value="size1">Size 1</option>
+    <option value="size2">Size 2</option>
+    <option value="size3">Size 3</option>
+  </select>
+</div>
+
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    const floatingButton = document.getElementById('floating-filter-button');
+    const filterDropdowns = document.getElementById('filter-dropdowns');
+
+    floatingButton.addEventListener('click', () => {
+      filterDropdowns.classList.toggle('show');
+    });
+  });
+</script>

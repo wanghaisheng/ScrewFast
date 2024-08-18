@@ -267,46 +267,6 @@ const pageTitle: string = `Products | ${SITE.title}`;
   .filter-dropdowns.show {
     display: block;
   }
-</style>
-<div id="floating-filter-button" class="floating-filter-button">
-  <span>Filters</span>
-</div>
-<div id="filter-dropdowns" class="filter-dropdowns">
-  <!-- Dropdown 1: Filter by Type -->
-  <select id="mobile-filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-    <option value="">Filter by Type</option>
-    <option value="type1">Type 1</option>
-    <option value="type2">Type 2</option>
-    <option value="type3">Type 3</option>
-  </select>
-  
-  <!-- Dropdown 2: Filter by Material -->
-  <select id="mobile-filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-    <option value="">Filter by Material</option>
-    <option value="material1">Material 1</option>
-    <option value="material2">Material 2</option>
-    <option value="material3">Material 3</option>
-  </select>
-  
-  <!-- Dropdown 3: Filter by Size -->
-  <select id="mobile-filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-    <option value="">Filter by Size</option>
-    <option value="size1">Size 1</option>
-    <option value="size2">Size 2</option>
-    <option value="size3">Size 3</option>
-  </select>
-</div>
-
-<script type="module">
-  document.addEventListener('DOMContentLoaded', () => {
-    const floatingButton = document.getElementById('floating-filter-button');
-    const filterDropdowns = document.getElementById('filter-dropdowns');
-
-    floatingButton.addEventListener('click', () => {
-      filterDropdowns.classList.toggle('show');
-    });
-  });
-</script>
 .qaAX1 {
   margin-top: 1rem;
 }
@@ -350,3 +310,45 @@ const pageTitle: string = `Products | ${SITE.title}`;
 .jhw7y {
   /* Add any additional styling needed */
 }
+
+</style>
+<div id="floating-filter-button" class="floating-filter-button">
+  <span>Filters</span>
+</div>
+<div id="filter-dropdowns" class="filter-dropdowns">
+  <!-- Dropdown 1: Filter by Type -->
+  <select id="mobile-filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+    <option value="">Filter by Type</option>
+    <option value="type1">Type 1</option>
+    <option value="type2">Type 2</option>
+    <option value="type3">Type 3</option>
+  </select>
+  
+  <!-- Dropdown 2: Filter by Material -->
+  <select id="mobile-filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+    <option value="">Filter by Material</option>
+    <option value="material1">Material 1</option>
+    <option value="material2">Material 2</option>
+    <option value="material3">Material 3</option>
+  </select>
+  
+  <!-- Dropdown 3: Filter by Size -->
+  <select id="mobile-filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+    <option value="">Filter by Size</option>
+    <option value="size1">Size 1</option>
+    <option value="size2">Size 2</option>
+    <option value="size3">Size 3</option>
+  </select>
+</div>
+
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    const floatingButton = document.getElementById('floating-filter-button');
+    const filterDropdowns = document.getElementById('filter-dropdowns');
+
+    floatingButton.addEventListener('click', () => {
+      filterDropdowns.classList.toggle('show');
+    });
+  });
+</script>
+

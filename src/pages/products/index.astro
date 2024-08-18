@@ -1,7 +1,9 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
+import CardSmall from "@components/ui/cards/CardSmall.astro";
 import CardWide from "@components/ui/cards/CardWide.astro";
+import FeaturesStatsAlt from "@components/sections/features/FeaturesStatsAlt.astro";
 import TestimonialsSectionAlt from "@components/sections/testimonials/TestimonialsSectionAlt.astro";
 
 import { getCollection } from "astro:content";
@@ -14,6 +16,11 @@ const product: CollectionEntry<"products">[] = (
   (a: CollectionEntry<"products">, b: CollectionEntry<"products">) =>
     a.data.main.id - b.data.main.id,
 );
+
+const categories = [
+  { id: 'cat1', name: 'Category 1', subcategories: ['Subcategory 1', 'Subcategory 2', 'Subcategory 3', 'Subcategory 4', 'Subcategory 5', 'Subcategory 6', 'Subcategory 7', 'Subcategory 8'] },
+  { id: 'cat2', name: 'Category 2', subcategories: ['Subcategory 9', 'Subcategory 10', 'Subcategory 11', 'Subcategory 12', 'Subcategory 13', 'Subcategory 14', 'Subcategory 15'] }
+];
 
 const title: string = "Products";
 const subTitle: string =
@@ -50,22 +57,6 @@ const testimonials = [
 ];
 
 const pageTitle: string = `Products | ${SITE.title}`;
-const categories = [
-  { id: 1, name: 'Category 1' },
-  { id: 2, name: 'Category 2' }
-];
-const subcategories: Record<number, { id: string; name: string }[]> = {
-  1: [
-    { id: '1a', name: 'Subcategory 1a' },
-    { id: '1b', name: 'Subcategory 1b' },
-    // Add more subcategories as needed
-  ],
-  2: [
-    { id: '2a', name: 'Subcategory 2a' },
-    { id: '2b', name: 'Subcategory 2b' },
-    // Add more subcategories as needed
-  ],
-};
 ---
 
 <MainLayout
@@ -86,8 +77,6 @@ const subcategories: Record<number, { id: string; name: string }[]> = {
     "inLanguage": "en-US"
   }}
 >
-  
-  <!-- Add space before category tabs and filter dropdowns -->
   <div class="mb-8">
     <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
       <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
@@ -109,11 +98,7 @@ const subcategories: Record<number, { id: string; name: string }[]> = {
         <div class="flex-1 flex items-center gap-4">
           <div class="flex space-x-4">
             {categories.map(category => (
-              <button
-                key={category.id}
-                class={`py-2 px-4 text-sm font-medium ${selectedCategory === category.id ? 'text-blue-600' : 'text-neutral-600 dark:text-neutral-300'}`}
-                data-category-id={category.id}
-              >
+              <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300" data-category-id={category.id}>
                 {category.name}
               </button>
             ))}
@@ -147,71 +132,169 @@ const subcategories: Record<number, { id: string; name: string }[]> = {
       <div class="mt-8 flex items-center justify-between">
         <button id="prev-subcategory" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
         <div id="subcategory-buttons" class="flex space-x-4">
-          <!-- Subcategories will be dynamically inserted here -->
+          <!-- Subcategories will be injected here -->
         </div>
         <button id="next-subcategory" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
       </div>
 
       <!-- Displaying products -->
-      <section id="product-list" class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8 mt-8">
-        {product.map((p) => (
-          <CardWide
-            key={p.data.main.id}
-            title={p.data.main.title}
-            description={p.data.main.description}
-            image={p.data.main.image}
-            url={p.data.main.url}
-          />
-        ))}
+      <section id="product-list" class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
+        {product.map((product, index) => {
+          const position = index % 4;
+          return position === 0 || position === 3
+            ? <CardSmall product={product} />
+            : <CardWide product={product} />;
+        })}
       </section>
 
-      <TestimonialsSectionAlt testimonials={testimonials} />
+      <!-- Second Category Tabs with Navigation -->
+      <div class="mt-8 flex items-center justify-between">
+        <button id="prev-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
+        <div class="flex space-x-4">
+          {categories.map(category => (
+            <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300" data-category-id={category.id}>
+              {category.name}
+            </button>
+          ))}
+        </div>
+        <button id="next-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
+      </div>
     </div>
+
+    <!-- Features statistics section -->
+    <FeaturesStatsAlt
+      title="Why Choose ScrewFast?"
+      subTitle="Transform your ideas into tangible results with ScrewFast tools. Whether you're starting with a sketch on a napkin or diving into a comprehensive construction project, our tools are engineered to help you build with confidence."
+      benefits={[
+        "Robust and reliable tools for long-lasting performance.",
+        "Innovative solutions tailored to modern construction needs.",
+        "Customer support dedicated to your project's success.",
+      ]}
+    />
+
+    <!-- Testimonials section -->
+    <TestimonialsSectionAlt
+      title="What Our Customers Say"
+      testimonials={testimonials}
+    />
+  </div>
+
+  <!-- Floating button for mobile filter -->
+  <style>
+    .floating-filter-button {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+    .filter-dropdowns {
+      display: none;
+      position: fixed;
+      top: 2rem;
+      right: 1rem;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    .filter-dropdowns.show {
+      display: block;
+    }
+  </style>
+  <div id="floating-filter-button" class="floating-filter-button">
+    <span>Filters</span>
+  </div>
+  <div id="filter-dropdowns" class="filter-dropdowns">
+    <select id="mobile-filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+      <option value="">Filter by Type</option>
+      <option value="type1">Type 1</option>
+      <option value="type2">Type 2</option>
+      <option value="type3">Type 3</option>
+    </select>
+
+    <select id="mobile-filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+      <option value="">Filter by Material</option>
+      <option value="material1">Material 1</option>
+      <option value="material2">Material 2</option>
+      <option value="material3">Material 3</option>
+    </select>
+
+    <select id="mobile-filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+      <option value="">Filter by Size</option>
+      <option value="size1">Size 1</option>
+      <option value="size2">Size 2</option>
+      <option value="size3">Size 3</option>
+    </select>
   </div>
 
   <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
-      const subcategoryLimit = 7;
-      let selectedCategory = 1;
-      let currentSubcategoryIndex = 0;
+      const categoryButtons = Array.from(document.querySelectorAll('.flex.space-x-4 button[data-category-id]'));
+      const subcategoryContainer = document.getElementById('subcategory-buttons');
+      const prevSubcategoryButton = document.getElementById('prev-subcategory');
+      const nextSubcategoryButton = document.getElementById('next-subcategory');
+      let currentCategory = categoryButtons[0]?.dataset.categoryId || '';
+      let currentSubcategoryStartIndex = 0;
+      const subcategoryDisplayCount = 7;
 
-      const updateSubcategories = () => {
-        const subcategoryButtons = document.getElementById('subcategory-buttons') as HTMLElement;
-        subcategoryButtons.innerHTML = '';
+      const updateSubcategories = (categoryId) => {
+        const category = categories.find(cat => cat.id === categoryId);
+        if (!category) return;
+        const subcategories = category.subcategories;
 
-        const relevantSubcategories = (subcategories[selectedCategory] || []).slice(currentSubcategoryIndex, currentSubcategoryIndex + subcategoryLimit);
-
-        relevantSubcategories.forEach((sub) => {
+        // Update subcategory buttons
+        subcategoryContainer.innerHTML = '';
+        subcategories.slice(currentSubcategoryStartIndex, currentSubcategoryStartIndex + subcategoryDisplayCount).forEach(subcategory => {
           const button = document.createElement('button');
-          button.textContent = sub.name;
           button.className = 'py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300';
-          button.dataset.subcategoryId = sub.id;
-          subcategoryButtons.appendChild(button);
+          button.innerText = subcategory;
+          subcategoryContainer.appendChild(button);
         });
-
-        const prevButton = document.getElementById('prev-subcategory') as HTMLElement;
-        const nextButton = document.getElementById('next-subcategory') as HTMLElement;
-
-        prevButton.style.display = currentSubcategoryIndex === 0 ? 'none' : 'inline-flex';
-        nextButton.style.display = (currentSubcategoryIndex + subcategoryLimit) >= (subcategories[selectedCategory]?.length || 0) ? 'none' : 'inline-flex';
       };
 
-      updateSubcategories();
-
-      document.querySelectorAll('.flex.space-x-4 button[data-category-id]').forEach(button => {
-        const btn = button as HTMLButtonElement;
-        btn.addEventListener('click', () => {
-          selectedCategory = parseInt(btn.dataset.categoryId!, 10);
-          currentSubcategoryIndex = 0;
-          updateSubcategories();
+      categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          currentCategory = button.dataset.categoryId;
+          currentSubcategoryStartIndex = 0;
+          updateSubcategories(currentCategory);
         });
       });
 
-      const floatingButton = document.getElementById('floating-filter-button') as HTMLElement;
-      const filterDropdowns = document.getElementById('filter-dropdowns') as HTMLElement;
+      prevSubcategoryButton.addEventListener('click', () => {
+        currentSubcategoryStartIndex = Math.max(0, currentSubcategoryStartIndex - subcategoryDisplayCount);
+        updateSubcategories(currentCategory);
+      });
+
+      nextSubcategoryButton.addEventListener('click', () => {
+        currentSubcategoryStartIndex = Math.min(categories.find(cat => cat.id === currentCategory)?.subcategories.length - subcategoryDisplayCount || 0, currentSubcategoryStartIndex + subcategoryDisplayCount);
+        updateSubcategories(currentCategory);
+      });
+
+      // Initial load
+      updateSubcategories(currentCategory);
+    });
+  </script>
+  
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      const floatingButton = document.getElementById('floating-filter-button');
+      const filterDropdowns = document.getElementById('filter-dropdowns');
 
       floatingButton.addEventListener('click', () => {
-        filterDropdowns.classList.toggle('hidden');
+        filterDropdowns.classList.toggle('show');
       });
     });
   </script>

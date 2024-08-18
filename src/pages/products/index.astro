@@ -1,3 +1,4 @@
+---
 import MainLayout from "@/layouts/MainLayout.astro";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
 import CardSmall from "@components/ui/cards/CardSmall.astro";
@@ -97,19 +98,20 @@ const pageTitle: string = `Products | ${SITE.title}`;
             <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category 2</button>
           </div>
           <div class="flex flex-grow justify-end space-x-4">
-            <!-- Filter Dropdowns -->
             <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
               <option value="">Filter by Type</option>
               <option value="type1">Type 1</option>
               <option value="type2">Type 2</option>
               <option value="type3">Type 3</option>
             </select>
+
             <select id="filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
               <option value="">Filter by Material</option>
               <option value="material1">Material 1</option>
               <option value="material2">Material 2</option>
               <option value="material3">Material 3</option>
             </select>
+
             <select id="filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
               <option value="">Filter by Size</option>
               <option value="size1">Size 1</option>
@@ -120,19 +122,19 @@ const pageTitle: string = `Products | ${SITE.title}`;
         </div>
       </div>
 
-      <!-- Sub-category Button Group with Navigation -->
-      <div class="mt-8 flex items-center justify-between">
-        <button id="prev-subcategory" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
-        <div class="flex space-x-4">
-          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 1</button>
-          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 2</button>
-          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 3</button>
-        </div>
-        <button id="next-subcategory" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
-      </div>
+<!-- Sub-category Button Group with Navigation -->
+<div class="mt-8 flex items-center justify-between">
+  <button id="prev-subcategory" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
+  <div class="flex space-x-4">
+    <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 1</button>
+    <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 2</button>
+    <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Subcategory 3</button>
+  </div>
+  <button id="next-subcategory" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
+</div>
 
       <!-- Displaying products -->
-      <section id="product-list" class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8 mt-8">
+      <section id="product-list" class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
         {product.map((product, index) => {
           const position = index % 4;
           return position === 0 || position === 3
@@ -141,122 +143,177 @@ const pageTitle: string = `Products | ${SITE.title}`;
         })}
       </section>
 
-      <!-- Features statistics section -->
-      <FeaturesStatsAlt
-        title="Why Choose ScrewFast?"
-        subTitle="Transform your ideas into tangible results with ScrewFast tools. Whether you're starting with a sketch on a napkin or diving into a comprehensive construction project, our tools are engineered to help you build with confidence."
-        benefits={[
-          "Robust and reliable tools for long-lasting performance.",
-          "Innovative solutions tailored to modern construction needs.",
-          "Customer support dedicated to your project's success.",
-        ]}
-      />
-
-      <!-- Testimonials section -->
-      <TestimonialsSectionAlt
-        title="What Our Customers Say"
-        testimonials={testimonials}
-      />
+      <!-- Second Category Tabs with Navigation -->
+      <div class="mt-8 flex items-center justify-between">
+        <button id="prev-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
+        <div class="flex space-x-4">
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category A</button>
+          <button class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">Category B</button>
+        </div>
+        <button id="next-category" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
+      </div>
     </div>
 
-    <!-- Floating button for mobile filter -->
-    <style>
-      .floating-filter-button {
-        position: fixed;
-        bottom: 1rem;
-        right: 1rem;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 3rem;
-        height: 3rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        cursor: pointer;
-      }
+    <!-- Features statistics section -->
+    <FeaturesStatsAlt
+      title="Why Choose ScrewFast?"
+      subTitle="Transform your ideas into tangible results with ScrewFast tools. Whether you're starting with a sketch on a napkin or diving into a comprehensive construction project, our tools are engineered to help you build with confidence."
+      benefits={[
+        "Robust and reliable tools for long-lasting performance.",
+        "Innovative solutions tailored to modern construction needs.",
+        "Customer support dedicated to your project's success.",
+      ]}
+    />
 
-      .filter-dropdowns {
-        display: none;
-        position: fixed;
-        top: 2rem;
-        right: 1rem;
-        background-color: white;
-        border: 1px solid #ddd;
-        border-radius: 0.5rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        z-index: 1000;
-      }
-
-      .filter-dropdowns.show {
-        display: block;
-      }
-    </style>
-    <div id="floating-filter-button" class="floating-filter-button">
-      <span>Filters</span>
-    </div>
-    <div id="filter-dropdowns" class="filter-dropdowns">
-      <!-- Dropdown 1: Filter by Type -->
-      <select id="mobile-filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-        <option value="">Filter by Type</option>
-        <option value="type1">Type 1</option>
-        <option value="type2">Type 2</option>
-        <option value="type3">Type 3</option>
-      </select>
-
-      <!-- Dropdown 2: Filter by Material -->
-      <select id="mobile-filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-        <option value="">Filter by Material</option>
-        <option value="material1">Material 1</option>
-        <option value="material2">Material 2</option>
-        <option value="material3">Material 3</option>
-      </select>
-
-      <!-- Dropdown 3: Filter by Size -->
-      <select id="mobile-filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
-        <option value="">Filter by Size</option>
-        <option value="size1">Size 1</option>
-        <option value="size2">Size 2</option>
-        <option value="size3">Size 3</option>
-      </select>
-    </div>
-
-    <script type="module">
-      document.addEventListener('DOMContentLoaded', () => {
-        const prevButton = document.getElementById('prev-subcategory');
-        const nextButton = document.getElementById('next-subcategory');
-        const buttons = Array.from(document.querySelectorAll('.flex.space-x-4 button'));
-        
-        let currentIndex = 0;
-
-        const updateButtons = () => {
-          buttons.forEach((btn, index) => {
-            btn.style.display = (index === currentIndex) ? 'inline-flex' : 'none';
-          });
-        };
-
-        prevButton.addEventListener('click', () => {
-          currentIndex = (currentIndex === 0) ? buttons.length - 1 : currentIndex - 1;
-          updateButtons();
-        });
-
-        nextButton.addEventListener('click', () => {
-          currentIndex = (currentIndex === buttons.length - 1) ? 0 : currentIndex + 1;
-          updateButtons();
-        });
-
-        updateButtons();
-
-        // Floating Filter Button
-        const floatingButton = document.getElementById('floating-filter-button');
-        const filterDropdowns = document.getElementById('filter-dropdowns');
-
-        floatingButton.addEventListener('click', () => {
-          filterDropdowns.classList.toggle('show');
-        });
-      });
-    </script>
+    <!-- Testimonials section -->
+    <TestimonialsSectionAlt
+      title="What Our Customers Say"
+      testimonials={testimonials}
+    />
   </div>
+  
+  <!-- Floating button for mobile filter -->
+  <style>
+    .floating-filter-button {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+    .filter-dropdowns {
+      display: none;
+      position: fixed;
+      top: 2rem;
+      right: 1rem;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    .filter-dropdowns.show {
+      display: block;
+    }
+    .qaAX1 {
+      margin-top: 1rem;
+    }
+
+    .jiBXB {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .GOfXh {
+      flex: 1 1 auto;
+    }
+
+    .kq7dZ {
+      /* Add any additional styling needed */
+    }
+
+    .PpgG3 {
+      /* Add any additional styling needed */
+    }
+
+    .oZXL2 {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      text-decoration: none;
+      color: #007bff;
+      border-radius: 0.25rem;
+      background-color: #f8f9fa;
+      transition: background-color 0.2s;
+    }
+
+    .oZXL2:hover {
+      background-color: #e2e6ea;
+    }
+
+    .uoMSP {
+      /* Add any additional styling needed */
+    }
+
+    .jhw7y {
+      /* Add any additional styling needed */
+    }
+  </style>
+  <div id="floating-filter-button" class="floating-filter-button">
+    <span>Filters</span>
+  </div>
+  <div id="filter-dropdowns" class="filter-dropdowns">
+    <!-- Dropdown 1: Filter by Type -->
+    <select id="mobile-filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+      <option value="">Filter by Type</option>
+      <option value="type1">Type 1</option>
+      <option value="type2">Type 2</option>
+      <option value="type3">Type 3</option>
+    </select>
+
+    <!-- Dropdown 2: Filter by Material -->
+    <select id="mobile-filter-material" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+      <option value="">Filter by Material</option>
+      <option value="material1">Material 1</option>
+      <option value="material2">Material 2</option>
+      <option value="material3">Material 3</option>
+    </select>
+
+    <!-- Dropdown 3: Filter by Size -->
+    <select id="mobile-filter-size" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
+      <option value="">Filter by Size</option>
+      <option value="size1">Size 1</option>
+      <option value="size2">Size 2</option>
+      <option value="size3">Size 3</option>
+    </select>
+  </div>
+<script type="module">
+  document.addEventListener('DOMContentLoaded', () => {
+    const prevButton = document.getElementById('prev-subcategory');
+    const nextButton = document.getElementById('next-subcategory');
+    const buttons = Array.from(document.querySelectorAll('.flex.space-x-4 button'));
+    
+    let currentIndex = 0;
+
+    const updateButtons = () => {
+      buttons.forEach((btn, index) => {
+        btn.style.display = (index === currentIndex) ? 'inline-flex' : 'none';
+      });
+    };
+
+    prevButton.addEventListener('click', () => {
+      currentIndex = (currentIndex === 0) ? buttons.length - 1 : currentIndex - 1;
+      updateButtons();
+    });
+
+    nextButton.addEventListener('click', () => {
+      currentIndex = (currentIndex === buttons.length - 1) ? 0 : currentIndex + 1;
+      updateButtons();
+    });
+
+    updateButtons();
+  });
+</script>
+
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      const floatingButton = document.getElementById('floating-filter-button');
+      const filterDropdowns = document.getElementById('filter-dropdowns');
+
+      floatingButton.addEventListener('click', () => {
+        filterDropdowns.classList.toggle('show');
+      });
+    });
+  </script>
 </MainLayout>

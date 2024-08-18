@@ -56,16 +56,14 @@ const categories = [
   { id: 1, name: 'Category 1' },
   { id: 2, name: 'Category 2' }
 ];
-const subcategories = {
+const subcategories: Record<number, { id: string; name: string }[]> = {
   1: [
     { id: '1a', name: 'Subcategory 1a' },
     { id: '1b', name: 'Subcategory 1b' },
-    // Add more subcategories as needed
   ],
   2: [
     { id: '2a', name: 'Subcategory 2a' },
     { id: '2b', name: 'Subcategory 2b' },
-    // Add more subcategories as needed
   ],
 };
 ---
@@ -88,8 +86,6 @@ const subcategories = {
     "inLanguage": "en-US"
   }}
 >
-  
-  <!-- Add space before category tabs and filter dropdowns -->
   <div class="mb-8">
     <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
       <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
@@ -106,7 +102,6 @@ const subcategories = {
         <PrimaryCTA title="Customer Stories" url="#testimonials" noArrow={true} />
       </div>
 
-      <!-- Category Tabs and Filter Dropdowns -->
       <div class="flex flex-col-reverse gap-4 lg:flex-row lg:gap-8 mb-4">
         <div class="flex-1 flex items-center gap-4">
           <div class="flex space-x-4">
@@ -114,7 +109,7 @@ const subcategories = {
               <button
                 key={category.id}
                 class={`py-2 px-4 text-sm font-medium ${selectedCategory === category.id ? 'text-blue-600' : 'text-neutral-600 dark:text-neutral-300'}`}
-                data-category-id={category.id}
+                data-category-id={category.id.toString()}
               >
                 {category.name}
               </button>
@@ -145,7 +140,6 @@ const subcategories = {
         </div>
       </div>
 
-      <!-- Subcategory Button Group with Navigation -->
       <div class="mt-8 flex items-center justify-between">
         <button id="prev-subcategory" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{"<"}</button>
         <div id="subcategory-buttons" class="flex space-x-4">
@@ -154,7 +148,6 @@ const subcategories = {
         <button id="next-subcategory" class="py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300">{">"}</button>
       </div>
 
-      <!-- Displaying products -->
       <section id="product-list" class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8 mt-8">
         {product.map((product, index) => {
           const position = index % 4;
@@ -164,7 +157,6 @@ const subcategories = {
         })}
       </section>
 
-      <!-- Features and Testimonials Sections -->
       <FeaturesStatsAlt
         title="Why Choose ScrewFast?"
         subTitle="Transform your ideas into tangible results with ScrewFast tools. Whether you're starting with a sketch on a napkin or diving into a comprehensive construction project, our tools are engineered to help you build with confidence."
@@ -182,12 +174,10 @@ const subcategories = {
     </div>
   </div>
 
-  <!-- Floating Filter Button -->
   <button id="floating-filter-button" class="fixed bottom-4 right-4 bg-blue-600 text-white py-2 px-4 rounded-full shadow-lg z-50">
     Filters
   </button>
 
-  <!-- Filter Dropdowns -->
   <div id="filter-dropdowns" class="fixed bottom-16 right-4 bg-white border border-neutral-300 rounded-lg shadow-lg p-4 dark:bg-neutral-800 dark:border-neutral-600 hidden z-40">
     <select id="filter-type" class="bg-white border border-neutral-300 rounded-lg py-2 px-4 dark:bg-neutral-800 dark:border-neutral-600">
       <option value="">Filter by Type</option>
@@ -211,6 +201,7 @@ const subcategories = {
     </select>
   </div>
 </MainLayout>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const categories = [{ id: 1, name: 'Category 1' }, { id: 2, name: 'Category 2' }];
@@ -218,12 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
     1: [
       { id: '1a', name: 'Subcategory 1a' },
       { id: '1b', name: 'Subcategory 1b' },
-      // Add more subcategories as needed
     ],
     2: [
       { id: '2a', name: 'Subcategory 2a' },
       { id: '2b', name: 'Subcategory 2b' },
-      // Add more subcategories as needed
     ],
   };
 
@@ -233,25 +222,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateSubcategories = () => {
     const subcategoryButtons = document.getElementById('subcategory-buttons');
-    subcategoryButtons.innerHTML = '';
+    if (subcategoryButtons) {
+      subcategoryButtons.innerHTML = '';
 
-    const relevantSubcategories = subcategories[selectedCategory].slice(currentSubcategoryIndex, currentSubcategoryIndex + subcategoryLimit);
+      const relevantSubcategories = subcategories[selectedCategory]?.slice(currentSubcategoryIndex, currentSubcategoryIndex + subcategoryLimit) || [];
 
-    relevantSubcategories.forEach(sub => {
-      const button = document.createElement('button');
-      button.textContent = sub.name;
-      button.className = 'py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300';
-      button.dataset.subcategoryId = sub.id;
-      subcategoryButtons.appendChild(button);
-    });
+      relevantSubcategories.forEach(sub => {
+        const button = document.createElement('button');
+        button.textContent = sub.name;
+        button.className = 'py-2 px-4 text-sm font-medium text-neutral-600 dark:text-neutral-300';
+        button.dataset.subcategoryId = sub.id;
+        subcategoryButtons.appendChild(button);
+      });
 
-    document.getElementById('prev-subcategory').style.display = currentSubcategoryIndex === 0 ? 'none' : 'inline-flex';
-    document.getElementById('next-subcategory').style.display = (currentSubcategoryIndex + subcategoryLimit) >= subcategories[selectedCategory].length ? 'none' : 'inline-flex';
+      const prevButton = document.getElementById('prev-subcategory');
+      const nextButton = document.getElementById('next-subcategory');
+
+      if (prevButton && nextButton) {
+        prevButton.style.display = currentSubcategoryIndex === 0 ? 'none' : 'inline-flex';
+        nextButton.style.display = (currentSubcategoryIndex + subcategoryLimit) >= (subcategories[selectedCategory]?.length || 0) ? 'none' : 'inline-flex';
+      }
+    }
   };
 
   updateSubcategories();
 
-  document.querySelectorAll('.flex.space-x-4 button[data-category-id]').forEach(button => {
+  const categoryButtons = document.querySelectorAll('.flex.space-x-4 button[data-category-id]');
+  categoryButtons.forEach(button => {
     button.addEventListener('click', () => {
       selectedCategory = parseInt(button.dataset.categoryId, 10);
       currentSubcategoryIndex = 0;
@@ -259,22 +256,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.getElementById('prev-subcategory').addEventListener('click', () => {
-    currentSubcategoryIndex = Math.max(0, currentSubcategoryIndex - subcategoryLimit);
-    updateSubcategories();
-  });
+  const prevButton = document.getElementById('prev-subcategory');
+  const nextButton = document.getElementById('next-subcategory');
 
-  document.getElementById('next-subcategory').addEventListener('click', () => {
-    currentSubcategoryIndex = Math.min(subcategories[selectedCategory].length - subcategoryLimit, currentSubcategoryIndex + subcategoryLimit);
-    updateSubcategories();
-  });
+  if (prevButton) {
+    prevButton.addEventListener('click', () => {
+      currentSubcategoryIndex = Math.max(0, currentSubcategoryIndex - subcategoryLimit);
+      updateSubcategories();
+    });
+  }
+
+  if (nextButton) {
+    nextButton.addEventListener('click', () => {
+      currentSubcategoryIndex = Math.min((subcategories[selectedCategory]?.length || 0) - subcategoryLimit, currentSubcategoryIndex + subcategoryLimit);
+      updateSubcategories();
+    });
+  }
 
   const floatingButton = document.getElementById('floating-filter-button');
   const filterDropdowns = document.getElementById('filter-dropdowns');
 
-  floatingButton.addEventListener('click', () => {
-    filterDropdowns.classList.toggle('hidden');
-  });
+  if (floatingButton && filterDropdowns) {
+    floatingButton.addEventListener('click', () => {
+      filterDropdowns.classList.toggle('hidden');
+    });
+  }
 });
-
 </script>

@@ -1,6 +1,7 @@
 ---
 title: "SF-FN F303"
 description: "Boulons hexagonaux"
+category: "bike"
 main:
   id: 4
   content: |

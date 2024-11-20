@@ -6,12 +6,11 @@ import CardSmall from "@components/ui/cards/CardSmall.astro";
 import CardWide from "@components/ui/cards/CardWide.astro";
 import FeaturesStatsAlt from "@components/sections/features/FeaturesStatsAlt.astro";
 import TestimonialsSectionAlt from "@components/sections/testimonials/TestimonialsSectionAlt.astro";
-import siteconfig from "@data/site.json";
 
 // Importing necessary functions from Astro
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import { SITE } from "@/data_files/en/constants";
+import siteconfig from "@data/site.json";
 
 // Fetching all the product related content and sorting it by main.id
 const product: CollectionEntry<"products">[] = (
@@ -61,14 +60,14 @@ const testimonials = [
     avatarAlt: "Image Description",
   },
 ];
-const navlinkData = await import(`../../data_files/en/nav.json`)
+const navlinkData = await import(`../../data_files/en/nav.json`);
 
-const pageTitle: string = `Products | ${SITE.title}`;
+const pageTitle: string = `Products | ${siteconfig.SITE.title}`;
 ---
 
 <MainLayout
-navdata={navlinkData}
 supportedLangLabels={siteconfig.supportedLangLabels}
+navdata={navlinkData}
 
   title={pageTitle}
   structuredData={{
@@ -80,7 +79,7 @@ supportedLangLabels={siteconfig.supportedLangLabels}
     "description": "Explore the durability and precision of ScrewFast tools, designed for both professionals and enthusiasts.",
     "isPartOf": {
       "@type": "WebSite",
-      "url": "https://screwfast.uk",
+      "url": siteconfig.SITE.url,
       "name": "ScrewFast",
       "description": "ScrewFast offers top-tier hardware tools and expert construction services to meet all your project needs."
     },

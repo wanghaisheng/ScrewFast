@@ -1,6 +1,7 @@
 ---
 title: "SF-AB A765"
 description: "Ensemble de Vis Assorties"
+category: "bike"
 main:
   id: 2
   content: |

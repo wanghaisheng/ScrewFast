@@ -6,7 +6,7 @@ import CardBlogRecent from "@components/ui/cards/CardBlogRecent.astro";
 import CardInsight from "@components/ui/cards/CardInsight.astro";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import { SITE } from "@/data_files/en/constants";
+import siteconfig from "@data/site.json";
 
 // Get all blogs post in English and sort them based on publish date
 
@@ -36,11 +36,15 @@ const subTitle: string =
 const secondTitle: string = "Insights";
 const secondSubTitle: string =
   "Stay up-to-date with the latest trends and developments in the construction industry with insights from ScrewFast's team of industry experts. ";
+const navlinkData = await import(`../../data_files/en/nav.json`);
 
-const pageTitle: string = `Blog | ${SITE.title}`;
+const pageTitle: string = `Blog | ${siteconfig.SITE.title}`;
 ---
 
 <MainLayout
+navdata={navlinkData}
+supportedLangLabels={siteconfig.supportedLangLabels}
+
   title={pageTitle}
   structuredData={{
     "@context": "https://schema.org",

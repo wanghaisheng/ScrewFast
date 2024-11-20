@@ -5,7 +5,7 @@ import ProductTabBtn from "@components/ui/buttons/ProductTabBtn.astro";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
-import { SITE } from "@/data_files/en/constants";
+import { SITE } from "@data/en/constants";
 import siteconfig from "@data/site.json";
 
 // Global declaration for gsap animation library
@@ -29,17 +29,17 @@ export async function getStaticPaths() {
     };
   });
 }
-const navlinkData = await import(`../../data_files/en/nav.json`)
+const navlinkData = await import(`../../data_files/en/nav.json`);
 
 const { product } = Astro.props;
 
 const pageTitle: string = `${product.data.title} | ${SITE.title}`;
 ---
 
-<MainLayout 
-navdata={navlinkData}
+<MainLayout
 supportedLangLabels={siteconfig.supportedLangLabels}
 
+navdata={navlinkData}
 title={pageTitle}>
   <div id="overlay" class="fixed inset-0 bg-neutral-200 dark:bg-neutral-800">
   </div>

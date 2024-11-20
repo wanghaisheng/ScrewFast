@@ -2,7 +2,7 @@ import type { APIRoute, ImageMetadata } from "astro";
 import { getImage } from "astro:assets";
 import icon from "@images/icon.png";
 import maskableIcon from "@images/icon-maskable.png";
-
+import siteconfig from "@data/site.json";
 interface Favicon {
   purpose: 'any' | 'maskable' | 'monochrome';
   src: ImageMetadata;
@@ -44,8 +44,8 @@ export const GET: APIRoute = async () => {
   );
 
   const manifest = {
-    short_name: "ScrewFast",
-    name: "ScrewFast",
+    short_name: siteconfig.SITE.shortname,
+    name: siteconfig.SITE.title    ,
     icons,
     display: "minimal-ui",
     id: "/",

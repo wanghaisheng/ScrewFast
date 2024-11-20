@@ -6,6 +6,8 @@ import CardWide from "@components/ui/cards/ProductCardWide.astro";
 import FeaturesStatsAlt from "@components/sections/features/FeaturesStatsAlt.astro";
 import TestimonialsSectionAlt from "@components/sections/testimonials/TestimonialsSectionAlt.astro";
 import siteconfig from "@data/site.json";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 // Define getStaticPaths to handle both language and category
 export async function getStaticPaths() {
@@ -40,12 +42,18 @@ if (!lang || !category) {
 }
 
 // Load all products
+
+const productsData: CollectionEntry<"products">[] = (
+await getCollection("products", ({ id }) => {
+  return id.startsWith("en/");
+})
+)
 // const { default: productsData } = await import(`../../../data_files/${lang}/products/all.json`);
 const { default: productsDatajson } = await import(`../../../data_files/${lang}/collections/${category}.json`);
-const productsData=productsDatajson.products
+// const productsData=productsDatajson.products
 // Filter products by category
 const filteredProducts = Array.isArray(productsData)
-  ? productsData.filter(product => product.category === category)
+  ? productsData.filter(product => product.data.category === category)
   : [];
 
 console.log('specific collc',filteredProducts)
@@ -67,21 +75,21 @@ if (!allCategories.includes(category)) {
 ---
 
 <MainLayout
-  title={`${collectionsData.title} | ${siteconfig.title}`}
+  title={`${collectionsData.title} | ${siteconfig.SITE.title}`}
   navdata={navlinkData}
   supportedLangLabels={siteconfig.supportedLangLabels}
   structuredData={{
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": `https://screwfast.uk/${lang}/collections/${category}`,
-    "url": `https://screwfast.uk/${lang}/collections/${category}`,
+    "@id": `${siteconfig.SITE.url}/${lang}/collections/${category}`,
+    "url": `${siteconfig.SITE.url}/${lang}/collections/${category}`,
     "name": collectionsData.title,
     "description": collectionsData.subTitle,
     "isPartOf": {
       "@type": "WebSite",
-      "url": "https://screwfast.uk",
-      "name": siteconfig.title,
-      "description": siteconfig.description
+      "url": siteconfig.SITE.url,
+      "name": siteconfig.SITE.title,
+      "description": siteconfig.SITE.description
     },
     "inLanguage": lang
   }}
@@ -129,6 +137,6 @@ if (!allCategories.includes(category)) {
     )}
   </div>
 
-  <FeaturesStatsAlt {...collectionsData.features} />
-  <TestimonialsSectionAlt {...collectionsData.testimonials} />
+  <!-- <FeaturesStatsAlt {...collectionsData.features} /> -->
+  <!-- <TestimonialsSectionAlt {...collectionsData.testimonials} /> -->
 </MainLayout>

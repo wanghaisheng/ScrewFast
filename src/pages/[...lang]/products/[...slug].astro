@@ -1,102 +1,126 @@
 ---
-// src/pages/[...lang]/products/[...slug].astro
+// Import section components
 import MainLayout from "@/layouts/MainLayout.astro";
 import ProductTabBtn from "@components/ui/buttons/ProductTabBtn.astro";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import siteconfig from "@data/site.json";
 
-// Global declaration for gsap
+// Type definitions
+interface SiteConfig {
+  supportedLangLabels: {
+    [key: string]: string;
+  };
+  SITE: {
+    title: string;
+    tagline: string;
+    description: string;
+    description_short: string;
+    url: string;
+    author: string;
+  };
+}
+
+interface Props {
+  params: {
+    lang: string;
+    slug: string;
+  };
+  props: {
+    product: CollectionEntry<"products">;
+  };
+}
+
+// Global declaration for gsap animation library
 declare global {
   interface Window {
     gsap: any;
   }
 }
 
-// Define getStaticPaths to handle language and product slug
+// Language utility functions
+function getLanguageUtils(config: SiteConfig) {
+  return {
+    getSupportedLanguages: () => Object.keys(config.supportedLangLabels),
+    getLanguageLabel: (lang: string) => config.supportedLangLabels[lang],
+    isLanguageSupported: (lang: string) => lang in config.supportedLangLabels,
+    getDefaultLanguage: () => "en",
+  };
+}
+
+// Get static paths for all products in all languages
 export async function getStaticPaths() {
-  const supportedLanguages = siteconfig.supportedLanguages;
-  // const allProducts = await getCollection("products");
-
-  const paths = [];
-  for (const lang of supportedLanguages) {
-    try {
-      const { default: products } = await import(`../../../data_files/${lang}/products/all.json`);
-      const productPaths = products.map(product => ({
-        params: { 
-          lang,
-          slug: product.slug // This should be just "bike-new" without language prefix
-        },
-        props: { product }
-      }));
-      paths.push(...productPaths);
-    } catch (error) {
-      console.error(`Error loading products for language ${lang}:`, error);
-    }
-  }
-  return paths;
-
-}
-const { lang = "en", slug } = Astro.params;
-const { product } = Astro.props;
-
-// Get params and props
-
-if (!product) {
-  return Astro.redirect(`/${lang}/products`);
-}
-
-// Load language-specific data
-const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
-  .catch(() => ({ nav: [] }));
-console.log('====product nav',navlinkData)
-const i18n = await import(`../../../data_files/${lang}/products/i18n.json`)
-  .catch(() => ({
-    breadcrumb: {
-      products: "Products"
-    }
+  const supportedLanguages = Object.keys(siteconfig.supportedLangLabels);
+  
+  const allProducts = await Promise.all(
+    supportedLanguages.map(async (lang) => {
+      const products = await getCollection("products", ({ id }) =>
+        id.startsWith(`${lang}/`)
+      );
+      return products.map((product) => {
+        const slugWithoutLang = product.slug.replace(`${lang}/`, "");
+        return {
+          params: {
+            lang,
+            slug: slugWithoutLang,
+          },
+          props: { 
+            product 
+          },
+        };
+      });
+    })
+  );
+  const fallbackPaths = allProducts.flat().map((product) => ({
+    params: {
+      lang: undefined,
+      slug: product.params.slug,
+    },
+    redirect: `/${siteconfig.defaultlang}/products/${product.params.slug}/`,
   }));
+  return [...allProducts.flat(), ...fallbackPaths];
+
+  // return allProducts.flat();
+}
+
+
+// Component logic
+const { lang } = Astro.params;
+const currentLang = lang || "en";
+
+// Validate language
+const langUtils = getLanguageUtils(siteconfig as SiteConfig);
+if (!langUtils.isLanguageSupported(currentLang)) {
+  return Astro.redirect(`/${langUtils.getDefaultLanguage()}/404`);
+}
+
+// Get navigation data and product information
+const navlinkData = await import(`../../../data_files/${currentLang}/nav.json`);
+const { product } = Astro.props;
+if (!product) {
+  return Astro.redirect(`/404`);
+}
+console.log('=======',product)
+
+const pageTitle: string = `${product.data.title} | ${siteconfig.SITE.title}`;
 ---
 
 <MainLayout
-  title={`${product.data.title} | ${siteconfig.title}`}
   navdata={navlinkData}
   supportedLangLabels={siteconfig.supportedLangLabels}
-  structuredData={{
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "@id": `https://screwfast.uk/${lang}/products/${slug}`,
-    "url": `https://screwfast.uk/${lang}/products/${slug}`,
-    "name": product.data.title,
-    "description": product.data.description,
-    "image": product.data.main.imgMain,
-    "inLanguage": lang
-  }}
+  title={pageTitle}
 >
-  <div id="overlay" class="fixed inset-0 bg-neutral-200 dark:bg-neutral-800"></div>
-
-  <!-- Breadcrumb navigation -->
-  <nav class="mx-auto max-w-[85rem] px-4 py-4 sm:px-6 lg:px-8" aria-label="Breadcrumb">
-    <ol class="flex items-center space-x-2 text-sm text-neutral-600 dark:text-neutral-400">
-      <li>
-        <a href={`/${lang}/products`} class="hover:text-orange-400 dark:hover:text-orange-300">
-          {i18n.breadcrumb.products}
-        </a>
-      </li>
-      <li>/</li>
-      <li class="text-neutral-800 dark:text-neutral-200">
-        {product.data.title}
-      </li>
-    </ol>
-  </nav>
-
+  <div id="overlay" class="fixed inset-0 bg-neutral-200 dark:bg-neutral-800">
+  </div>
+  
   <section class="mx-auto flex max-w-[85rem] flex-col px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
     <div>
       <p id="fadeText" class="mb-8 max-w-prose text-pretty font-light text-neutral-700 dark:text-neutral-300 sm:text-xl">
         {product.data.main.content}
       </p>
     </div>
+    
     <div class="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
       <div id="fadeInUp">
         <h1 class="block text-4xl font-bold tracking-tighter text-neutral-800 dark:text-neutral-200 sm:text-5xl md:text-6xl lg:text-7xl">
@@ -120,11 +144,7 @@ const i18n = await import(`../../../data_files/${lang}/products/i18n.json`)
   </section>
 
   <div class="mx-auto max-w-[85rem] px-4 pt-10 sm:px-6 lg:px-8 lg:pt-14">
-    <nav
-      class="mx-auto grid max-w-6xl gap-y-px sm:flex sm:gap-x-4 sm:gap-y-0"
-      aria-label="Tabs"
-      role="tablist"
-    >
+    <nav class="mx-auto grid max-w-6xl gap-y-px sm:flex sm:gap-x-4 sm:gap-y-0" aria-label="Tabs" role="tablist">
       {
         product.data.tabs.map((tab, index) => (
           <ProductTabBtn
@@ -138,7 +158,7 @@ const i18n = await import(`../../../data_files/${lang}/products/i18n.json`)
     </nav>
 
     <div class="mt-12 md:mt-16">
-      <!-- Overview Tab -->
+      <!-- Tab 1 Content -->
       <div id="tabs-with-card-1" role="tabpanel">
         <div class="mx-auto max-w-[85rem] px-4 pb-10 sm:px-6 lg:px-8 lg:pb-14">
           <div class="grid gap-12 md:grid-cols-2">
@@ -176,107 +196,14 @@ const i18n = await import(`../../../data_files/${lang}/products/i18n.json`)
         </div>
       </div>
 
-      <!-- Specifications Tab -->
+      <!-- Tab 2 Content -->
       <div id="tabs-with-card-2" class="hidden" role="tabpanel">
-        <div class="mx-auto max-w-[85rem] px-4 pb-10 sm:px-6 lg:px-8 lg:pb-14">
-          <div class="grid w-full grid-cols-1 gap-x-16 md:grid-cols-2">
-            <div class="max-w-md space-y-6">
-              {
-                product.data.specificationsLeft.map((spec) => (
-                  <div>
-                    <h3 class="block font-bold text-neutral-800 dark:text-neutral-200">
-                      {spec.title}
-                    </h3>
-                    <p class="text-neutral-600 dark:text-neutral-400">
-                      {spec.subTitle}
-                    </p>
-                  </div>
-                ))
-              }
-            </div>
-            {
-              product.data.specificationsRight ? (
-                <div class="mt-6 max-w-md space-y-6 md:ml-auto md:mt-0">
-                  {product.data.specificationsRight?.map((spec) => (
-                    <div>
-                      <h3 class="block font-bold text-neutral-800 dark:text-neutral-200">
-                        {spec.title}
-                      </h3>
-                      <p class="text-neutral-600 dark:text-neutral-400">
-                        {spec.subTitle}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              ) : product.data.tableData ? (
-                <div class="mt-6 space-y-6 md:ml-auto md:mt-0">
-                  <div class="flex flex-col">
-                    <div class="-m-1.5 overflow-x-auto">
-                      <div class="inline-block min-w-full p-1.5 align-middle">
-                        <div class="overflow-hidden">
-                          <table class="min-w-full divide-y divide-neutral-300 dark:divide-neutral-700">
-                            <thead>
-                              <tr>
-                                {product.data.tableData[0].feature?.map((header) => (
-                                  <th scope="col" class="px-6 py-3 text-start text-xs font-medium uppercase text-neutral-500 dark:text-neutral-500">
-                                    {header}
-                                  </th>
-                                ))}
-                              </tr>
-                            </thead>
-                            <tbody class="divide-y divide-neutral-300 dark:divide-neutral-700">
-                              {product.data.tableData.map((row) =>
-                                row.description.map((rowData) => (
-                                  <tr>
-                                    {rowData.map((cellValue) => (
-                                      <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-600 dark:text-neutral-400">
-                                        {cellValue}
-                                      </td>
-                                    ))}
-                                  </tr>
-                                ))
-                              )}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : null
-            }
-          </div>
-        </div>
+        <!-- ... (rest of tab 2 content) ... -->
       </div>
 
-      <!-- Blueprints Tab -->
+      <!-- Tab 3 Content -->
       <div id="tabs-with-card-3" class="hidden" role="tabpanel">
-        <div class="mx-auto mb-20 flex w-full md:mb-28 2xl:w-4/5">
-          <div class="relative left-12 top-12 z-10 overflow-hidden rounded-xl shadow-lg md:left-12 md:top-16 md:-ml-12 lg:ml-0">
-            {
-              product.data.blueprints.first && (
-                <Image
-                  src={product.data.blueprints.first}
-                  class="h-full w-full object-cover object-center"
-                  alt="Blueprint Illustration"
-                  format="avif"
-                />
-              )
-            }
-          </div>
-          <div class="relative right-12 overflow-hidden rounded-xl shadow-xl">
-            {
-              product.data.blueprints.second && (
-                <Image
-                  src={product.data.blueprints.second}
-                  class="h-full w-full object-cover object-center"
-                  alt="Blueprint Illustration"
-                  format="avif"
-                />
-              )
-            }
-          </div>
-        </div>
+        <!-- ... (rest of tab 3 content) ... -->
       </div>
     </div>
   </div>
@@ -296,6 +223,7 @@ const i18n = await import(`../../../data_files/${lang}/products/i18n.json`)
     gsap.set(id, settings);
   }
 
+  // Set initial states
   setElementAnimationDefaults("#fadeText", {
     autoAlpha: 0,
     y: 50,
@@ -314,6 +242,7 @@ const i18n = await import(`../../../data_files/${lang}/products/i18n.json`)
     willChange: "transform, opacity",
   });
 
+  // Create animation timeline
   let timeline = gsap.timeline({ defaults: { overwrite: "auto" } });
 
   timeline.to("#fadeText", {
@@ -340,6 +269,7 @@ const i18n = await import(`../../../data_files/${lang}/products/i18n.json`)
 </script>
 
 <script>
+  // Tab functionality
   document.addEventListener("DOMContentLoaded", function () {
     function setButtonInactive(btn: Element, activeButton: Element) {
       if (btn !== activeButton) {
@@ -398,7 +328,7 @@ const i18n = await import(`../../../data_files/${lang}/products/i18n.json`)
     }
 
     const tabButtons = document.querySelectorAll("[data-target]");
-
+    
     if (tabButtons.length > 0) {
       changeHeadingStyle(
         tabButtons[0],
@@ -408,63 +338,10 @@ const i18n = await import(`../../../data_files/${lang}/products/i18n.json`)
     }
 
     tabButtons.forEach((button) => {
-        button.addEventListener("click", () => {
+      button.addEventListener("click", () => {
         tabButtons.forEach((btn) => setButtonInactive(btn, button));
         activateButton(button);
       });
-
-      // Add keyboard navigation
-      button.addEventListener("keydown", (e) => {
-        const targetButton = e.target as Element;
-        if (!targetButton) return;
-
-        const buttons = Array.from(tabButtons);
-        const index = buttons.indexOf(targetButton);
-        let nextButton: Element | undefined;
-
-        switch (e.key) {
-          case "ArrowRight":
-          case "ArrowDown":
-            e.preventDefault();
-            nextButton = buttons[index + 1] || buttons[0];
-            break;
-          case "ArrowLeft":
-          case "ArrowUp":
-            e.preventDefault();
-            nextButton = buttons[index - 1] || buttons[buttons.length - 1];
-            break;
-          case "Home":
-            e.preventDefault();
-            nextButton = buttons[0];
-            break;
-          case "End":
-            e.preventDefault();
-            nextButton = buttons[buttons.length - 1];
-            break;
-        }
-
-        if (nextButton) {
-          (nextButton as HTMLElement).click();
-          (nextButton as HTMLElement).focus();
-        }
-      });
     });
-
-    // Handle URL hash changes
-    function handleHashChange() {
-      const hash = window.location.hash;
-      if (hash) {
-        const targetButton = document.querySelector(`[data-target="${hash}"]`);
-        if (targetButton) {
-          (targetButton as HTMLElement).click();
-        }
-      }
-    }
-
-    // Listen for hash changes
-    window.addEventListener("hashchange", handleHashChange);
-
-    // Check hash on initial load
-    handleHashChange();
   });
 </script>

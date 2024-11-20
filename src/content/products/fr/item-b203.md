@@ -1,6 +1,7 @@
 ---
 title: "SF-BN B203"
 description: "Ensemble de boulons à vis et écrous"
+category: "bike"
 main:
   id: 3
   content: |

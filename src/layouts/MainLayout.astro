@@ -3,7 +3,7 @@
 import Meta from "@components/Meta.astro";
 import Navbar from "@components/sections/navbar&footer/Navbar.astro";
 import FooterSection from "@components/sections/navbar&footer/FooterSection.astro";
-import { SITE } from "@/data_files/en/constants";
+import siteconfig from "@data/site.json";
 import type {Navlinks} from "@utils/navigation"
 // Setting expected props
 
@@ -18,7 +18,7 @@ interface Props {
   navdata:Navlinks;
   supportedLangLabels:{};
 }
-const { title = SITE.title, meta, structuredData, lang = "en",navdata,supportedLangLabels } = Astro.props;
+const { title = siteconfig.SITE.title, meta, structuredData, lang = "en",navdata,supportedLangLabels } = Astro.props;
 
 ---
 

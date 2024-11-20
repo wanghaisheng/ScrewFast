@@ -72,15 +72,15 @@ const processedArticles = servicesData.articles.map(article => ({
   structuredData={{
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": `https://screwfast.uk/${lang}/services`,
-    "url": `https://screwfast.uk/${lang}/services`,
+    "@id": `${siteconfig.SITE.url}/${lang}/services`,
+    "url": `${siteconfig.SITE.url}/${lang}/services`,
     "name": servicesData.pageTitle,
     "description": servicesData.mainSection.subTitle,
     "isPartOf": {
       "@type": "WebSite",
-      "url": "https://screwfast.uk",
-      "name": siteconfig.title,
-      "description": siteconfig.description
+      "url": siteconfig.SITE.url,
+      "name": siteconfig.SITE.title,
+      "description": siteconfig.SITE.description
     },
     "inLanguage": lang
   }}

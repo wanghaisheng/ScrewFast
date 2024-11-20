@@ -2,13 +2,30 @@
 // Import the necessary components
 import MainLayout from "@/layouts/MainLayout.astro";
 import ContactSection from "@components/sections/misc/ContactSection.astro";
-import { SITE } from "@/data_files/en/constants";
+import siteconfig from "@data/site.json";
 
-const pageTitle: string = `Contact | ${SITE.title}`;
+
+export async function getStaticPaths() {
+  const supportedLanguages = siteconfig.supportedLanguages;
+  return supportedLanguages.map((lang) => ({
+    params: { lang },
+    props: { lang }
+  }));
+}
+const { lang } = Astro.props;
+if (!lang || !siteconfig.supportedLanguages.includes(lang)) {
+  return Astro.redirect('/en');
+}
+const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
+
+const pageTitle: string = `Contact | ${siteconfig.SITE.title}`;
 ---
 
 <!--Utilizing MainLayout for the outer layout of the page, and defining meta for SEO purposes-->
 <MainLayout
+navdata={navlinkData}
+supportedLangLabels={siteconfig.supportedLangLabels}
+
   title={pageTitle}
   structuredData={{
     "@context": "https://schema.org",
@@ -20,7 +37,7 @@ const pageTitle: string = `Contact | ${SITE.title}`;
       "Have questions or want to discuss a project? Reach out, and let's craft the perfect solution with our tools and services.",
     "isPartOf": {
       "@type": "WebSite",
-      "url": "https://screwfast.uk",
+      "url": siteconfig.SITE.url,
       "name": "ScrewFast",
       "description":
         "ScrewFast offers top-tier hardware tools and expert construction services to meet all your project needs.",

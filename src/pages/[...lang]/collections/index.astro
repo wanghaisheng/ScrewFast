@@ -25,21 +25,21 @@ const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
 ---
 
 <MainLayout
-  title={`${categoriesData.title} | ${siteconfig.title}`}
+  title={`${categoriesData.title} | ${siteconfig.SITE.title}`}
   navdata={navlinkData}
   supportedLangLabels={siteconfig.supportedLangLabels}
   structuredData={{
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": `https://screwfast.uk/${lang}/collections`,
-    "url": `https://screwfast.uk/${lang}/collections`,
+    "@id": `${siteconfig.SITE.url}/${lang}/collections`,
+    "url": `${siteconfig.SITE.url}/${lang}/collections`,
     "name": categoriesData.title,
     "description": categoriesData.description,
     "isPartOf": {
       "@type": "WebSite",
-      "url": "https://screwfast.uk",
-      "name": siteconfig.title,
-      "description": siteconfig.description
+      "url": siteconfig.SITE.url,
+      "name": siteconfig.SITE.title,
+      "description": siteconfig.SITE.description
     },
     "inLanguage": lang
   }}

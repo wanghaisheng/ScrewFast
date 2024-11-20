@@ -10,7 +10,7 @@ import { Image } from "astro:assets";
 import { capitalize, formatDate } from "@utils/utils";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import { SITE } from "@/data_files/en/constants";
+import siteconfig from "@data/site.json";
 
 // Update getStaticPaths for English posts
 export async function getStaticPaths() {
@@ -41,11 +41,16 @@ const blogPosts: CollectionEntry<"blog">[] = await getCollection(
 const relatedPosts: CollectionEntry<"blog">[] = blogPosts.filter(
   (blogEntry) => blogEntry.slug !== post.slug
 );
+const navlinkData = await import(`../../data_files/en/nav.json`);
 
-const pageTitle: string = `${post.data.title} | ${SITE.title}`;
+const pageTitle: string = `${post.data.title} | ${siteconfig.SITE.title}`;
 ---
 
-<MainLayout title={pageTitle}>
+<MainLayout 
+navdata={navlinkData}
+supportedLangLabels={siteconfig.supportedLangLabels}
+
+title={pageTitle}>
   <section class="mx-auto max-w-3xl px-4 pb-12 pt-6 sm:px-6 lg:px-8 lg:pt-10">
     <div class="max-w-2xl">
       <div class="mb-6 flex items-center justify-between">

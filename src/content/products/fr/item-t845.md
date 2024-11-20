@@ -1,6 +1,7 @@
 ---
 title: "SF-TB T845"
 description: "Vis à machine"
+category: "bike"
 main:
   id: 1
   content: |

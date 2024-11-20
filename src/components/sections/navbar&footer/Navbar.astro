@@ -5,6 +5,8 @@ import NavLink from "@components/ui/links/NavLink.astro";
 import Authentication from "../misc/Authentication.astro";
 // import enStrings from "@utils/navigation.ts";
 // import frStrings from "@utils/fr/navigation.ts";
+import siteconfig from "@data/site.json";
+
 import BrandLogo from "@components/BrandLogo.astro";
 import LanguagePicker from "@components/ui/LanguagePicker.astro";
 interface NavBarLink {
@@ -126,7 +128,7 @@ const homeUrl = Astro.currentLocale === "fr" ? "/fr" : "/";
         ))}
 
         <Authentication />
-        <LanguagePicker supportedLangLabels={supportedLangLabels} />
+        <LanguagePicker supportedLangLabels={siteconfig.supportedLangLabels} />
         <!-- ThemeIcon component specifically for larger screens -->
         <span class="hidden md:inline-block">
           <ThemeIcon />

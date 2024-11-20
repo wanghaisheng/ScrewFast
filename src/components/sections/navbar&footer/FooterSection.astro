@@ -2,14 +2,17 @@
 // Import the necessary dependencies
 import FooterSocialLink from "@components/ui/links/FooterSocialLink.astro";
 import EmailFooterInput from "@components/ui/forms/input/EmailFooterInput.astro";
-import enStrings from "@utils/navigation.ts";
-import frStrings from "@utils/fr/navigation.ts";
 import Icon from "@components/ui/icons/Icon.astro";
 import BrandLogo from "@components/BrandLogo.astro";
-import { SITE } from "@data/constants";
+import { SITE } from "@/data_files/en/constants";
+import type { Navlinks  } from "@utils/navigation.ts";
 
-// Select the correct translation based on the page's lang prop:
-const strings = Astro.currentLocale === "fr" ? frStrings : enStrings;
+interface Props {
+  navdata: Navlinks;
+}
+const { navdata  } = Astro.props;
+
+// console.log('=======',navdata)
 
 // Define the variables that will be used in this component
 const sectionThreeTitle: string = Astro.currentLocale === "fr" ? "Rester à jour" : "Stay up to date";
@@ -29,7 +32,7 @@ const crafted: string = Astro.currentLocale === "fr" ? "Fabriqué par" : "Crafte
       </div>
       <!-- An array of links for Product and Company sections -->
       {
-        strings.footerLinks.map((section) => (
+        navdata.footerLinks.map((section) => (
           <div class="col-span-1">
             <h3 class="font-bold text-neutral-800 dark:text-neutral-200">
               {section.section}
@@ -86,23 +89,23 @@ const crafted: string = Astro.currentLocale === "fr" ? "Fabriqué par" : "Crafte
 
       <!-- Social Brands -->
       <div>
-        <FooterSocialLink url={strings.socialLinks.facebook}
+        <FooterSocialLink url={navdata.socialLinks.facebook}
           ><Icon name="facebookFooter" />
         </FooterSocialLink>
 
-        <FooterSocialLink url={strings.socialLinks.x}
+        <FooterSocialLink url={navdata.socialLinks.x}
           ><Icon name="xFooter" /></FooterSocialLink
         >
 
-        <FooterSocialLink url={strings.socialLinks.github}
+        <FooterSocialLink url={navdata.socialLinks.github}
           ><Icon name="githubFooter" />
         </FooterSocialLink>
 
-        <FooterSocialLink url={strings.socialLinks.google}
+        <FooterSocialLink url={navdata.socialLinks.google}
           ><Icon name="googleFooter" />
         </FooterSocialLink>
 
-        <FooterSocialLink url={strings.socialLinks.slack}
+        <FooterSocialLink url={navdata.socialLinks.slack}
           ><Icon name="slackFooter" />
         </FooterSocialLink>
       </div>

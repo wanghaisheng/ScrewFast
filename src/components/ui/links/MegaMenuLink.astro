@@ -1,7 +1,30 @@
 ---
 import { Image } from "astro:assets";
 import Icon from "../icons/Icon.astro";
-import { servicesData, successStoriesData } from "@data/mega_link";
+// import { servicesData, successStoriesData } from "@/data_files/en/mega_link";
+// import servicesData from 'services.json';
+// import successStoriesData from './successStories.json';
+import { Service, SuccessStory } from '@utils/userStory';
+
+// const services: Service[] = servicesData;
+// const successStories: SuccessStory[] = successStoriesData;
+
+
+interface Props {
+  servicesData: Service[];
+  successStoriesData: SuccessStory[];
+  sectionTitle:string;
+  subsectionTitle:string;
+  ctaText:string;
+
+}
+const { sectionTitle='Services',
+subsectionTitle="Success Stories",
+ctaText="Learn more"
+,successStoriesData, servicesData } = Astro.props;
+
+
+
 ---
 
 <div
@@ -11,7 +34,7 @@ import { servicesData, successStoriesData } from "@data/mega_link";
     type="button"
     class="flex w-full text-base items-center font-medium text-neutral-600 hover:text-neutral-500 dark:text-neutral-400 dark:hover:text-neutral-500"
   >
-    Services <Icon name="chevronDown" />
+{sectionTitle}     <Icon name="chevronDown" />
   </button>
 
   <div
@@ -65,8 +88,8 @@ import { servicesData, successStoriesData } from "@data/mega_link";
       <div class="mx-1 flex flex-col pt-4 md:mx-0 md:pt-0">
         <span
           class="text-sm font-semibold uppercase text-neutral-800 dark:text-neutral-200"
-          >Success Stories</span
-        >
+          >
+{subsectionTitle}        </span>
         <a
           class="group mt-2 flex items-center gap-x-5 rounded-xl p-3 hover:bg-neutral-100 dark:hover:bg-neutral-500/10"
           href={successStoriesData[0].learnMoreUrl}
@@ -84,8 +107,8 @@ import { servicesData, successStoriesData } from "@data/mega_link";
             <p
               class="mt-3 inline-flex items-center gap-x-1 text-sm font-medium text-orange-400 decoration-2 hover:underline dark:text-orange-300"
             >
-              Learn more
-              <Icon name="arrowRight" />
+            {ctaText}
+            <Icon name="arrowRight" />
             </p>
           </div>
         </a>

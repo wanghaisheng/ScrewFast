@@ -1,6 +1,7 @@
-{
+{  "title":"Frequently<br />asked questions",
+
   "subTitle": "Posez-nous toutes vos questions sur notre marque et nos produits, et obtenez des réponses factuelles.",
-  "faqs": [
+  "faqgroups": [
     {
       "question": "Quels types d'outils sont inclus dans le Kit de Démarrage?",
       "answer": "Le Kit de Démarrage comprend des outils à main et électriques essentiels pour différents projets de bricolage, notamment des marteaux, des perceuses, des tournevis et une variété de fixations. C'est une sélection soigneusement élaborée pour aider les débutants et les bricoleurs expérimentés à aborder la plupart des tâches d'amélioration de l'habitat."

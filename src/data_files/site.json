@@ -1,0 +1,45 @@
+{
+    "supportedLanguages":["en","fr","zh"],
+    "supportedLangLabels":{
+        "en": "English",
+        "fr": "Français",
+        "zh":"中文"
+
+    },
+    "SITE": {
+      "title": "ScrewFast",
+      "tagline": "Top-quality Hardware Tools",
+      "description": "ScrewFast offers top-tier hardware tools and expert construction services to meet all your project needs. Start exploring and contact our sales team for superior quality and reliability.",
+      "description_short": "ScrewFast offers top-tier hardware tools and expert construction services to meet all your project needs.",
+      "url": "https://screwfast.uk",
+      "author": "Emil Gulamov"
+    },
+    "SEO": {
+      "title": "ScrewFast",
+      "description": "ScrewFast offers top-tier hardware tools and expert construction services to meet all your project needs. Start exploring and contact our sales team for superior quality and reliability.",
+      "structuredData": {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "inLanguage": "en-US",
+        "@id": "https://screwfast.uk",
+        "url": "https://screwfast.uk",
+        "name": "ScrewFast",
+        "description": "ScrewFast offers top-tier hardware tools and expert construction services to meet all your project needs. Start exploring and contact our sales team for superior quality and reliability.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "url": "https://screwfast.uk",
+          "name": "ScrewFast",
+          "description": "ScrewFast offers top-tier hardware tools and expert construction services to meet all your project needs. Start exploring and contact our sales team for superior quality and reliability."
+        }
+      }
+    },
+    "OG": {
+      "locale": "en_US",
+      "type": "website",
+      "url": "https://screwfast.uk",
+      "title": "ScrewFast: : Hardware Tools & Construction Services",
+      "description": "Equip your projects with ScrewFast's top-quality hardware tools and expert construction services. Trusted by industry leaders, ScrewFast offers simplicity, affordability, and reliability. Experience the difference with user-centric design and cutting-edge tools. Start exploring now!",
+      "image": "@images/social.png"
+    }
+  }
+  

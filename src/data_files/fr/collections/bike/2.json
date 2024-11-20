@@ -1,0 +1,101 @@
+{
+    "title": "Mountain Bike Tool Set",
+    "description": "Professional-grade tools for mountain bike maintenance and repair",
+    "main": {
+      "content": "Our comprehensive mountain bike tool set is designed for both professional mechanics and enthusiast riders. Each tool is precision-engineered to meet the specific needs of mountain bike maintenance and repair.",
+      "imgMain": "/images/products/bike/mountain-tools.avif",
+      "imgAlt": "Professional mountain bike tool set displayed in a custom case"
+    },
+    "tabs": [
+      {
+        "title": "Overview",
+        "id": "tabs-with-card-item-1",
+        "dataTab": "#tabs-with-card-1"
+      },
+      {
+        "title": "Specifications",
+        "id": "tabs-with-card-item-2",
+        "dataTab": "#tabs-with-card-2"
+      },
+      {
+        "title": "Blueprints",
+        "id": "tabs-with-card-item-3",
+        "dataTab": "#tabs-with-card-3"
+      }
+    ],
+    "longDescription": {
+      "title": "Professional-Grade Mountain Bike Tools",
+      "subTitle": "Built for durability and precision, this comprehensive tool set includes everything needed for professional mountain bike maintenance and repair. From basic adjustments to complex overhauls, these tools ensure quality results.",
+      "btnTitle": "View Specifications",
+      "btnURL": "#specifications"
+    },
+    "descriptionList": [
+      {
+        "title": "Premium Materials",
+        "subTitle": "Crafted from hardened chrome-vanadium steel with precision-machined tips and ergonomic handles"
+      },
+      {
+        "title": "Complete Coverage",
+        "subTitle": "Includes tools for drivetrain, suspension, brake systems, and general maintenance tasks"
+      },
+      {
+        "title": "Professional Organization",
+        "subTitle": "Custom-molded case with dedicated slots for each tool ensures proper storage and easy transport"
+      },
+      {
+        "title": "Lifetime Warranty",
+        "subTitle": "Backed by our comprehensive lifetime warranty against manufacturing defects"
+      }
+    ],
+    "specificationsLeft": [
+      {
+        "title": "Tool Count",
+        "subTitle": "37 professional-grade tools"
+      },
+      {
+        "title": "Case Dimensions",
+        "subTitle": "24\" x 16\" x 4\" (closed)"
+      },
+      {
+        "title": "Total Weight",
+        "subTitle": "12.5 lbs (5.67 kg)"
+      },
+      {
+        "title": "Primary Material",
+        "subTitle": "Chrome-vanadium steel with anti-corrosion coating"
+      }
+    ],
+    "specificationsRight": [
+      {
+        "title": "Warranty",
+        "subTitle": "Lifetime warranty against manufacturing defects"
+      },
+      {
+        "title": "Certification",
+        "subTitle": "ISO 9001:2015 certified manufacturing"
+      },
+      {
+        "title": "Included Tools",
+        "subTitle": "Hex keys, torque wrench, chain tools, brake tools, bearing tools"
+      },
+      {
+        "title": "Case Material",
+        "subTitle": "Impact-resistant polymer with steel hinges"
+      }
+    ],
+    "tableData": [
+      {
+        "feature": ["Tool Type", "Material", "Size Range"],
+        "description": [
+          ["Hex Keys", "Chrome-vanadium", "2-10mm"],
+          ["Torque Wrench", "Steel/Composite", "2-20Nm"],
+          ["Chain Tools", "Hardened Steel", "All standard chains"],
+          ["Bearing Tools", "Carbon Steel", "608-6902 sizes"]
+        ]
+      }
+    ],
+    "blueprints": {
+      "first": "/images/products/bike/blueprint-1.avif",
+      "second": "/images/products/bike/blueprint-2.avif"
+    }
+  }

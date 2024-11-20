@@ -1,6 +1,9 @@
 ---
-import { languages } from "@utils//ui";
 import Icon from "./icons/Icon.astro";
+interface Props {
+  supportedLangLabels: Record<string, string>;
+}
+const { supportedLangLabels } = Astro.props;
 ---
 
 <div class="hs-dropdown relative inline-flex">
@@ -20,78 +23,70 @@ import Icon from "./icons/Icon.astro";
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
-      stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg
+      stroke-linejoin="round"
     >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
   </button>
 
   <div
     class="hs-dropdown-menu duration !left-[20%] !top-[98%] mt-2 hidden !transform-none rounded-lg bg-neutral-50 p-2 opacity-0 shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100 dark:divide-neutral-700 dark:border dark:border-neutral-700 dark:bg-neutral-800 md:!left-[90%] md:!top-[80%]"
     aria-labelledby="hs-dropdown-hover-event"
+    data-supported-langs={JSON.stringify(supportedLangLabels)}
   >
     {
-      // Map through the list of languages, creating a link for each language
-      Object.entries(languages).map(([lang, label]) => (
-        <a
-          class="flex items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-neutral-800 hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
-          href={`/${lang === "en" ? "" : lang}`}
+      Object.entries(supportedLangLabels).map(([lang, label]) => (
+        <button
+          class="flex w-full items-center gap-x-3.5 rounded-lg px-3 py-2 text-sm text-neutral-800 hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700"
+          data-lang={lang}
         >
           {label}
-        </a>
+        </button>
       ))
     }
   </div>
 </div>
 
-<!--Import the necessary Dropdown plugin-->
-<!--https://preline.co/plugins/html/dropdown.html-->
 <script>
   import "@preline/dropdown/index.js";
 </script>
 
 <script>
-  // Type alias for supported languages
-  type TLanguage = "en" | "fr";
-  // array of supported languages
-  const languages: TLanguage[] = ["en", "fr"];
-
   document.addEventListener("DOMContentLoaded", function () {
-    const languageLinks = document.querySelectorAll(".hs-dropdown-menu a");
-    languageLinks.forEach((element) => {
-      const link = element as HTMLAnchorElement;
-      const lang = link
-        .getAttribute("href")
-        ?.replace("/", "")
-        .replace("/", "") as TLanguage;
+    // Get supported languages from the data attribute
+    const dropdownMenu = document.querySelector(".hs-dropdown-menu");
+    const supportedLangLabels = JSON.parse(dropdownMenu?.getAttribute("data-supported-langs") || "{}");
+    const supportedLanguages = Object.keys(supportedLangLabels);
 
-      link.addEventListener("click", function (event) {
-        event.preventDefault();
+    const languageButtons = document.querySelectorAll(".hs-dropdown-menu button");
+    
+    languageButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const targetLang = this.getAttribute("data-lang");
+        if (!targetLang || !supportedLanguages.includes(targetLang)) return;
 
-        const url = new URL(window.location.href);
-        const pathParts = url.pathname
-          .split("/")
-          .filter((part) => part && !languages.includes(part as TLanguage));
-
-        // Disable the selection of the same language
-        if (lang === url.pathname.split("/")[1]) return;
-
-        // Determine if the current URL already has a language prefix
-        const currentLang = languages.includes(pathParts[0] as TLanguage) ? pathParts[0] : "en";
-
-        // Remove current language prefix from pathParts
-        if (languages.includes(pathParts[0] as TLanguage)) {
-          pathParts.shift();
+        // Get current path
+        const currentPath = window.location.pathname;
+        const pathParts = currentPath.split("/").filter(Boolean);
+        
+        // Simply replace or add the language part
+        if (supportedLanguages.includes(pathParts[0])) {
+          // Replace existing language
+          pathParts[0] = targetLang;
+        } else {
+          // Add language at the beginning
+          pathParts.unshift(targetLang);
         }
 
-        // Determine if we are switching to a different language
-        if (lang !== currentLang) {
-          if (lang !== "en") {
-            // Add the new language prefix for non-English
-            pathParts.unshift(lang);
-          }
-        }
-
-        url.pathname = pathParts.join("/");
-        window.location.href = url.toString();
+        // Reconstruct the URL
+        const newPath = `/${pathParts.join("/")}`;
+        const finalPath = newPath.endsWith("/") ? newPath : `${newPath}/`;
+        
+        // Preserve query parameters
+        const queryString = window.location.search;
+        
+        // Navigate to new URL
+        window.location.href = `${finalPath}${queryString}`;
       });
     });
   });

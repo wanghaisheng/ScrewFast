@@ -1,0 +1,35 @@
+{
+  "navBarLinks": [
+    { "name": "Accueil", "url": "/" },
+    { "name": "Produits", "url": "/products" },
+    { "name": "Services", "url": "/services" },
+    { "name": "Blog", "url": "/blog" },
+    { "name": "Contact", "url": "/contact" }
+  ],
+  "footerLinks": [
+    {
+      "section": "Écosystème",
+      "links": [
+        { "name": "Documentation", "url": "/welcome-to-docs/" },
+        { "name": "Outils & Équipement", "url": "/products" },
+        { "name": "Services de Construction", "url": "/services" }
+      ]
+    },
+    {
+      "section": "Entreprise",
+      "links": [
+        { "name": "À propos", "url": "#" },
+        { "name": "Blog", "url": "/blog" },
+        { "name": "Carrières", "url": "#" },
+        { "name": "Clients", "url": "#" }
+      ]
+    }
+  ],
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/",
+    "x": "https://twitter.com/",
+    "github": "https://github.com/mearashadowfax/ScrewFast",
+    "google": "https://www.google.com/",
+    "slack": "https://slack.com/"
+  }
+}

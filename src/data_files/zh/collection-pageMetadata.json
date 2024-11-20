@@ -1,0 +1,20 @@
+{
+    "title": "Products",
+    "subTitle": "Explore the durability and precision of ScrewFast tools, designed for both professionals and enthusiasts. Each of our products is crafted with precision and built to last, ensuring you have the right tool for every job.",
+    "structuredData": {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": "https://screwfast.uk/products",
+      "url": "https://screwfast.uk/products",
+      "name": "Hardware Tools | ScrewFast",
+      "description": "Explore the durability and precision of ScrewFast tools, designed for both professionals and enthusiasts.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "url": "https://screwfast.uk",
+        "name": "ScrewFast",
+        "description": "ScrewFast offers top-tier hardware tools and expert construction services to meet all your project needs."
+      },
+      "inLanguage": "en-US"
+    }
+  }
+  

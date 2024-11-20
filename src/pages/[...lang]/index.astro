@@ -1,0 +1,49 @@
+---
+// src/pages/[...lang]/index.astro
+import MainLayout from "@/layouts/MainLayout.astro";
+import HeroSection from "@components/sections/landing/HeroSection.astro";
+import HeroSectionAlt from "@components/sections/landing/HeroSectionAlt.astro";
+import ClientsSection from "@components/sections/landing/ClientsSection.astro";
+import FeaturesGeneral from "@components/sections/features/FeaturesGeneral.astro";
+import TestimonialsSection from "@components/sections/testimonials/TestimonialsSection.astro";
+import PricingSection from "@components/sections/pricing/PricingSection.astro";
+import FAQ from "@components/sections/misc/FAQ.astro";
+import siteconfig from "@data/site.json";
+
+// Define getStaticPaths
+export async function getStaticPaths() {
+  const supportedLanguages = siteconfig.supportedLanguages;
+  
+  return supportedLanguages.map((lang) => ({
+    params: { lang },
+    props: { lang }
+  }));
+}
+
+// Extract 'lang' from props (not params)
+const { lang } = Astro.props;
+
+if (!lang || !siteconfig.supportedLanguages.includes(lang)) {
+  return Astro.redirect('/en');
+}
+
+// Dynamically load data based on 'lang'
+const heroData = await import(`../../data_files/${lang}/hero.json`).catch(() => ({ title: "Default Title", subtitle: "Default Subtitle" }));
+const clientsData = await import(`../../data_files/${lang}/clients.json`).catch(() => ({ clients: [] }));
+const featuresData = await import(`../../data_files/${lang}/features.json`).catch(() => ({ data: [] }));
+const testimonialsData = await import(`../../data_files/${lang}/testimonials.json`).catch(() => ({ testimonials: [] }));
+const pricingData = await import(`../../data_files/${lang}/pricing.json`).catch(() => ({ pricing: [] }));
+const faqData = await import(`../../data_files/${lang}/faqs.json`).catch(() => ({ faqs: [] }));
+const ctaData = await import(`../../data_files/${lang}/cta.json`).catch(() => ({ cta: { text: "Call to Action" } }));
+const navlinkData = await import(`../../data_files/${lang}/nav.json`).catch(() => ({ nav: [] }));
+---
+
+<MainLayout navdata={navlinkData} supportedLangLabels={siteconfig.supportedLangLabels}>
+  <HeroSection {...heroData} />
+  <ClientsSection {...clientsData} />
+  <FeaturesGeneral features={featuresData.data} />
+  <TestimonialsSection {...testimonialsData} />
+  <PricingSection pricing={pricingData} />
+  <FAQ faqs={faqData} />
+  <HeroSectionAlt {...ctaData} />
+</MainLayout>

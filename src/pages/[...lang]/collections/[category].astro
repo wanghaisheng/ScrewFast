@@ -1,0 +1,134 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
+import CardSmall from "@components/ui/cards/ProductCardSmall.astro";
+import CardWide from "@components/ui/cards/ProductCardWide.astro";
+import FeaturesStatsAlt from "@components/sections/features/FeaturesStatsAlt.astro";
+import TestimonialsSectionAlt from "@components/sections/testimonials/TestimonialsSectionAlt.astro";
+import siteconfig from "@data/site.json";
+
+// Define getStaticPaths to handle both language and category
+export async function getStaticPaths() {
+  const supportedLanguages = siteconfig.supportedLanguages;
+  const paths = [];
+
+  for (const lang of supportedLanguages) {
+    try {
+      // Import categories from all.json
+      const { default: categories } = await import(`../../../data_files/${lang}/collections/all.json`);
+      
+      // Generate paths for each category in this language
+      const langPaths = categories.map(category => ({
+        params: { lang, category },
+        props: { lang, category }
+      }));
+
+      paths.push(...langPaths);
+    } catch (error) {
+      console.error(`Error loading categories for language ${lang}:`, error);
+    }
+  }
+
+  return paths;
+}
+
+// Extract params
+const { lang = "en", category } = Astro.params;
+
+if (!lang || !category) {
+  throw new Error("Language or category parameter is missing!");
+}
+
+// Load all products
+// const { default: productsData } = await import(`../../../data_files/${lang}/products/all.json`);
+const { default: productsDatajson } = await import(`../../../data_files/${lang}/collections/${category}.json`);
+const productsData=productsDatajson.products
+// Filter products by category
+const filteredProducts = Array.isArray(productsData)
+  ? productsData.filter(product => product.category === category)
+  : [];
+
+console.log('specific collc',filteredProducts)
+
+// Load language-specific data
+const collectionsData = await import(`../../../data_files/${lang}/collections/${category}.json`)
+  .catch(() => import(`../../../data_files/${lang}/collections/default.json`));
+
+const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
+  .catch(() => ({ nav: [] }));
+
+// Get all categories
+const { default: allCategories } = await import(`../../../data_files/${lang}/collections/all.json`);
+
+// Validate current category
+if (!allCategories.includes(category)) {
+  return Astro.redirect(`/${lang}/collections/${allCategories[0]}`);
+}
+---
+
+<MainLayout
+  title={`${collectionsData.title} | ${siteconfig.title}`}
+  navdata={navlinkData}
+  supportedLangLabels={siteconfig.supportedLangLabels}
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `https://screwfast.uk/${lang}/collections/${category}`,
+    "url": `https://screwfast.uk/${lang}/collections/${category}`,
+    "name": collectionsData.title,
+    "description": collectionsData.subTitle,
+    "isPartOf": {
+      "@type": "WebSite",
+      "url": "https://screwfast.uk",
+      "name": siteconfig.title,
+      "description": siteconfig.description
+    },
+    "inLanguage": lang
+  }}
+>
+  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+    <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
+      <div class="flex items-center gap-12">
+        <h1 class="text-balance text-2xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 md:text-4xl md:leading-tight">
+          {collectionsData.title}
+        </h1>
+        {
+          collectionsData.subTitle && (
+            <p class="hidden max-w-screen-sm text-pretty text-neutral-600 dark:text-neutral-400 md:block">
+              {collectionsData.subTitle}
+            </p>
+          )
+        }
+      </div>
+      <PrimaryCTA
+        title={collectionsData.ctaTitle}
+        url="#testimonials"
+        noArrow={true}
+      />
+    </div>
+
+    {/* Display message if no products found */}
+    {filteredProducts.length === 0 && (
+      <p class="text-center text-neutral-600 dark:text-neutral-400">
+        No products found in this category.
+      </p>
+    )}
+
+    {/* Display products grid if products exist */}
+    {filteredProducts.length > 0 && (
+      <section class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
+        {
+          filteredProducts.map((product, index) => {
+            const position = index % 4;
+            return position === 0 || position === 3
+              ? <CardSmall productLocale={lang} product={product} />
+              : <CardWide productLocale={lang} product={product} />;
+          })
+        }
+      </section>
+    )}
+  </div>
+
+  <FeaturesStatsAlt {...collectionsData.features} />
+  <TestimonialsSectionAlt {...collectionsData.testimonials} />
+</MainLayout>

@@ -1,0 +1,101 @@
+{
+    "title": "Kit d'Outils pour VTT",
+    "description": "Outils de qualité professionnelle pour l'entretien et la réparation des VTT",
+    "main": {
+      "content": "Notre kit complet d'outils pour VTT est conçu pour les mécaniciens professionnels et les passionnés. Chaque outil est conçu avec précision pour répondre aux besoins spécifiques de l'entretien et de la réparation des VTT.",
+      "imgMain": "/images/products/bike/mountain-tools.avif",
+      "imgAlt": "Kit d'outils professionnel pour VTT présenté dans une mallette personnalisée"
+    },
+    "tabs": [
+      {
+        "title": "Aperçu",
+        "id": "tabs-with-card-item-1",
+        "dataTab": "#tabs-with-card-1"
+      },
+      {
+        "title": "Spécifications",
+        "id": "tabs-with-card-item-2",
+        "dataTab": "#tabs-with-card-2"
+      },
+      {
+        "title": "Plans",
+        "id": "tabs-with-card-item-3",
+        "dataTab": "#tabs-with-card-3"
+      }
+    ],
+    "longDescription": {
+      "title": "Outils de VTT de Qualité Professionnelle",
+      "subTitle": "Conçu pour la durabilité et la précision, ce kit d'outils complet comprend tout le nécessaire pour l'entretien et la réparation professionnelle des VTT. Des ajustements basiques aux révisions complexes, ces outils garantissent des résultats de qualité.",
+      "btnTitle": "Voir les Spécifications",
+      "btnURL": "#specifications"
+    },
+    "descriptionList": [
+      {
+        "title": "Matériaux Premium",
+        "subTitle": "Fabriqué en acier chrome-vanadium trempé avec des embouts usinés avec précision et des poignées ergonomiques"
+      },
+      {
+        "title": "Couverture Complète",
+        "subTitle": "Inclut des outils pour la transmission, la suspension, les systèmes de freinage et l'entretien général"
+      },
+      {
+        "title": "Organisation Professionnelle",
+        "subTitle": "Mallette moulée sur mesure avec des emplacements dédiés pour chaque outil assurant un rangement approprié et un transport facile"
+      },
+      {
+        "title": "Garantie à Vie",
+        "subTitle": "Couvert par notre garantie à vie complète contre les défauts de fabrication"
+      }
+    ],
+    "specificationsLeft": [
+      {
+        "title": "Nombre d'Outils",
+        "subTitle": "37 outils de qualité professionnelle"
+      },
+      {
+        "title": "Dimensions de la Mallette",
+        "subTitle": "61 x 41 x 10 cm (fermée)"
+      },
+      {
+        "title": "Poids Total",
+        "subTitle": "5,67 kg"
+      },
+      {
+        "title": "Matériau Principal",
+        "subTitle": "Acier chrome-vanadium avec revêtement anticorrosion"
+      }
+    ],
+    "specificationsRight": [
+      {
+        "title": "Garantie",
+        "subTitle": "Garantie à vie contre les défauts de fabrication"
+      },
+      {
+        "title": "Certification",
+        "subTitle": "Fabrication certifiée ISO 9001:2015"
+      },
+      {
+        "title": "Outils Inclus",
+        "subTitle": "Clés hexagonales, clé dynamométrique, outils pour chaîne, outils pour freins, outils pour roulements"
+      },
+      {
+        "title": "Matériau de la Mallette",
+        "subTitle": "Polymère résistant aux chocs avec charnières en acier"
+      }
+    ],
+    "tableData": [
+      {
+        "feature": ["Type d'Outil", "Matériau", "Gamme de Tailles"],
+        "description": [
+          ["Clés Hexagonales", "Chrome-vanadium", "2-10mm"],
+          ["Clé Dynamométrique", "Acier/Composite", "2-20Nm"],
+          ["Outils pour Chaîne", "Acier Trempé", "Toutes chaînes standard"],
+          ["Outils pour Roulements", "Acier Carbone", "Tailles 608-6902"]
+        ]
+      }
+    ],
+    "blueprints": {
+      "first": "/images/products/bike/blueprint-1.avif",
+      "second": "/images/products/bike/blueprint-2.avif"
+    }
+  }

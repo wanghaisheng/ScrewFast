@@ -3,10 +3,11 @@
 import Meta from "@components/Meta.astro";
 import Navbar from "@components/sections/navbar&footer/Navbar.astro";
 import FooterSection from "@components/sections/navbar&footer/FooterSection.astro";
-import { SITE } from "@data/constants";
-
+import { SITE } from "@/data_files/en/constants";
+import type {Navlinks} from "@utils/navigation"
 // Setting expected props
-const { title = SITE.title, meta, structuredData, lang = "en" } = Astro.props;
+
+
 
 // Interface to type-check the properties
 interface Props {
@@ -14,8 +15,13 @@ interface Props {
   meta?: string;
   structuredData?: object;
   lang?: string;
+  navdata:Navlinks;
+  supportedLangLabels:{};
 }
+const { title = SITE.title, meta, structuredData, lang = "en",navdata,supportedLangLabels } = Astro.props;
+
 ---
+
 
 <!--
 This is the main structure for the page.
@@ -51,12 +57,13 @@ We set the language of the page to English and add classes for scrollbar and scr
     The Navbar is placed at the top, with a slot for the main content and FooterSection at the bottom.
     -->
     <div class="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
-      <Navbar />
+      <Navbar navdata={navdata} supportedLangLabels={supportedLangLabels} />
       <main>
         <slot />
       </main>
     </div>
-    <FooterSection />
+    <FooterSection navdata={navdata} />
+
     <style>
       /* CSS rules for the page scrollbar */
       .scrollbar-hide::-webkit-scrollbar {

@@ -1,0 +1,20 @@
+{
+  "title": "Équipez vos projets avec <span class='text-yellow-500 dark:text-yellow-400'>ScrewFast</span>",
+  "subTitle": "Des outils de haute qualité et des services de construction experts pour tous vos besoins de projet.",
+  "primaryBtn": "Commencez à explorer",
+  "primaryBtnURL": "/products",
+  "secondaryBtn": "Contacter l'équipe de vente",
+  "secondaryBtnURL": "/contact",
+  "withReview": true,
+  "avatars": [
+    "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+    "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+    "https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&&auto=format&fit=facearea&facepad=3&w=300&h=300&q=80",
+    "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+  ],
+  "rating": "<span class='font-bold'>4.8</span> / 5",
+  "starCount": 4,
+  "reviews": "De plus de <span class='font-bold'>12.8k</span> avis",
+  "src": "/src/images/hero-image.avif",
+  "alt": "Pile de boîtes de produits ScrewFast contenant des outils de quincaillerie assortis"
+}

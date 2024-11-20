@@ -6,11 +6,12 @@ import CardSmall from "@components/ui/cards/CardSmall.astro";
 import CardWide from "@components/ui/cards/CardWide.astro";
 import FeaturesStatsAlt from "@components/sections/features/FeaturesStatsAlt.astro";
 import TestimonialsSectionAlt from "@components/sections/testimonials/TestimonialsSectionAlt.astro";
+import siteconfig from "@data/site.json";
 
 // Importing necessary functions from Astro
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import { SITE } from "@data/constants";
+import { SITE } from "@/data_files/en/constants";
 
 // Fetching all the product related content and sorting it by main.id
 const product: CollectionEntry<"products">[] = (
@@ -60,11 +61,15 @@ const testimonials = [
     avatarAlt: "Image Description",
   },
 ];
+const navlinkData = await import(`../../data_files/en/nav.json`)
 
 const pageTitle: string = `Products | ${SITE.title}`;
 ---
 
 <MainLayout
+navdata={navlinkData}
+supportedLangLabels={siteconfig.supportedLangLabels}
+
   title={pageTitle}
   structuredData={{
     "@context": "https://schema.org",

@@ -1,0 +1,29 @@
+{
+    "title": "Customize <span class='text-yellow-500 dark:text-yellow-400'>ScrewFast</span>'s offerings to perfectly suit your hardware and construction needs.",
+    "tabs": [
+      {
+        "heading": "Cutting-Edge Tools",
+        "content": "Empower your projects with ScrewFast's cutting-edge tools. Experience enhanced efficiency in construction management with our sophisticated automated solutions.",
+        "svg": "tools",
+        "src": "/images/automated-tools.avif",
+        "alt": "Yellow and black heavy equipment on brown grass field",
+        "first": true
+      },
+      {
+        "heading": "Intuitive Dashboards",
+        "content": "Navigate with ease using ScrewFast's intuitive dashboards. Set up and oversee your projects seamlessly, with user-friendly interfaces designed for quick and effective workflow management.",
+        "svg": "dashboard",
+        "src": "/images/dashboard-image.avif",
+        "alt": "A screenshot or graphic representation of the intuitive dashboard",
+        "second": true
+      },
+      {
+        "heading": "Robust Features",
+        "content": "Minimize complexity, maximize productivity. ScrewFast's robust features are engineered to streamline your construction process, delivering results that stand out for their excellence.",
+        "svg": "house",
+        "src": "/images/construction-image.avif",
+        "alt": "Gray metal building frame near tower crane during daytime"
+      }
+    ]
+  }
+  

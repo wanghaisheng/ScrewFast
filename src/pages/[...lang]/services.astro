@@ -1,0 +1,99 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import MainSection from "@components/ui/blocks/MainSection.astro";
+import LeftSection from "@components/ui/blocks/LeftSection.astro";
+import RightSection from "@components/ui/blocks/RightSection.astro";
+import FeaturesStats from "@components/sections/features/FeaturesStats.astro";
+import siteconfig from "@data/site.json";
+
+// Import images
+import blueprints from "@images/blueprints-image.avif";
+import personWorking from "@images/person-working.avif";
+import beforeAfter from "@images/before-after.avif";
+import constructionWorkers from "@images/construction-workers.avif";
+import aerialView from "@images/aerial-view.avif";
+import usingTools from "@images/using-tools.avif";
+import progressBuilding from "@images/progress-building.avif";
+import underConstruction from "@images/under-construction.avif";
+
+// Define getStaticPaths
+export async function getStaticPaths() {
+  const supportedLanguages = siteconfig.supportedLanguages;
+  return supportedLanguages.map((lang) => ({
+    params: { lang },
+    props: { lang }
+  }));
+}
+
+// Extract 'lang' from props
+const { lang = "en" } = Astro.params;
+
+console.log("Services Current language:", lang);
+
+if (!lang) {
+  throw new Error("Language parameter is missing!");
+}
+
+// Load language-specific data
+const servicesData = await import(`../../data_files/${lang}/services.json`).catch(() => ({ 
+  pageTitle: "Services",
+  mainSection: {},
+  articles: [],
+  featuresStats: {}
+}));
+
+const navlinkData = await import(`../../data_files/${lang}/nav.json`).catch(() => ({ nav: [] }));
+
+// Map of images to use in articles
+const imageMap = {
+  blueprints,
+  personWorking,
+  beforeAfter,
+  constructionWorkers,
+  aerialView,
+  usingTools,
+  progressBuilding,
+  underConstruction
+};
+
+// Process articles to include actual image objects
+const processedArticles = servicesData.articles.map(article => ({
+  ...article,
+  imgOne: article.imgOne ? imageMap[article.imgOne] : undefined,
+  imgTwo: article.imgTwo ? imageMap[article.imgTwo] : undefined,
+  img: article.img ? imageMap[article.img] : undefined
+}));
+---
+
+<MainLayout 
+  title={`${servicesData.pageTitle} | ${siteconfig.title}`}
+  navdata={navlinkData}
+  supportedLangLabels={siteconfig.supportedLangLabels}
+  structuredData={{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `https://screwfast.uk/${lang}/services`,
+    "url": `https://screwfast.uk/${lang}/services`,
+    "name": servicesData.pageTitle,
+    "description": servicesData.mainSection.subTitle,
+    "isPartOf": {
+      "@type": "WebSite",
+      "url": "https://screwfast.uk",
+      "name": siteconfig.title,
+      "description": siteconfig.description
+    },
+    "inLanguage": lang
+  }}
+>
+  <MainSection {...servicesData.mainSection} />
+  
+  {processedArticles.map(article => 
+    article.isRightSection ? (
+      <RightSection {...article} />
+    ) : (
+      <LeftSection {...article} />
+    )
+  )}
+  
+  <FeaturesStats {...servicesData.featuresStats} />
+</MainLayout>

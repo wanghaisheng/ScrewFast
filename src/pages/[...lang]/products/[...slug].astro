@@ -219,19 +219,122 @@ const pageTitle: string = `${product.data.title} | ${siteconfig.SITE.title}`;
         </div>
       </div>
 
-      <!-- Tab 2 Content -->
       <div id="tabs-with-card-2" class="hidden" role="tabpanel">
-        <!-- ... (rest of tab 2 content) ... -->
+        <div class="mx-auto max-w-[85rem] px-4 pb-10 sm:px-6 lg:px-8 lg:pb-14">
+          <div class="grid w-full grid-cols-1 gap-x-16 md:grid-cols-2">
+            <div class="max-w-md space-y-6">
+              {
+                product.data.specificationsLeft.map((spec) => (
+                  <div>
+                    <h3 class="block font-bold text-neutral-800 dark:text-neutral-200">
+                      {spec.title}
+                    </h3>
+                    <p class="text-neutral-600 dark:text-neutral-400">
+                      {spec.subTitle}
+                    </p>
+                  </div>
+                ))
+              }
+            </div>
+            {
+              product.data.specificationsRight ? (
+                <div class="mt-6 max-w-md space-y-6 md:ml-auto md:mt-0">
+                  {product.data.specificationsRight?.map((spec) => (
+                    <div>
+                      <h3 class="block font-bold text-neutral-800 dark:text-neutral-200">
+                        {spec.title}
+                      </h3>
+                      <p class="text-neutral-600 dark:text-neutral-400">
+                        {spec.subTitle}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : product.data.tableData ? (
+                <div class="mt-6 space-y-6 md:ml-auto md:mt-0">
+                  <div class="flex flex-col">
+                    <div class="-m-1.5 overflow-x-auto">
+                      <div class="inline-block min-w-full p-1.5 align-middle">
+                        <div class="overflow-hidden">
+                          <table class="min-w-full divide-y divide-neutral-300 dark:divide-neutral-700">
+                            <thead>
+                              <tr>
+                                {product.data.tableData?.[0].feature?.map(
+                                  (header) => (
+                                    <th
+                                      scope="col"
+                                      class="px-6 py-3 text-start text-xs font-medium uppercase text-neutral-500 dark:text-neutral-500"
+                                    >
+                                      {header}
+                                    </th>
+                                  )
+                                )}
+                              </tr>
+                            </thead>
+                            <tbody class="divide-y divide-neutral-300 dark:divide-neutral-700">
+                              {product.data.tableData?.map((row) =>
+                                // Wrap each row's content in a separate <tr> element
+                                row.description.map((rowData) => (
+                                  <tr>
+                                    {/* Iterate through each cell value in the row's description array */}
+                                    {rowData.map((cellValue) => (
+                                      // Render each cell value in its own <td> element
+                                      <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                                        {cellValue}
+                                      </td>
+                                    ))}
+                                  </tr>
+                                ))
+                              )}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tabs-with-card-3" class="hidden" role="tabpanel">
+    <div class="mx-auto mb-20 flex w-full md:mb-28 2xl:w-4/5">
+      <div
+        class="relative left-12 top-12 z-10 overflow-hidden rounded-xl shadow-lg md:left-12 md:top-16 md:-ml-12 lg:ml-0"
+      >
+        {
+          product.data.blueprints.first && (
+            <Image
+              src={product.data.blueprints.first}
+              class="h-full w-full object-cover object-center"
+              alt="Blueprint Illustration"
+              format={"avif"}
+            />
+          )
+        }
       </div>
 
-      <!-- Tab 3 Content -->
-      <div id="tabs-with-card-3" class="hidden" role="tabpanel">
-        <!-- ... (rest of tab 3 content) ... -->
+      <div class="relative right-12 overflow-hidden rounded-xl shadow-xl">
+        {
+          product.data.blueprints.second && (
+            <Image
+              src={product.data.blueprints.second}
+              class="h-full w-full object-cover object-center"
+              alt="Blueprint Illustration"
+              format={"avif"}
+            />
+          )
+        }
       </div>
     </div>
   </div>
 </MainLayout>
 
+  
 <script>
   import { gsap } from "gsap";
 

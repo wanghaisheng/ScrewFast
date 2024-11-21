@@ -1,10 +1,30 @@
 {
-    "title": "Why Choose AstroProductFast?",
-    "subTitle": "Transform your ideas into tangible results with AstroProductFast tools. Whether you're starting with a sketch on a napkin or diving into a comprehensive construction project, our tools are engineered to help you build with confidence.",
-    "benefits": [
-      "Robust and reliable tools for long-lasting performance.",
-      "Innovative solutions tailored to modern construction needs.",
-      "Customer support dedicated to your project's success."
-    ]
-  }
   
+  "title":"Meeting Industry Demands",
+  "subTitle":"At ScrewFast, we tackle the unique challenges encountered in the hardware and construction sectors. From cutting-edge tools to expert services, we're dedicated to helping you overcome obstacles and achieve your goals.",
+  "src":"/src/images/features-image.avif",
+  "alt":"ScrewFast products in floating boxes",
+  "data":
+[
+  {
+    "heading": "Dedicated Teams",
+    "content": "Benefit from our committed teams who ensure your success is personal. Count on expert guidance and exceptional results throughout your project journey.",
+    "svg": "groups"
+  },
+  {
+    "heading": "Simplicity and Affordability",
+    "content": "Find easy-to-use, affordable solutions with AstroProductFast's line of tools and equipment. Our products make procurement simple and keep projects within budget.",
+    "svg": "verified"
+  },
+  {
+    "heading": "Comprehensive Documentation",
+    "content": "Integrate with ease using AstroProductFast's exhaustive guides and libraries. Achieve seamless product adoption with our full suite of documentation designed for your success.",
+    "svg": "books"
+  },
+  {
+    "heading": "User-Centric Design",
+    "content": "Experience the difference with AstroProductFast's user-focused design — where functionality meets practicality for an enhanced work experience.",
+    "svg": "frame"
+  }
+]
+}

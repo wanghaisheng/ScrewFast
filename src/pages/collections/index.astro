@@ -1,79 +1,15 @@
 ---
-import MainLayout from "@/layouts/MainLayout.astro";
-import CategoryCard from "@components/ui/cards/CategoryCard.astro";
-import { Image } from "astro:assets";
+import PageContent from "../[...lang]/collections/index.astro"
 import siteconfig from "@data/site.json";
+let defaultLang = siteconfig.defaultlang;
 
-interface CollectionType{
-
-  title:string;
-  description:string;
-  image:string;
-  productCount:number;
-  slug:string;
-
+if (!defaultLang){
+    defaultLang='en'
 }
-// Define getStaticPaths for language support
-export async function getStaticPaths() {
-  const supportedLanguages = siteconfig.supportedLanguages;
-  return supportedLanguages.map(lang => ({
-    params: { lang },
-    props: { lang }
-  }));
-}
+// Default to 'en' if 'lang' is undefined
 
-// Get language parameter
-// const { lang = "en" } = Astro.params;
-const lang= siteconfig.defaultlang
-
-// Load language-specific data
-const collectionsData = await import(`../../data_files/${lang}/collections.json`)
-  .catch(() => import(`../../data_files/en/collections.json`));
-
-const navlinkData = await import(`../../data_files/${lang}/nav.json`)
-  .catch(() => ({ nav: [] }));
+const { lang = defaultLang } = Astro.props;
+console.log("collection root Resolved language:", lang);
 ---
 
-<MainLayout
-  title={`${collectionsData.title} | ${siteconfig.SITE.title}`}
-  navdata={navlinkData}
-  supportedLangLabels={siteconfig.supportedLangLabels}
-  structuredData={{
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "@id": `${siteconfig.SITE.url}/${lang}/collections`,
-    "url": `${siteconfig.SITE.url}/${lang}/collections`,
-    "name": collectionsData.title,
-    "description": collectionsData.description,
-    "isPartOf": {
-      "@type": "WebSite",
-      "url": siteconfig.SITE.url,
-      "name": siteconfig.SITE.title,
-      "description": siteconfig.SITE.description
-    },
-    "inLanguage": lang
-  }}
->
-  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
-    <div class="mb-10 max-w-2xl">
-      <h1 class="text-2xl font-bold text-neutral-800 dark:text-neutral-200 sm:text-3xl">
-        {collectionsData.title}
-      </h1>
-      <p class="mt-2 text-lg text-neutral-600 dark:text-neutral-400">
-        {collectionsData.description}
-      </p>
-    </div>
-
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {collectionsData.categories.map((category:CollectionType) => (
-        <CategoryCard
-          title={category.title}
-          description={category.description}
-          image={category.image}
-          url={`/${lang}/collections/${category.slug}`}
-          count={category.productCount}
-        />
-      ))}
-    </div>
-  </div>
-</MainLayout>
+<PageContent lang={lang} />

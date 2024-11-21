@@ -1,0 +1,17 @@
+{
+    "breadcrumb": {
+      "products": "Products",
+      "specifications": "Specifications",
+      "overview": "Overview",
+      "blueprints": "Blueprints"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "specifications": "Specifications",
+      "blueprints": "Blueprints"
+    },
+    "buttons": {
+      "learnMore": "Learn More",
+      "viewDetails": "View Details"
+    }
+  }

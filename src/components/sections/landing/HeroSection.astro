@@ -38,6 +38,35 @@ interface Props {
   src?: any;
   alt?: string;
 }
+
+import sizeOf from 'image-size';
+
+export function getLocalImageSize(src:string) {
+  const computedSrc = src.replace('/src', './src');
+  const dimensions = sizeOf(computedSrc);
+  console.log('----',dimensions)
+  if (!dimensions || !dimensions.width || !dimensions.height) {
+    throw new Error(`Failed to get dimensions for local image: ${computedSrc}`);
+  }
+  return {
+    width: dimensions.width,
+    height: dimensions.height,
+  };
+}
+// https://github.com/withastro/astro/issues/6452
+let importedImage;
+let imagesize = { width: 800, height: 600 }; // Initialize with default values
+//if (src.startsWith('@images/')) {
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/images/*.{jpeg,jpg,png,gif,avif,webp,svg}');
+if (src){
+  console.log('-------',src)
+//  let src1='../../src/images/hero-image.avif'
+importedImage=images[src]()
+console.log(images)
+imagesize=getLocalImageSize(src)
+
+// importedImage = await import(src1);
+}
 ---
 
 <!-- Defining a grid container that holds all the content -->
@@ -81,12 +110,15 @@ interface Props {
       <div class="top-12 overflow-hidden">
 	{src && alt &&
 	<Image
-        src={import(`${src}`)}
+      src={importedImage}
+  // src={src}
         alt={alt}
         class="h-full w-full scale-110 object-cover object-center"
         draggable={"false"}
         loading={"eager"}
         format={"avif"}
+        width={imagesize.width}
+        height={imagesize.height}
 	 />
 	}
     </div>

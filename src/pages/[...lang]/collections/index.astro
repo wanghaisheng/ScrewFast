@@ -4,6 +4,15 @@ import CategoryCard from "@components/ui/cards/CategoryCard.astro";
 import { Image } from "astro:assets";
 import siteconfig from "@data/site.json";
 
+interface CollectionType{
+
+  title:string;
+  description:string;
+  image:string;
+  productCount:number;
+  slug:string;
+
+}
 // Define getStaticPaths for language support
 export async function getStaticPaths() {
   const supportedLanguages = siteconfig.supportedLanguages;
@@ -55,7 +64,7 @@ const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
     </div>
 
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {categoriesData.categories.map((category) => (
+      {categoriesData.categories.map((category:CollectionType) => (
         <CategoryCard
           title={category.title}
           description={category.description}

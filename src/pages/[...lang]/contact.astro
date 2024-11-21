@@ -16,7 +16,7 @@ const { lang } = Astro.props;
 if (!lang || !siteconfig.supportedLanguages.includes(lang)) {
   return Astro.redirect('/en');
 }
-const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
+const navlinkData = await import(`../../data_files/${lang}/nav.json`)
 
 const pageTitle: string = `Contact | ${siteconfig.SITE.title}`;
 ---
@@ -30,17 +30,17 @@ supportedLangLabels={siteconfig.supportedLangLabels}
   structuredData={{
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": "https://screwfast.uk/contact",
-    "url": "https://screwfast.uk/contact",
-    "name": "Contact Us | ScrewFast",
+    "@id": "https://astroproduct.borninsea.com/contact",
+    "url": "https://astroproduct.borninsea.com/contact",
+    "name": "Contact Us | AstroProductFast",
     "description":
       "Have questions or want to discuss a project? Reach out, and let's craft the perfect solution with our tools and services.",
     "isPartOf": {
       "@type": "WebSite",
       "url": siteconfig.SITE.url,
-      "name": "ScrewFast",
+      "name": "AstroProductFast",
       "description":
-        "ScrewFast offers top-tier hardware tools and expert construction services to meet all your project needs.",
+        "AstroProductFast offers top-tier hardware tools and expert construction services to meet all your project needs.",
     },
     "inLanguage": "en-US"
   }}

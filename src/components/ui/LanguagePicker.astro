@@ -61,7 +61,7 @@ const { supportedLangLabels } = Astro.props;
     const languageButtons = document.querySelectorAll(".hs-dropdown-menu button");
     
     languageButtons.forEach((button) => {
-      button.addEventListener("click", function () {
+      button.addEventListener("click", function (this: HTMLButtonElement) {
         const targetLang = this.getAttribute("data-lang");
         if (!targetLang || !supportedLanguages.includes(targetLang)) return;
 

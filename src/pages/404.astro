@@ -40,7 +40,7 @@ const langCodeMatch = urlPath.match(/^\/(en|fr)\//);
 const lang: TranslationKeys = langCodeMatch
   ? (langCodeMatch[1] as TranslationKeys)
   : defaultLang;
-const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
+const navlinkData = await import(`../data_files/${lang}/nav.json`)
 
 const { pageTitle, subTitle, content, btnTitle } = translations[lang];
 ---

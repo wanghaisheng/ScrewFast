@@ -3,11 +3,12 @@ import tailwind from "@astrojs/tailwind";
 import sitemap from "@astrojs/sitemap";
 import compressor from "astro-compressor";
 import starlight from "@astrojs/starlight";
+import { astroImageTools } from "astro-imagetools";
 
 // https://astro.build/config
 export default defineConfig({
   // https://docs.astro.build/en/guides/images/#authorizing-remote-images
-  site: "https://screwfast.uk",
+  site: "https://astroproduct.borninsea.com",
   image: {
     domains: ["images.unsplash.com"],
   },
@@ -23,10 +24,11 @@ export default defineConfig({
   // },
   prefetch: true,
   integrations: [
+    astroImageTools,
     tailwind(),
     sitemap({
       i18n: {
-        defaultLocale: "en", // All urls that don't contain `fr` after `https://screwfast.uk/` will be treated as default locale, i.e. `en`
+        defaultLocale: "en", // All urls that don't contain `fr` after `https://astroproduct.borninsea.com/` will be treated as default locale, i.e. `en`
         locales: {
           en: "en", // The `defaultLocale` value must present in `locales` keys
           fr: "fr",
@@ -34,7 +36,7 @@ export default defineConfig({
       },
     }),
     starlight({
-      title: "ScrewFast Docs",
+      title: "AstroProductFast Docs",
       defaultLocale: "root",
       // https://github.com/withastro/starlight/blob/main/packages/starlight/CHANGELOG.md
       // If no Astro and Starlight i18n configurations are provided, the built-in default locale is used in Starlight and a matching Astro i18n configuration is generated/used.
@@ -84,7 +86,7 @@ export default defineConfig({
         },
       ],
       social: {
-        github: "https://github.com/mearashadowfax/ScrewFast",
+        github: "https://github.com/mearashadowfax/AstroProductFast",
       },
       disable404Route: true,
       customCss: ["./src/assets/styles/starlight.css"],
@@ -100,14 +102,14 @@ export default defineConfig({
           tag: "meta",
           attrs: {
             property: "og:image",
-            content: "https://screwfast.uk" + "/social.webp",
+            content: "https://astroproduct.borninsea.com" + "/social.webp",
           },
         },
         {
           tag: "meta",
           attrs: {
             property: "twitter:image",
-            content: "https://screwfast.uk" + "/social.webp",
+            content: "https://astroproduct.borninsea.com" + "/social.webp",
           },
         },
       ],

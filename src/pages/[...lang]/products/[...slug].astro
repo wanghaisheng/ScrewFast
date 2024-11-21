@@ -86,7 +86,7 @@ export async function getStaticPaths() {
 
 
 // Component logic
-const { lang } = Astro.params;
+const { lang = "en", slug } = Astro.params;
 const currentLang = lang || "en";
 
 // Validate language
@@ -97,7 +97,30 @@ if (!langUtils.isLanguageSupported(currentLang)) {
 
 // Get navigation data and product information
 const navlinkData = await import(`../../../data_files/${currentLang}/nav.json`);
-const { product } = Astro.props;
+
+
+const allProducts = await getCollection("products", ({ id }) =>
+id.startsWith(`${currentLang}/`)
+);
+
+const product = allProducts.find((prod) => prod.slug === `${currentLang}/${slug}`);
+
+interface Props {
+  params: {
+    lang: string;
+    slug: string;
+  };
+  props: {
+    product: CollectionEntry<"products">; // Add the product type here
+  };
+}
+
+// Accessing product safely
+// const { product } = Astro.props;
+
+if (!product) {
+  return Astro.redirect(`/404`);
+}
 if (!product) {
   return Astro.redirect(`/404`);
 }

@@ -1,0 +1,138 @@
+---
+// Import necessary components and utilities
+import MainLayout from "@/layouts/MainLayout.astro";
+import AvatarBlogLarge from "@components/ui/avatars/AvatarBlogLarge.astro";
+import CardRelated from "@components/ui/cards/CardRelated.astro";
+import Bookmark from "@components/ui/buttons/Bookmark.astro";
+import SocialShare from "@components/ui/buttons/SocialShare.astro";
+import PostFeedback from "@components/ui/feedback/PostFeedback.astro";
+import { Image } from "astro:assets";
+import { capitalize, formatDate } from "@utils/utils";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import siteconfig from "@data/site.json";
+interface SiteConfig {
+  supportedLangLabels: {
+    [key: string]: string;
+  };
+  SITE: {
+    title: string;
+    tagline: string;
+    description: string;
+    description_short: string;
+    url: string;
+    author: string;
+  };
+}
+// Utility function for language validation
+function getLanguageUtils(config:SiteConfig) {
+  return {
+    getSupportedLanguages: () => Object.keys(config.supportedLangLabels),
+    getLanguageLabel: (lang:string) => config.supportedLangLabels[lang],
+    isLanguageSupported: (lang:string) => lang in config.supportedLangLabels,
+    getDefaultLanguage: () => "en",
+  };
+}
+
+// Get static paths for all blog posts in all languages
+export async function getStaticPaths() {
+  const supportedLanguages = Object.keys(siteconfig.supportedLangLabels);
+  
+  const allPaths = await Promise.all(
+    supportedLanguages.map(async (lang) => {
+      const posts = await getCollection("blog", ({ id }) =>
+        id.startsWith(`${lang}/`)
+      );
+      return posts.map((post) => ({
+        params: {
+          lang,
+          slug: post.slug.replace(`${lang}/`, ""), // Strip language prefix
+        },
+        props: { post },
+      }));
+    })
+  );
+
+  return allPaths.flat();
+}
+
+// Get language from params and validate
+const { lang = "en", slug } = Astro.params;
+const langUtils = getLanguageUtils(siteconfig);
+
+if (!langUtils.isLanguageSupported(lang)) {
+  return Astro.redirect(`/${langUtils.getDefaultLanguage()}/404`);
+}
+
+// Fetch language-specific navigation data
+const navlinkData = await import(`../../../data_files/${lang}/nav.json`);
+
+// Fetch all posts for the current language
+const blogPosts = await getCollection("blog", ({ id }) =>
+  id.startsWith(`${lang}/`)
+);
+
+// Find the current post
+const post = blogPosts.find((entry) => entry.slug === `${lang}/${slug}`);
+if (!post) {
+  return Astro.redirect(`/${lang}/404`);
+}
+
+// Get related posts in the same language
+const relatedPosts = blogPosts.filter(
+  (entry) => entry.slug !== post.slug
+);
+
+const pageTitle = `${post.data.title} | ${siteconfig.SITE.title}`;
+---
+
+<MainLayout
+  navdata={navlinkData}
+  supportedLangLabels={siteconfig.supportedLangLabels}
+  title={pageTitle}
+>
+  <section class="mx-auto max-w-3xl px-4 pb-12 pt-6 sm:px-6 lg:px-8 lg:pt-10">
+    <div class="max-w-2xl">
+      <div class="mb-6 flex items-center justify-between">
+        <AvatarBlogLarge blogEntry={post} />
+      </div>
+      <h2 class="mb-3 text-2xl font-bold text-neutral-800 dark:text-neutral-200 md:text-3xl">
+        {post.data.title}
+      </h2>
+      <div class="mb-5 space-y-5 md:mb-8 md:space-y-8">
+        {post.data.contents.map((content, index) =>
+          index === 1 ? (
+            <>
+              <p class="text-lg text-neutral-700 dark:text-neutral-300">
+                {content}
+              </p>
+              <Image
+                class="w-full rounded-xl object-cover"
+                src={post.data.cardImage}
+                alt={post.data.cardImageAlt}
+                draggable={false}
+                format="avif"
+              />
+            </>
+          ) : (
+            <p class="text-lg text-neutral-700 dark:text-neutral-300">{content}</p>
+          )
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Articles Section -->
+  <section class="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+    <div class="mb-10 max-w-2xl">
+      <h2 class="text-2xl font-bold text-neutral-800 dark:text-neutral-200 md:text-4xl">
+        Related Articles
+      </h2>
+    </div>
+    <div class="grid grid-cols-2 gap-6">
+      {relatedPosts.map((entry) => (
+        <CardRelated blogEntry={entry} />
+      ))}
+    </div>
+  </section>
+</MainLayout>

@@ -1,10 +1,7 @@
 ---
 // Import the necessary modules
-import { Image } from "astro:assets";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
-// Destructure the props passed to the Astro component
-const { title, subTitle, btnExists, btnTitle, btnURL, img, imgAlt } =
-  Astro.props;
+
 // Define TypeScript interface for props
 interface Props {
   title: string;
@@ -12,23 +9,34 @@ interface Props {
   btnExists?: boolean;
   btnTitle?: string;
   btnURL?: string;
-  img: any;
-  imgAlt: any;
+  img: string; // String path for the image
+  imgAlt: string; // Alt text for the image
 }
+
+// Destructure the props passed to the Astro component
+const {
+  title,
+  subTitle,
+  btnExists,
+  btnTitle,
+  btnURL,
+  img,
+  imgAlt,
+} = Astro.props as Props;
 ---
 
 <!-- The root section of the component -->
 <section
   class="mx-auto max-w-[85rem] items-center gap-8 px-4 py-10 sm:px-6 sm:py-16 md:grid md:grid-cols-2 lg:grid lg:grid-cols-2 lg:px-8 lg:py-14 xl:gap-16 2xl:max-w-full"
 >
-  <!-- The Image component which renders the image -->
-  <Image
+  <!-- The <img> tag to render the image -->
+  <img
     class="w-full rounded-xl"
     src={img}
     alt={imgAlt}
-    draggable={"false"}
-    format={"avif"}
+    draggable="false"
   />
+  
   <!-- The container for title, subtitle, and optional CTA button -->
   <div class="mt-4 md:mt-0">
     <!-- The title of the section -->
@@ -37,13 +45,17 @@ interface Props {
     >
       {title}
     </h2>
+    
     <!-- The subtitle of the section -->
     <p
       class="mb-4 max-w-prose text-pretty font-normal text-neutral-600 dark:text-neutral-400 sm:text-lg"
     >
       {subTitle}
     </p>
+    
     <!-- Conditionally render the Primary CTA button if btnExists is true -->
-    {btnExists ? <PrimaryCTA title={btnTitle} url={btnURL} /> : null}
+    {btnExists && (
+      <PrimaryCTA title={btnTitle ?? "Learn More"} url={btnURL ?? "#"} />
+    )}
   </div>
 </section>

@@ -1,5 +1,5 @@
 {
-  "title": "Équipez vos projets avec <span class='text-yellow-500 dark:text-yellow-400'>ScrewFast</span>",
+  "title": "Équipez vos projets avec <span class='text-yellow-500 dark:text-yellow-400'>AstroProductFast</span>",
   "subTitle": "Des outils de haute qualité et des services de construction experts pour tous vos besoins de projet.",
   "primaryBtn": "Commencez à explorer",
   "primaryBtnURL": "/products",
@@ -16,5 +16,5 @@
   "starCount": 4,
   "reviews": "De plus de <span class='font-bold'>12.8k</span> avis",
   "src": "/src/images/hero-image.avif",
-  "alt": "Pile de boîtes de produits ScrewFast contenant des outils de quincaillerie assortis"
+  "alt": "Pile de boîtes de produits AstroProductFast contenant des outils de quincaillerie assortis"
 }

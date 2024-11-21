@@ -1,5 +1,5 @@
 {
-    "title": "Equip Your Projects with <span class='text-yellow-500 dark:text-yellow-400'>ScrewFast</span>",
+    "title": "Equip Your Projects with <span class='text-yellow-500 dark:text-yellow-400'>AstroProductFast</span>",
     "subTitle": "Top-quality hardware tools and expert construction services for every project need.",
     "primaryBtn": "Start Exploring",
     "primaryBtnURL": "/products",
@@ -16,6 +16,6 @@
     "starCount": 4,
     "reviews": "From Over <span class='font-bold'>12.8k</span> Reviews",
     "src": "/src/images/hero-image.avif",
-    "alt": "Stack of ScrewFast product boxes containing assorted hardware tools"
+    "alt": "Stack of AstroProductFast product boxes containing assorted hardware tools"
   }
   

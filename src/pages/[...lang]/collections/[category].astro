@@ -9,6 +9,13 @@ import siteconfig from "@data/site.json";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
+interface CollectionType{
+  title:string;
+  description:string;
+  image:string;
+  productCount:number;
+  slug:string;
+}
 // Define getStaticPaths to handle both language and category
 export async function getStaticPaths() {
   const supportedLanguages = siteconfig.supportedLanguages;
@@ -20,7 +27,7 @@ export async function getStaticPaths() {
       const { default: categories } = await import(`../../../data_files/${lang}/collections/all.json`);
       
       // Generate paths for each category in this language
-      const langPaths = categories.map(category => ({
+      const langPaths = categories.map((category: string) => ({
         params: { lang, category },
         props: { lang, category }
       }));

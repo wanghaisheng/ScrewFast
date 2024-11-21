@@ -6,26 +6,14 @@ import RightSection from "@components/ui/blocks/RightSection.astro";
 import FeaturesStats from "@components/sections/features/FeaturesStats.astro";
 import siteconfig from "@data/site.json";
 
-// Import images
-import blueprints from "@images/blueprints-image.avif";
-import personWorking from "@images/person-working.avif";
-import beforeAfter from "@images/before-after.avif";
-import constructionWorkers from "@images/construction-workers.avif";
-import aerialView from "@images/aerial-view.avif";
-import usingTools from "@images/using-tools.avif";
-import progressBuilding from "@images/progress-building.avif";
-import underConstruction from "@images/under-construction.avif";
-
-// Define getStaticPaths
 export async function getStaticPaths() {
   const supportedLanguages = siteconfig.supportedLanguages;
   return supportedLanguages.map((lang) => ({
     params: { lang },
-    props: { lang }
+    props: { lang },
   }));
 }
 
-// Extract 'lang' from props
 const { lang = "en" } = Astro.params;
 
 console.log("Services Current language:", lang);
@@ -34,39 +22,75 @@ if (!lang) {
   throw new Error("Language parameter is missing!");
 }
 
-// Load language-specific data
-const servicesData = await import(`../../data_files/${lang}/services.json`).catch(() => ({ 
+const servicesData = await import(`../../data_files/${lang}/services.json`).catch(() => ({
   pageTitle: "Services",
   mainSection: {},
   articles: [],
-  featuresStats: {}
+  featuresStats: {},
 }));
 
-const navlinkData = await import(`../../data_files/${lang}/nav.json`).catch(() => ({ nav: [] }));
+const navlinkData = await import(`../../data_files/${lang}/nav.json`).catch(() => ({
+  nav: [],
+}));
 
-// Map of images to use in articles
-const imageMap = {
-  blueprints,
-  personWorking,
-  beforeAfter,
-  constructionWorkers,
-  aerialView,
-  usingTools,
-  progressBuilding,
-  underConstruction
-};
+const resolveImagePath = (imageName?: string): string | undefined =>
+  imageName ? `/src/assets/images/${imageName}` : undefined;
 
-// Process articles to include actual image objects
-const processedArticles = servicesData.articles.map(article => ({
+interface Article {
+  isRightSection: boolean;
+  title: string;
+  subTitle: string;
+  btnExists?: boolean;
+  btnTitle?: string;
+  btnURL?: string;
+  single?: boolean;
+  img?: string;
+  imgAlt?: string;
+  imgOne?: string;
+  imgOneAlt?: string;
+  imgTwo?: string;
+  imgTwoAlt?: string;
+}
+// RightSection Props Interface
+export interface RightSectionProps {
+  title: string; // Required title of the section
+  subTitle: string; // Required subtitle of the section
+  btnExists?: boolean; // Optional boolean indicating if a button exists
+  btnTitle?: string; // Optional title of the button
+  btnURL?: string; // Optional URL for the button
+  single?: boolean; // Optional flag for rendering a single image
+  imgOne?: string; // Optional URL for the first image
+  imgOneAlt?: string; // Optional alt text for the first image
+  imgTwo?: string; // Optional URL for the second image (only used if single is false)
+  imgTwoAlt?: string; // Optional alt text for the second image
+}
+
+// LeftSection Props Interface
+interface LeftSectionProps {
+  title: string; // Required title of the section
+  subTitle: string; // Required subtitle of the section
+  btnExists?: boolean; // Optional boolean indicating if a button exists
+  btnTitle?: string; // Optional title of the button
+  btnURL?: string; // Optional URL for the button
+  img?: string; // Optional image URL
+  imgAlt?: string; // Optional alt text for the image
+}
+
+
+const processedArticles = servicesData.articles.map((article: Article) => ({
   ...article,
-  imgOne: article.imgOne ? imageMap[article.imgOne] : undefined,
-  imgTwo: article.imgTwo ? imageMap[article.imgTwo] : undefined,
-  img: article.img ? imageMap[article.img] : undefined
+  imgOne: resolveImagePath(article.imgOne),
+  imgTwo: resolveImagePath(article.imgTwo),
+  img: resolveImagePath(article.img),
 }));
+const leftSectionArticles = processedArticles.filter((article:Article) => !article.isRightSection);
+
+const rightSectionArticles = processedArticles.filter((article:Article) => article.isRightSection);
+
 ---
 
-<MainLayout 
-  title={`${servicesData.pageTitle} | ${siteconfig.title}`}
+<MainLayout
+  title={`${servicesData.pageTitle} | ${siteconfig.SITE.title}`}
   navdata={navlinkData}
   supportedLangLabels={siteconfig.supportedLangLabels}
   structuredData={{
@@ -80,20 +104,21 @@ const processedArticles = servicesData.articles.map(article => ({
       "@type": "WebSite",
       "url": siteconfig.SITE.url,
       "name": siteconfig.SITE.title,
-      "description": siteconfig.SITE.description
+      "description": siteconfig.SITE.description,
     },
-    "inLanguage": lang
+    "inLanguage": lang,
   }}
 >
   <MainSection {...servicesData.mainSection} />
-  
-  {processedArticles.map(article => 
+
+  {processedArticles.map((article: Article) =>
     article.isRightSection ? (
-      <RightSection {...article} />
+      <RightSection {...rightSectionArticles} />
     ) : (
-      <LeftSection {...article} />
+    
+      <LeftSection {...leftSectionArticles} />
     )
   )}
-  
+
   <FeaturesStats {...servicesData.featuresStats} />
 </MainLayout>

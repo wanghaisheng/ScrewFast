@@ -1,0 +1,114 @@
+---
+// Import necessary components, modules, and types
+import MainLayout from "@/layouts/MainLayout.astro";
+import CardBlog from "@components/ui/cards/CardBlog.astro";
+import CardBlogRecent from "@components/ui/cards/CardBlogRecent.astro";
+import CardInsight from "@components/ui/cards/CardInsight.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import siteconfig from "@data/site.json";
+
+// Generate static paths for language support
+export async function getStaticPaths() {
+  const supportedLanguages = Object.keys(siteconfig.supportedLangLabels);
+  return supportedLanguages.map(lang => ({
+    params: { lang },
+    props: { lang }
+  }));
+}
+
+// Get the current language
+const { lang } = Astro.params;
+const currentLang = lang || "en";
+
+// Redirect if the language is unsupported
+if (!Object.keys(siteconfig.supportedLangLabels).includes(currentLang)) {
+  return Astro.redirect('/en/blog');
+}
+
+// Fetch blog posts in the current language
+const blogEntries = await getCollection("blog", ({ id }) => id.startsWith(`${currentLang}/`));
+const insightEntries = await getCollection("insights", ({ id }) => id.startsWith(`${currentLang}/`));
+
+// Sort and organize blog posts
+const sortedBlogPosts = blogEntries.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const mostRecentPost = sortedBlogPosts[0];
+const otherPosts = sortedBlogPosts.slice(1);
+
+// Define page content
+const pageContent = {
+  title: "Your Gateway to Construction Excellence",
+  subTitle: "Explore the latest news, tips, and insights from AstroProductFast to enhance your construction projects. From product spotlights to project management strategies, our blog is your go-to resource for all things hardware and construction.",
+  insightsTitle: "Insights",
+  insightsSubTitle: "Stay up-to-date with the latest trends and developments in the construction industry with insights from AstroProductFast's team of industry experts."
+};
+
+// Import navigation data
+const navlinkData = await import(`../../../data_files/${currentLang}/nav.json`).catch(() => ({ nav: [] }));
+
+// Define page metadata
+const pageTitle = `Blog | ${siteconfig.SITE.title}`;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${siteconfig.SITE.url}/${currentLang}/blog`,
+  url: `${siteconfig.SITE.url}/${currentLang}/blog`,
+  name: pageTitle,
+  description: pageContent.subTitle,
+  isPartOf: {
+    "@type": "WebSite",
+    url: siteconfig.SITE.url,
+    name: siteconfig.SITE.title,
+    description: siteconfig.SITE.description
+  },
+  inLanguage: currentLang
+};
+---
+
+<MainLayout
+  navdata={navlinkData}
+  supportedLangLabels={siteconfig.supportedLangLabels}
+  title={pageTitle}
+  structuredData={structuredData}
+>
+  <!-- Page Header -->
+  <section class="mx-auto max-w-[85rem] space-y-8 px-4 pt-16 sm:px-6 lg:px-8 2xl:max-w-full">
+    <div class="mx-auto max-w-3xl text-left sm:text-center">
+      <h1 class="block text-balance text-4xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 md:text-5xl lg:text-6xl">
+        {pageContent.title}
+      </h1>
+      <p class="mt-4 text-pretty text-lg text-neutral-600 dark:text-neutral-400">
+        {pageContent.subTitle}
+      </p>
+    </div>
+  </section>
+
+  <!-- Blog Posts Section -->
+  <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+    <div class="grid gap-6 lg:grid-cols-2">
+      {otherPosts.map(blogEntry => <CardBlog blogEntry={blogEntry} />)}
+    </div>
+  </section>
+
+  <!-- Most Recent Blog Post -->
+  <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+    <CardBlogRecent blogEntry={mostRecentPost} />
+  </section>
+
+  <!-- Insights Section -->
+  <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+    <div class="mx-auto mb-10 max-w-2xl text-center lg:mb-14">
+      <h2 class="text-2xl font-bold text-neutral-800 dark:text-neutral-200 md:text-4xl md:leading-tight">
+        {pageContent.insightsTitle}
+      </h2>
+      <p class="mt-1 text-pretty text-neutral-600 dark:text-neutral-400">
+        {pageContent.insightsSubTitle}
+      </p>
+    </div>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {insightEntries.map(insightEntry => <CardInsight insightEntry={insightEntry} />)}
+    </div>
+  </section>
+</MainLayout>

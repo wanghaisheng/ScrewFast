@@ -1,5 +1,5 @@
 {
-  "title": "为您的项目配备 <span class='text-yellow-500 dark:text-yellow-400'>ScrewFast</span>",
+  "title": "为您的项目配备 <span class='text-yellow-500 dark:text-yellow-400'>AstroProductFast</span>",
   "subTitle": "为每个项目需求提供高质量的硬件工具和专业的建筑服务。",
   "primaryBtn": "开始探索",
   "primaryBtnURL": "/products",
@@ -16,5 +16,5 @@
   "starCount": 4,
   "reviews": "来自 <span class='font-bold'>12.8k</span> 条评论",
   "src": "/src/images/hero-image.avif",
-  "alt": "包含各种硬件工具的ScrewFast产品盒堆叠"
+  "alt": "包含各种硬件工具的AstroProductFast产品盒堆叠"
 }

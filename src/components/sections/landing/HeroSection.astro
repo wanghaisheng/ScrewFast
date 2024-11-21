@@ -57,13 +57,17 @@ export function getLocalImageSize(src:string) {
 let importedImage;
 let imagesize = { width: 800, height: 600 }; // Initialize with default values
 //if (src.startsWith('@images/')) {
-const images = import.meta.glob<{ default: ImageMetadata }>('/src/images/*.{jpeg,jpg,png,gif,avif,webp,svg}');
-if (src){
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/images/**/*.{jpeg,jpg,png,gif,webp,svg,avif}', {
+    eager: true
+  });
+
+    if (src){
   console.log('-------',src)
-//  let src1='../../src/images/hero-image.avif'
-importedImage=images[src]()
-console.log(images)
+  console.log(images)
+
+  importedImage=images[src].default
 imagesize=getLocalImageSize(src)
+console.log('---importedImage----',importedImage.src)
 
 // importedImage = await import(src1);
 }

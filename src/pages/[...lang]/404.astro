@@ -1,0 +1,91 @@
+---
+// Import section components
+import MainLayout from "@/layouts/MainLayout.astro";
+import Btn404 from "@components/ui/buttons/Btn404.astro";
+import siteconfig from "@data/site.json";
+export async function getStaticPaths() {
+  const supportedLanguages = siteconfig.supportedLanguages;
+  return supportedLanguages.map((lang) => ({
+    params: { lang },
+    props: { lang },
+  }));
+}
+const { lang = "en" } = Astro.params;
+console.log("404 Current language:", lang);
+if (!lang) {
+  throw new Error("Language parameter is missing!");
+}
+const notfoundData:TranslateType = await import(`../../data_files/${lang}/404.json`)
+const navlinkData = await import(`../../data_files/${lang}/nav.json`)
+
+// Define types for translations
+type TranslationKeys = "en" | "fr";
+type Translations = {
+  [key in TranslationKeys]: {
+    pageTitle: string;
+    subTitle: string;
+    content: string;
+    btnTitle: string;
+  };
+};
+interface TranslateType{
+  pageTitle: string;
+  subTitle: string;
+  content: string;
+  btnTitle: string;
+
+
+}
+
+// Define variables for page content
+const translations:TranslateType = {
+    pageTitle: `${notfoundData.pageTitle} | ${siteconfig.SITE.title}`,
+    subTitle: `${notfoundData.subTitle}`,
+    content: `${notfoundData.content}`,
+    btnTitle: `${notfoundData.btnTitle}`,
+};
+
+
+// const { pageTitle, subTitle, content, btnTitle } = translations;
+---
+
+<MainLayout 
+navdata={navlinkData}
+supportedLangLabels={siteconfig.supportedLangLabels}
+
+title={translations.pageTitle}>
+  <section class="grid h-svh place-content-center">
+    <div class="mx-auto max-w-screen-xl px-4 py-8 lg:px-6 lg:py-16">
+      <div class="mx-auto max-w-screen-sm text-center">
+        <h1
+          class="text-dark mb-4 text-7xl font-extrabold text-yellow-500 dark:text-yellow-400 lg:text-9xl"
+        >
+          404
+        </h1>
+        <p
+          id="subtitle"
+          class="mb-4 text-balance text-3xl font-bold tracking-tight text-neutral-700 dark:text-neutral-300 md:text-4xl"
+        >
+          {translations.subTitle}
+        </p>
+        <p
+          id="content"
+          class="mb-4 text-pretty text-lg text-neutral-600 dark:text-neutral-400"
+        >
+          {translations.content}
+        </p>
+        <!-- Display a button that navigates user back to the previous page -->
+        <Btn404 title={translations.btnTitle} id="go-back" />
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<!-- JavaScript code to handle going back to the previous page -->
+<script>
+  const goBackButton = document.getElementById("go-back") as HTMLButtonElement;
+
+  goBackButton.addEventListener("click", () => {
+    history.back();
+  });
+</script>

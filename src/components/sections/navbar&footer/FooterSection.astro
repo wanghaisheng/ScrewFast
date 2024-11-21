@@ -4,17 +4,18 @@ import FooterSocialLink from "@components/ui/links/FooterSocialLink.astro";
 import EmailFooterInput from "@components/ui/forms/input/EmailFooterInput.astro";
 import Icon from "@components/ui/icons/Icon.astro";
 import BrandLogo from "@components/BrandLogo.astro";
-import type { Navlinks  } from "@utils/navigation.ts";
-import siteconfig from "@data/site.json";
+import type { Navlinks,PowerBy  } from "@utils/navigation.ts";
 
 interface Props {
   navdata: Navlinks;
+  // powerbydata:PowerBy;
 }
 const { navdata  } = Astro.props;
 
 // console.log('=======',navdata)
 
 // Define the variables that will be used in this component
+
 const sectionThreeTitle: string = Astro.currentLocale === "fr" ? "Rester à jour" : "Stay up to date";
 const sectionThreeContent: string = Astro.currentLocale === "fr" ? "Restez informé des derniers outils et des offres exclusives." :
   "Stay updated with the latest tools and exclusive deals.";
@@ -60,13 +61,13 @@ const crafted: string = Astro.currentLocale === "fr" ? "Fabriqué par" : "Crafte
 
       <div class="col-span-2">
         <h3 class="font-bold text-neutral-800 dark:text-neutral-200">
-          {sectionThreeTitle}
+          {navdata.emailsub.section}
         </h3>
 
         <form>
-          <EmailFooterInput />
+          <EmailFooterInput label={navdata.emailsub.label} title={navdata.emailsub.title} placeholder={navdata.emailsub.placeholder} />
           <p class="mt-3 text-sm text-neutral-600 dark:text-neutral-400">
-            {sectionThreeContent}
+            {navdata.emailsub.content}
           </p>
         </form>
       </div>
@@ -77,12 +78,12 @@ const crafted: string = Astro.currentLocale === "fr" ? "Fabriqué par" : "Crafte
     >
       <div class="flex items-center justify-between">
         <p class="text-sm text-neutral-600 dark:text-neutral-400">
-          © <span id="current-year"></span> {siteconfig.SITE.title}. {crafted}
+          ©  {navdata.powerBy.text}
           <a
             class="rounded-lg font-medium underline underline-offset-2 outline-none ring-zinc-500 transition duration-300 hover:text-neutral-700 hover:decoration-dashed focus:outline-none focus-visible:ring dark:ring-zinc-200 dark:hover:text-neutral-300"
-            href="https://www.gulamoff.dev/"
+            href={navdata.powerBy.link}
             target="_blank"
-            rel="noopener noreferrer">gulamoff</a
+            rel="noopener noreferrer">{navdata.powerBy.linkText}</a
           >.
         </p>
       </div>

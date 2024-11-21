@@ -21,9 +21,24 @@ interface SocialLinks {
   slack: string;
 }
 
+
+interface EmailSub{
+  section:string;
+  title:string;
+  label:string;
+  content:string;
+  placeholder:string;
+}
 export interface Navlinks {
   navBarLinks: NavBarLink[];
   footerLinks: FooterSection[];
   socialLinks: SocialLinks;
+  emailsub:EmailSub;
+  powerBy:PowerBy;
 }
 
+export interface PowerBy{
+  text:string;
+  link:string;
+  linkText:string;
+}

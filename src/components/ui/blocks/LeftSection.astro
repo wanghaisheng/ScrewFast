@@ -1,7 +1,7 @@
 ---
 // Import the necessary modules
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
-
+import {getImageFromFolder} from "@utils/utils"
 // Define TypeScript interface for props
 interface Props {
   title: string;
@@ -23,6 +23,7 @@ const {
   img,
   imgAlt,
 } = Astro.props as Props;
+console.log('left',title)
 ---
 
 <!-- The root section of the component -->
@@ -32,7 +33,7 @@ const {
   <!-- The <img> tag to render the image -->
   <img
     class="w-full rounded-xl"
-    src={img}
+    src={getImageFromFolder('/src/images',img)}
     alt={imgAlt}
     draggable="false"
   />

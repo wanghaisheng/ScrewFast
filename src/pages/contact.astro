@@ -1,50 +1,10 @@
 ---
-// Import the necessary components
-import MainLayout from "@/layouts/MainLayout.astro";
-import ContactSection from "@components/sections/misc/ContactSection.astro";
-import siteconfig from "@data/site.json";
+import PageContent from "./[...lang]/contact.astro";
 
-
-export async function getStaticPaths() {
-  const supportedLanguages = siteconfig.supportedLanguages;
-  return supportedLanguages.map((lang) => ({
-    params: { lang },
-    props: { lang }
-  }));
-}
-// const { lang } = Astro.props;
-const lang= siteconfig.defaultlang
-if (!lang || !siteconfig.supportedLanguages.includes(lang)) {
-  return Astro.redirect('/en');
-}
-const navlinkData = await import(`../data_files/${lang}/nav.json`)
-
-const pageTitle: string = `Contact | ${siteconfig.SITE.title}`;
+// Default to 'en' if 'lang' is undefined
+const defaultLang = "en";
+const { lang = defaultLang } = Astro.props;
+console.log("services root Resolved language:", lang);
 ---
 
-<!--Utilizing MainLayout for the outer layout of the page, and defining meta for SEO purposes-->
-<MainLayout
-navdata={navlinkData}
-supportedLangLabels={siteconfig.supportedLangLabels}
-
-  title={pageTitle}
-  structuredData={{
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": `${siteconfig.SITE.url}/contact`,
-    "url": `${siteconfig.SITE.url}/contact`,
-    "name": "Contact Us | AstroProductFast",
-    "description":
-      "Have questions or want to discuss a project? Reach out, and let's craft the perfect solution with our tools and services.",
-    "isPartOf": {
-      "@type": "WebSite",
-      "url": siteconfig.SITE.url,
-      "name": "AstroProductFast",
-      "description":
-        "AstroProductFast offers top-tier hardware tools and expert construction services to meet all your project needs.",
-    },
-    "inLanguage": "en-US"
-  }}
->
-  <ContactSection />
-</MainLayout>
+<PageContent lang={lang} />

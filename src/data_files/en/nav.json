@@ -31,6 +31,19 @@
       "github": "https://github.com/mearashadowfax/AstroProductFast",
       "google": "https://www.google.com/",
       "slack": "https://slack.com/"
+    },
+    "emailsub":{
+      "section":  "Stay up to date"      ,
+      "content":  "Stay updated with the latest tools and exclusive deals."      ,
+      "label":"Search",
+      "title":"Subscribe",
+      "placeholder":"Enter your email"
+    },
+    "powerBy":{
+      "text":"AstroProductFast.Powered by",
+      "link":"https://borninsea.com",
+      "linkText":"borninsea"
     }
   }
+
   

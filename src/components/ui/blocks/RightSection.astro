@@ -1,6 +1,7 @@
 ---
 // Import the required modules
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
+import {getImageFromFolder} from "@utils/utils"
 
 // Extract properties from Astro.props
 const {
@@ -57,7 +58,8 @@ interface Props {
         <!-- Single image -->
         <img
           class="w-full rounded-lg"
-          src={imgOne}
+          src={getImageFromFolder('/src/images',imgOne)}
+
           alt={imgOneAlt}
           loading="lazy"
         />
@@ -67,7 +69,7 @@ interface Props {
         <!-- First image in a two-image layout -->
         <img
           class="w-full rounded-xl"
-          src={imgOne}
+          src={getImageFromFolder('/src/images',imgOne)}
           alt={imgOneAlt}
           draggable="false"
           loading="lazy"
@@ -75,7 +77,7 @@ interface Props {
         <!-- Second image in a two-image layout -->
         <img
           class="mt-4 w-full rounded-xl lg:mt-10"
-          src={imgTwo}
+          src={getImageFromFolder('/src/images',imgTwo)}
           alt={imgTwoAlt}
           draggable="false"
           loading="lazy"

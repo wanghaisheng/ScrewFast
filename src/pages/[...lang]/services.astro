@@ -5,7 +5,6 @@ import LeftSection from "@components/ui/blocks/LeftSection.astro";
 import RightSection from "@components/ui/blocks/RightSection.astro";
 import FeaturesStats from "@components/sections/features/FeaturesStats.astro";
 import siteconfig from "@data/site.json";
-
 export async function getStaticPaths() {
   const supportedLanguages = siteconfig.supportedLanguages;
   return supportedLanguages.map((lang) => ({
@@ -34,7 +33,7 @@ const navlinkData = await import(`../../data_files/${lang}/nav.json`).catch(() =
 }));
 
 const resolveImagePath = (imageName?: string): string | undefined =>
-  imageName ? `/src/assets/images/${imageName}` : undefined;
+  imageName ? `/src/images/${imageName}` : undefined;
 
 interface Article {
   isRightSection: boolean;
@@ -51,6 +50,7 @@ interface Article {
   imgTwo?: string;
   imgTwoAlt?: string;
 }
+
 // RightSection Props Interface
 export interface RightSectionProps {
   title: string; // Required title of the section
@@ -72,21 +72,32 @@ interface LeftSectionProps {
   btnExists?: boolean; // Optional boolean indicating if a button exists
   btnTitle?: string; // Optional title of the button
   btnURL?: string; // Optional URL for the button
-  img?: string; // Optional image URL
-  imgAlt?: string; // Optional alt text for the image
+  img: string; // Optional image URL
+  imgAlt: string; // Optional alt text for the image
 }
 
-
+// Process articles by resolving image paths
 const processedArticles = servicesData.articles.map((article: Article) => ({
   ...article,
   imgOne: resolveImagePath(article.imgOne),
   imgTwo: resolveImagePath(article.imgTwo),
   img: resolveImagePath(article.img),
 }));
-const leftSectionArticles = processedArticles.filter((article:Article) => !article.isRightSection);
 
-const rightSectionArticles = processedArticles.filter((article:Article) => article.isRightSection);
+// Filter articles into left and right sections
 
+const rightSectionArticles = servicesData.articles.filter((article: Article) => article.isRightSection);
+const leftSectionArticles = processedArticles
+  .filter((article: Article) => !article.isRightSection)
+  .map((article:Article) => ({
+    ...article,
+    img: article.img || "", // Provide default empty string for img if undefined
+    imgAlt: article.imgAlt || "Default alt text", // Provide fallback alt text if undefined
+  }));
+
+// Assign filtered data for later use
+const leftSectionSettings: LeftSectionProps[] = leftSectionArticles;
+const rightSectionSettings: RightSectionProps[] = rightSectionArticles;
 ---
 
 <MainLayout
@@ -109,16 +120,19 @@ const rightSectionArticles = processedArticles.filter((article:Article) => artic
     "inLanguage": lang,
   }}
 >
+  <!-- Render Main Section -->
   <MainSection {...servicesData.mainSection} />
 
-  {processedArticles.map((article: Article) =>
-    article.isRightSection ? (
-      <RightSection {...rightSectionArticles} />
-    ) : (
-    
-      <LeftSection {...leftSectionArticles} />
-    )
-  )}
+  <!-- Render Right Sections -->
+  {rightSectionSettings.map((article) => (
+    <RightSection {...article} />
+  ))}
 
+  <!-- Render Left Sections -->
+  {leftSectionSettings.map((article) => (
+    <LeftSection {...article} />
+  ))}
+
+  <!-- Render Features Stats Section -->
   <FeaturesStats {...servicesData.featuresStats} />
 </MainLayout>

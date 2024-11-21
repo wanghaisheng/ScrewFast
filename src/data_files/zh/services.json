@@ -1,82 +1,82 @@
 {
-    "pageTitle": "Services",
-    "mainSection": {
-      "title": "Uniting Expertise with Your Vision",
-      "subTitle": "At AstroProductFast, we take pride in providing comprehensive solutions and exceptional service in the hardware and construction industry. Our experienced team is dedicated to supporting your project from inception to completion with a range of specialized services.",
+  "pageTitle": "服务",
+  "mainSection": {
+    "title": "结合专业与您的愿景",
+    "subTitle": "在 AstroProductFast，我们以提供全面的解决方案和卓越的服务为荣，致力于硬件和建筑行业。我们的经验丰富的团队致力于通过一系列专业化服务支持您的项目从开始到完成。",
+    "btnExists": true,
+    "btnTitle": "安排咨询",
+    "btnURL": "#"
+  },
+  "articles": [
+    {
+      "isRightSection": true,
+      "title": "提供专业指导",
+      "subTitle": "开始一个建筑项目可能会让人感到不知所措。通过我们的专业咨询服务，我们会在每个阶段为您提供指导，确保您做出明智的决策。无论您是 DIY 爱好者还是经验丰富的承包商，我们的专家都可以根据您的需求提供产品选择、项目范围和当地法规合规方面的建议。",
+      "single": false,
+      "imgOne": "blueprints-image.avif",
+      "imgOneAlt": "蓝图和带有施工计划的数字平板电脑。",
+      "imgTwo": "person-working.avif",
+      "imgTwoAlt": "在办公室工作的人。"
+    },
+    {
+      "isRightSection": false,
+      "title": "将设计变为现实",
+      "subTitle": "我们的专业工匠在每个建筑项目中都展现了精湛的技艺和卓越的质量。从小型安装到大型结构工程，AstroProductFast 提供可靠的建筑服务，将您的计划变为现实。我们确保最高的安全和工艺标准，使用来自我们广泛库存中的高质量工具和材料。",
+      "img": "before-after.avif",
+      "imgAlt": "施工现场前后对比。",
       "btnExists": true,
-      "btnTitle": "Schedule a Consultation",
+      "btnTitle": "了解更多",
       "btnURL": "#"
     },
-    "articles": [
-      {
-        "isRightSection": true,
-        "title": "Delivering Expert Guidance",
-        "subTitle": "Embarking on a construction project can be overwhelming. With our professional consultation services, we guide you through every stage, ensuring you make informed decisions. Whether you are a DIY enthusiast or a skilled contractor, our experts are on hand to offer tailored advice on product selection, project scope, and compliance with local regulations.",
-        "single": false,
-        "imgOne": "blueprints",
-        "imgOneAlt": "Blueprints and digital tablet with construction plans.",
-        "imgTwo": "personWorking",
-        "imgTwoAlt": "Person working in the office"
-      },
-      {
-        "isRightSection": false,
-        "title": "Transforming Designs into Reality",
-        "subTitle": "Our skilled craftsmen bring precision and excellence to every construction project. From minor installations to substantial structural work, AstroProductFast offers reliable construction services to turn your plans into tangible outcomes. We ensure the highest standards of safety and workmanship, utilizing top-quality tools and materials from our extensive inventory.",
-        "img": "beforeAfter",
-        "imgAlt": "Construction site before and after",
-        "btnExists": true,
-        "btnTitle": "Learn More",
-        "btnURL": "#"
-      },
-      {
-        "isRightSection": true,
-        "title": "Navigating Projects with Professional Oversight",
-        "subTitle": "Effective project management is at the heart of any successful build. AstroProductFast provides thorough planning and robust management services that keep your project on time and within budget. Let us handle the complexities of workflow coordination, resource allocation, and stakeholder communication while you focus on your vision.",
-        "single": false,
-        "imgOne": "constructionWorkers",
-        "imgOneAlt": "Construction workers orchestrating a project",
-        "imgTwo": "aerialView",
-        "imgTwoAlt": "Aerial view of managed construction"
-      },
-      {
-        "isRightSection": false,
-        "title": "Ensuring Long-lasting Performance",
-        "subTitle": "Our commitment to your project doesn't end at completion. AstroProductFast offers ongoing maintenance and support services to ensure your construction's longevity and performance. From regular check-ups to emergency assistance, our responsive team is there to provide seamless support.",
-        "img": "usingTools",
-        "imgAlt": "Man in orange and black vest wearing white helmet holding yellow and black power tool"
-      },
-      {
-        "isRightSection": true,
-        "title": "Crafting Bespoke Strategies for Unique Challenges",
-        "subTitle": "For our larger enterprise clients, AstroProductFast offers custom solutions designed to meet specific industry challenges. By understanding your unique needs, we engineer tailored strategies aimed at optimizing your operations, enhancing efficiency, and driving your business forward.",
-        "single": false,
-        "imgOne": "progressBuilding",
-        "imgOneAlt": "In progress building structure",
-        "imgTwo": "underConstruction",
-        "imgTwoAlt": "Brown and gray building under construction",
-        "btnExists": true,
-        "btnTitle": "Read more",
-        "btnURL": "#"
-      }
-    ],
-    "featuresStats": {
-      "title": "By the Numbers",
-      "subTitle": "Our commitment to quality and reliability is evident in every project we undertake. At AstroProductFast, we are dedicated to delivering industry-leading services that ensure your construction projects are built to last.",
-      "mainStatTitle": "96%",
-      "mainStatSubTitle": "of our clients rate their experience with AstroProductFast as exceptional",
-      "stats": [
-        {
-          "stat": "99.8%",
-          "description": "project completion rate"
-        },
-        {
-          "stat": "5,000+",
-          "description": "successful installations"
-        },
-        {
-          "stat": "85%",
-          "description": "client growth year-over-year"
-        }
-      ]
+    {
+      "isRightSection": true,
+      "title": "以专业管理推动项目进展",
+      "subTitle": "有效的项目管理是任何成功建设的核心。AstroProductFast 提供详细的规划和强大的管理服务，确保您的项目按时且符合预算。让我们处理工作流程协调、资源分配和利益相关者沟通的复杂性，而您可以专注于您的愿景。",
+      "single": false,
+      "imgOne": "construction-workers.avif",
+      "imgOneAlt": "施工人员协调项目。",
+      "imgTwo": "aerial-view.avif",
+      "imgTwoAlt": "管理施工的鸟瞰图。"
+    },
+    {
+      "isRightSection": false,
+      "title": "确保持久的性能",
+      "subTitle": "我们的承诺不会在项目完成时结束。AstroProductFast 提供持续的维护和支持服务，以确保您的建筑具有长久的寿命和卓越的性能。从定期检查到紧急援助，我们的响应团队随时为您提供无缝支持。",
+      "img": "using-tools.avif",
+      "imgAlt": "穿着橙黑背心、戴着白色头盔的男人，手持黄色和黑色电动工具。"
+    },
+    {
+      "isRightSection": true,
+      "title": "为独特挑战定制解决方案",
+      "subTitle": "针对我们的大型企业客户，AstroProductFast 提供定制解决方案，以应对特定行业的挑战。通过了解您的独特需求，我们制定量身定制的策略，旨在优化您的运营、提高效率并推动您的业务向前发展。",
+      "single": false,
+      "imgOne": "progress-building.avif",
+      "imgOneAlt": "正在建设中的建筑结构。",
+      "imgTwo": "under-construction.avif",
+      "imgTwoAlt": "棕色和灰色的在建建筑。",
+      "btnExists": true,
+      "btnTitle": "阅读更多",
+      "btnURL": "#"
     }
+  ],
+  "featuresStats": {
+    "title": "通过数字了解我们",
+    "subTitle": "我们对质量和可靠性的承诺在我们承担的每个项目中都清晰可见。在 AstroProductFast，我们致力于提供行业领先的服务，确保您的建筑项目经久耐用。",
+    "mainStatTitle": "96%",
+    "mainStatSubTitle": "的客户对与 AstroProductFast 的合作评价为卓越",
+    "stats": [
+      {
+        "stat": "99.8%",
+        "description": "项目完成率"
+      },
+      {
+        "stat": "5000+",
+        "description": "成功安装项目"
+      },
+      {
+        "stat": "85%",
+        "description": "客户年增长率"
+      }
+    ]
   }
+}

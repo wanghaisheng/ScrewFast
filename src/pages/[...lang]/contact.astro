@@ -4,6 +4,55 @@ import MainLayout from "@/layouts/MainLayout.astro";
 import ContactSection from "@components/sections/misc/ContactSection.astro";
 import siteconfig from "@data/site.json";
 
+export type ContactUsData = {
+  pageTitle: string;
+  subTitle: string;
+  form: {
+    formTitle: string;
+    formSubTitle: string;
+    fields: Array<
+      | {
+          type: "text";
+          id: string;
+          label: string;
+          name: string;
+        }
+      | {
+          type: "email";
+          id: string;
+        }
+      | {
+          type: "phone";
+          id: string;
+        }
+      | {
+          type: "textarea";
+          id: string;
+          label: string;
+          name: string;
+        }
+    >;
+    submitButton: {
+      type: "button";
+      title: string;
+    };
+  };
+  contactMethods: Array<{
+    heading: string;
+    content: string;
+    link?: {
+      isVisible: boolean;
+      title?: string;
+      url?: string;
+    };
+    isArrowVisible?: boolean;
+    address?: {
+      isVisible: boolean;
+      content?: string;
+    };
+    icon: string;
+  }>;
+};
 
 export async function getStaticPaths() {
   const supportedLanguages = siteconfig.supportedLanguages;
@@ -14,9 +63,15 @@ export async function getStaticPaths() {
 }
 const { lang } = Astro.props;
 if (!lang || !siteconfig.supportedLanguages.includes(lang)) {
-  return Astro.redirect('/en');
+  return Astro.redirect(`/${siteconfig.defaultlang}/contact`);
 }
 const navlinkData = await import(`../../data_files/${lang}/nav.json`)
+
+
+const contactData:ContactUsData = await import(`../../data_files/${lang}/contact.json`)
+
+
+console.log('======',contactData.form.formTitle)
 
 const pageTitle: string = `Contact | ${siteconfig.SITE.title}`;
 ---
@@ -45,5 +100,6 @@ supportedLangLabels={siteconfig.supportedLangLabels}
     "inLanguage": "en-US"
   }}
 >
-  <ContactSection />
+  <ContactSection data={contactData as ContactUsData} />
+
 </MainLayout>

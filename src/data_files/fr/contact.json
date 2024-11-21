@@ -1,0 +1,84 @@
+{
+    "pageTitle": "Contactez-nous",
+    "subTitle": "Vous avez des questions ou souhaitez discuter d'un projet ? Contactez-nous et concevons ensemble la solution idéale grâce à nos outils et services.",
+    "form": {
+      "formTitle": "Remplissez le formulaire ci-dessous",
+      "formSubTitle": "Nous vous répondrons sous 1 à 2 jours ouvrables.",
+      "fields": [
+        {
+          "type": "text",
+          "id": "hs-firstname-contacts",
+          "label": "Prénom",
+          "name": "hs-firstname-contacts"
+        },
+        {
+          "type": "text",
+          "id": "hs-lastname-contacts",
+          "label": "Nom",
+          "name": "hs-firstname-contacts"
+        },
+        {
+          "type": "email",
+          "id": "hs-email-contacts"
+        },
+        {
+          "type": "phone",
+          "id": "hs-phone-number"
+        },
+        {
+          "type": "textarea",
+          "id": "hs-about-contacts",
+          "label": "Détails",
+          "name": "hs-about-contacts"
+        }
+      ],
+      "submitButton": {
+        "type": "button",
+        "title": "Envoyer le message"
+      }
+    },
+    "contactMethods": [
+      {
+        "heading": "Base de connaissances",
+        "content": "Parcourez tous nos articles dans la base de connaissances.",
+        "link": {
+          "isVisible": true,
+          "title": "Visitez les guides et tutoriels",
+          "url": "#"
+        },
+        "icon": "question",
+        "isArrowVisible": true
+      },
+      {
+        "heading": "FAQ",
+        "content": "Consultez notre FAQ pour des réponses rapides et claires à vos questions.",
+        "link": {
+          "isVisible": true,
+          "title": "Visitez la FAQ",
+          "url": "#"
+        },
+        "icon": "chatBubble",
+        "isArrowVisible": true
+      },
+      {
+        "heading": "Visitez notre bureau",
+        "content": "AstroProductFast, Royaume-Uni",
+        "address": {
+          "isVisible": true,
+          "content": "72 Union Terrace, E10 4PE Londres"
+        },
+        "icon": "mapPin"
+      },
+      {
+        "heading": "Contactez-nous par email",
+        "content": "Vous préférez un échange écrit ? Envoyez-nous un email à",
+        "link": {
+          "isVisible": true,
+          "title": "support@AstroProductFast.uk",
+          "url": "#"
+        },
+        "icon": "envelopeOpen"
+      }
+    ]
+  }
+  

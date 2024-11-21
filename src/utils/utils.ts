@@ -31,7 +31,7 @@ function capitalize(str:string): string {
   export function getImageFromFolder(imagefolder:string,path: string): ImageMetadata {
     // imagefolder  /src/images
 // Image handling
-const images = import.meta.glob<{ default: ImageMetadata }>(`${imagefolder}/**/*.{jpeg,jpg,png,gif,webp,svg,avif}`, {
+const images = import.meta.glob<{ default: ImageMetadata }>(`/src/images/**/*.{jpeg,jpg,png,gif,webp,svg,avif}`, {
   eager: true
 });
 const hasPrefix = path.startsWith(`${imagefolder}`);

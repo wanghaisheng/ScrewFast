@@ -5,21 +5,21 @@
       {
         "title": "Outils pour Vélos",
         "description": "Outils de qualité professionnelle pour l'entretien et la réparation des vélos",
-        "image": "/images/categories/bike-tools.avif",
+        "image": "/src/images/collections/bike-tools.avif",
         "slug": "bike",
         "productCount": 12
       },
       {
         "title": "Équipement de Restauration",
         "description": "Outils de haute qualité pour les cuisines commerciales et domestiques",
-        "image": "/images/categories/food-service.avif",
+        "image": "/src/images/collections/food-service.avif",
         "slug": "food",
         "productCount": 8
       },
       {
         "title": "Outils de Construction",
         "description": "Outils durables pour la construction et l'entretien",
-        "image": "/images/categories/construction.avif",
+        "image": "/src/images/collections/construction.avif",
         "slug": "tools",
         "productCount": 15
       }

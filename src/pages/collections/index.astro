@@ -27,15 +27,15 @@ export async function getStaticPaths() {
 const lang= siteconfig.defaultlang
 
 // Load language-specific data
-const categoriesData = await import(`../../data_files/${lang}/categories.json`)
-  .catch(() => import(`../../data_files/en/categories.json`));
+const collectionsData = await import(`../../data_files/${lang}/collections.json`)
+  .catch(() => import(`../../data_files/en/collections.json`));
 
 const navlinkData = await import(`../../data_files/${lang}/nav.json`)
   .catch(() => ({ nav: [] }));
 ---
 
 <MainLayout
-  title={`${categoriesData.title} | ${siteconfig.SITE.title}`}
+  title={`${collectionsData.title} | ${siteconfig.SITE.title}`}
   navdata={navlinkData}
   supportedLangLabels={siteconfig.supportedLangLabels}
   structuredData={{
@@ -43,8 +43,8 @@ const navlinkData = await import(`../../data_files/${lang}/nav.json`)
     "@type": "CollectionPage",
     "@id": `${siteconfig.SITE.url}/${lang}/collections`,
     "url": `${siteconfig.SITE.url}/${lang}/collections`,
-    "name": categoriesData.title,
-    "description": categoriesData.description,
+    "name": collectionsData.title,
+    "description": collectionsData.description,
     "isPartOf": {
       "@type": "WebSite",
       "url": siteconfig.SITE.url,
@@ -57,15 +57,15 @@ const navlinkData = await import(`../../data_files/${lang}/nav.json`)
   <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
     <div class="mb-10 max-w-2xl">
       <h1 class="text-2xl font-bold text-neutral-800 dark:text-neutral-200 sm:text-3xl">
-        {categoriesData.title}
+        {collectionsData.title}
       </h1>
       <p class="mt-2 text-lg text-neutral-600 dark:text-neutral-400">
-        {categoriesData.description}
+        {collectionsData.description}
       </p>
     </div>
 
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {categoriesData.categories.map((category:CollectionType) => (
+      {collectionsData.categories.map((category:CollectionType) => (
         <CategoryCard
           title={category.title}
           description={category.description}

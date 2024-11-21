@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import {getImageFromFolder,getLocalImageSize} from "@utils/utils"
 
 interface Props {
   title: string;
@@ -10,19 +11,20 @@ interface Props {
 }
 
 const { title, description, image, url, count } = Astro.props;
+console.log('category card input image path',image)
+const size=getLocalImageSize(image)
 ---
 
 <a
   href={url}
   class="group relative flex h-48 items-end overflow-hidden rounded-xl bg-neutral-100 shadow-lg outline-none ring-zinc-500 transition duration-300 hover:shadow-xl focus-visible:ring dark:bg-neutral-800 dark:ring-zinc-200 dark:focus:outline-none md:h-80"
 >
-  <Image
-    src={image}
+  <img
+    src={getImageFromFolder('/src/images',image)}
     alt={title}
     class="absolute inset-0 h-full w-full object-cover object-center transition duration-300 group-hover:scale-105"
-    width={800}
-    height={600}
-    format="avif"
+    width={size.width}
+    height={size.height}
   />
   
   <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-900/75 via-neutral-900/50 to-transparent">

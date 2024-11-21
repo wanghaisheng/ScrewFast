@@ -67,7 +67,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>('/src/images/**/*.{j
 
   importedImage=images[src].default
 imagesize=getLocalImageSize(src)
-// console.log('---importedImage----',importedImage.src)
+console.log('---importedImage----',importedImage.src)
 
 // importedImage = await import(src1);
 }

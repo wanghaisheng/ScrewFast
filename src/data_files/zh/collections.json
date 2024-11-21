@@ -1,0 +1,27 @@
+{
+    "title": "Product Categories",
+    "description": "Explore our comprehensive range of professional tools and equipment across different categories.",
+    "categories": [
+      {
+        "title": "Bike Tools",
+        "description": "Professional-grade tools for bicycle maintenance and repair",
+        "image": "/src/images/collections/bike-tools.avif",
+        "slug": "bike",
+        "productCount": 12
+      },
+      {
+        "title": "Food Service Equipment",
+        "description": "High-quality tools for commercial and home kitchens",
+        "image": "/src/images/collections/food-service.avif",
+        "slug": "food",
+        "productCount": 8
+      },
+      {
+        "title": "Construction Tools",
+        "description": "Durable tools for construction and maintenance",
+        "image": "/src/images/collections/construction.avif",
+        "slug": "tools",
+        "productCount": 15
+      }
+    ]
+  }

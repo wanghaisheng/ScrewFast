@@ -3,6 +3,8 @@ import sizeOf from 'image-size';
 
 export function getLocalImageSize(src:string) {
   const computedSrc = src.replace('/src', './src');
+  console.log('--replace file path to--',src,computedSrc)
+
   const dimensions = sizeOf(computedSrc);
   console.log('----',dimensions)
   if (!dimensions || !dimensions.width || !dimensions.height) {

@@ -2,17 +2,21 @@
 // src/pages/[...lang]/index.astro
 
 import { getStaticPaths } from "./[...lang]/index.astro";
+import siteconfig from "@data/site.json";
 
 // Re-export getStaticPaths to handle the same routes
 export { getStaticPaths };
 
 // Get the language from the URL parameters
 const { lang } = Astro.params;
-
+let defaultLang = siteconfig.defaultlang;
+if (!defaultLang){
+  defaultLang='en'
+}
 // Redirect to default language (en) if accessing the root
 export const prerender = false;
 if (!lang) {
-  return Astro.redirect('/en');
+  return Astro.redirect(`${defaultLang}`);
 }
 ---
 

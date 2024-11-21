@@ -43,12 +43,11 @@ This is the full example:
 <!-- Container for tab content that controls visibility and accessibility -->
 <div id={id} role="tabpanel" class={firstClass} aria-labelledby={aria}>
   <!-- Astro Image component to display the image with dynamic classes based on the 'second' property -->
-  <Image
+  <img
     src={src}
     alt={alt}
     class={secondClass}
     draggable={"false"}
-    format={"avif"}
     loading={"eager"}
   />
 </div>

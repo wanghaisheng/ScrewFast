@@ -4,6 +4,7 @@ import { Image } from "astro:assets";
 import Icon from "@components/ui/icons/Icon.astro";
 import type { CollectionEntry } from "astro:content";
 import siteconfig from "@data/site.json";
+import {getImageFromFolder} from "@utils/utils"
 
 // Retrieve the list of supported languages
 const supportedLanguages = siteconfig.supportedLanguages;

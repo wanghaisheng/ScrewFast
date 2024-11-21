@@ -3,6 +3,8 @@ import MainLayout from "@/layouts/MainLayout.astro";
 import CategoryCard from "@components/ui/cards/CategoryCard.astro";
 import { Image } from "astro:assets";
 import siteconfig from "@data/site.json";
+import CollectionTestimonialsSectionAlt from "@components/sections/testimonials/CollectionTestimonialsSectionAlt.astro";
+import CollectionFeaturesStatsAlt from "@components/sections/features/CollectionFeaturesStatsAlt.astro";
 
 interface CollectionType{
 
@@ -24,10 +26,22 @@ export async function getStaticPaths() {
 
 // Get language parameter
 const { lang = "en" } = Astro.params;
+const currentLang = lang || "en";
+
+if (!Object.keys(siteconfig.supportedLangLabels).includes(currentLang)) {
+  return Astro.redirect('/en/collections');
+}
 
 // Load language-specific data
-const categoriesData = await import(`../../../data_files/${lang}/categories.json`)
-  .catch(() => import(`../../../data_files/en/categories.json`));
+const categoriesData = await import(`../../../data_files/${lang}/collections.json`)
+  .catch(() => import(`../../../data_files/en/collections.json`));
+
+const categoriesFeature = await import(`../../../data_files/${lang}/collection-features.json`)
+
+  .catch(() => import(`../../../data_files/en/collections.json`));
+const categoriesTestimonial = await import(`../../../data_files/${lang}/collection-testmonials.json`)
+  .catch(() => import(`../../../data_files/en/collections.json`));
+
 
 const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
   .catch(() => ({ nav: [] }));
@@ -74,5 +88,9 @@ const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
         />
       ))}
     </div>
+    <CollectionFeaturesStatsAlt data={categoriesFeature}/>
+    <CollectionTestimonialsSectionAlt data={categoriesTestimonial}/>
+
+
   </div>
 </MainLayout>

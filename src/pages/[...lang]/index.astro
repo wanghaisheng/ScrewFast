@@ -9,6 +9,8 @@ import TestimonialsSection from "@components/sections/testimonials/TestimonialsS
 import PricingSection from "@components/sections/pricing/PricingSection.astro";
 import FAQ from "@components/sections/misc/FAQ.astro";
 import siteconfig from "@data/site.json";
+import FeaturesNavs from "@components/sections/features/FeaturesNavs.astro";
+import AnnouncementBanner from "@components/ui/banners/AnnouncementBanner.astro";
 
 // Define getStaticPaths
 export async function getStaticPaths() {
@@ -24,13 +26,16 @@ export async function getStaticPaths() {
 const { lang } = Astro.props;
 
 if (!lang || !siteconfig.supportedLanguages.includes(lang)) {
-  return Astro.redirect('/en');
+  return Astro.redirect(`/${siteconfig.defaultlang}`);
 }
 
 // Dynamically load data based on 'lang'
 const heroData = await import(`../../data_files/${lang}/hero.json`).catch(() => ({ title: "Default Title", subtitle: "Default Subtitle" }));
 const clientsData = await import(`../../data_files/${lang}/clients.json`).catch(() => ({ clients: [] }));
 const featuresData = await import(`../../data_files/${lang}/features.json`).catch(() => ({ data: [] }));
+const featuresNavData = await import(`../../data_files/${lang}/featuresNav.json`).catch(() => ({ data: [] }));
+const announceData = await import(`../../data_files/${lang}/announce.json`).catch(() => ({ data: [] }));
+console.log('00000000000',announceData)
 const testimonialsData = await import(`../../data_files/${lang}/testimonials.json`).catch(() => ({ testimonials: [] }));
 const pricingData = await import(`../../data_files/${lang}/pricing.json`).catch(() => ({ pricing: [] }));
 const faqData = await import(`../../data_files/${lang}/faqs.json`).catch(() => ({ faqs: [] }));
@@ -39,9 +44,12 @@ const navlinkData = await import(`../../data_files/${lang}/nav.json`).catch(() =
 ---
 
 <MainLayout navdata={navlinkData} supportedLangLabels={siteconfig.supportedLangLabels}>
+  <AnnouncementBanner data={announceData}/>
+
   <HeroSection {...heroData} />
-  <ClientsSection {...clientsData} />
-  <FeaturesGeneral features={featuresData.data} />
+  <ClientsSection trustdata={clientsData} />
+  <FeaturesGeneral featuredata={featuresData} />
+  <FeaturesNavs tabs={featuresNavData.tabs}/>
   <TestimonialsSection {...testimonialsData} />
   <PricingSection pricing={pricingData} />
   <FAQ faqs={faqData} />

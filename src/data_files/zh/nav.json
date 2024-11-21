@@ -2,6 +2,8 @@
   "navBarLinks": [
     { "name": "首页", "url": "/" },
     { "name": "产品", "url": "/products" },
+    { "name": "品类", "url": "/collections" },
+
     { "name": "服务", "url": "/services" },
     { "name": "博客", "url": "/blog" },
     { "name": "联系我们", "url": "/contact" }

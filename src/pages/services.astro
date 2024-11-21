@@ -1,8 +1,12 @@
 ---
 import PageContent from "./[...lang]/services.astro";
+import siteconfig from "@data/site.json";
 
 // Default to 'en' if 'lang' is undefined
-const defaultLang = "en";
+let defaultLang = siteconfig.defaultlang;
+if (!defaultLang){
+    defaultLang='en'
+}
 const { lang = defaultLang } = Astro.props;
 console.log("services root Resolved language:", lang);
 ---

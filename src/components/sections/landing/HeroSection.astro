@@ -62,14 +62,18 @@ const images = import.meta.glob<{ default: ImageMetadata }>('/src/images/**/*.{j
   });
 
     if (src){
-  console.log('-------',src)
-  console.log(images)
+  // console.log('-------',src)
+  // console.log(images)
 
   importedImage=images[src].default
 imagesize=getLocalImageSize(src)
-console.log('---importedImage----',importedImage.src)
+// console.log('---importedImage----',importedImage.src)
 
 // importedImage = await import(src1);
+}
+if(!importedImage){
+  console.log('hero image load error',src)
+  return 
 }
 ---
 

@@ -1,4 +1,6 @@
 ---
+import { processLiterals } from '@utils/literalProcessor';
+
 // Import the necessary dependencies
 import FooterSocialLink from "@components/ui/links/FooterSocialLink.astro";
 import EmailFooterInput from "@components/ui/forms/input/EmailFooterInput.astro";
@@ -10,7 +12,7 @@ interface Props {
   navdata: Navlinks;
   // powerbydata:PowerBy;
 }
-const { navdata  } = Astro.props;
+const { navdata  } = processLiterals<Props>(Astro.props);
 
 // console.log('=======',navdata)
 

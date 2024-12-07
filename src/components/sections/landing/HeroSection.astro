@@ -1,4 +1,5 @@
 ---
+import { processLiterals } from '@utils/literalProcessor';
 // Import the necessary dependencies
 import { Image } from "astro:assets";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
@@ -20,7 +21,7 @@ const {
   reviews,
   src,
   alt
-} = Astro.props;
+} = processLiterals<Props>(Astro.props);
 
 // Define TypeScript interface for props
 interface Props {

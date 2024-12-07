@@ -1,0 +1,43 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+interface Award {
+  year: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  awards: Award[];
+}
+
+const { title, description, awards } = processLiterals<Props>(Astro.props);
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <div class="mx-auto max-w-2xl text-center mb-10">
+    <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+      {title}
+    </h2>
+    <p class="mt-4 text-neutral-600 dark:text-neutral-400">
+      {description}
+    </p>
+  </div>
+
+  <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    {awards.map(award => (
+      <div class="bg-white dark:bg-neutral-800 p-6 rounded-lg shadow-sm">
+        <div class="text-orange-500 font-bold text-lg mb-2">
+          {award.year}
+        </div>
+        <h3 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200 mb-2">
+          {award.title}
+        </h3>
+        <p class="text-neutral-600 dark:text-neutral-400">
+          {award.description}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>

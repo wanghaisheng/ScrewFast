@@ -1,0 +1,163 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+
+interface Highlight {
+  icon?: string;
+  text: string;
+}
+
+interface CTAButton {
+  title: string;
+  link: string;
+  type: 'primary' | 'secondary';
+}
+
+interface Props {
+  title: string;
+  slogan: string;
+  description?: string;
+  highlights?: Highlight[];
+  ctas?: CTAButton[];
+  media: {
+    type: 'video' | 'image';
+    src: string;
+    mobileSrc?: string; // 移动端可选择性使用不同素材
+    poster?: string; // 视频封面图
+  };
+}
+
+
+const { 
+  title, 
+  slogan, 
+  description, 
+  highlights = [],
+  ctas = [],
+  media 
+} = processLiterals<Props>(Astro.props);
+---
+
+<section class="relative w-full min-h-[100svh] flex items-center justify-center overflow-hidden">
+  <!-- Background Media -->
+  <div class="absolute inset-0 bg-neutral-900">
+    {media.type === 'video' ? (
+      <>
+        <video 
+          autoplay 
+          loop 
+          muted 
+          playsinline 
+          poster={media.poster}
+          class="w-full h-full object-cover hidden md:block"
+        >
+          <source src={media.src} type="video/mp4" />
+        </video>
+        {media.mobileSrc && (
+          <video 
+            autoplay 
+            loop 
+            muted 
+            playsinline 
+            poster={media.poster}
+            class="w-full h-full object-cover md:hidden"
+          >
+            <source src={media.mobileSrc} type="video/mp4" />
+          </video>
+        )}
+      </>
+    ) : (
+      <picture>
+        {media.mobileSrc && (
+          <source media="(max-width: 768px)" srcset={media.mobileSrc} />
+        )}
+        <img 
+          src={media.src} 
+          alt={title}
+          class="w-full h-full object-cover"
+          loading="eager"
+        />
+      </picture>
+    )}
+    <!-- Gradient Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-24">
+    <div class="max-w-3xl mx-auto text-center text-white">
+      <!-- Title -->
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6">
+        {title}
+      </h1>
+      
+      <!-- Slogan -->
+      <p class="text-xl md:text-2xl lg:text-3xl font-medium mb-8">
+        {slogan}
+      </p>
+
+      <!-- Description -->
+      {description && (
+        <p class="text-lg text-white/80 mb-12 leading-relaxed">
+          {description}
+        </p>
+      )}
+
+      <!-- Highlights -->
+      {highlights.length > 0 && (
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+          {highlights.map(highlight => (
+            <div class="flex flex-col items-center gap-2">
+              {highlight.icon && (
+                <img 
+                  src={highlight.icon} 
+                  alt="" 
+                  class="w-8 h-8 object-contain"
+                  loading="lazy"
+                />
+              )}
+              <span class="text-sm md:text-base text-white/90">
+                {highlight.text}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <!-- CTAs -->
+      {ctas.length > 0 && (
+        <div class="flex flex-wrap justify-center gap-4">
+          {ctas.map(cta => (
+            <a
+              href={cta.link}
+              class={`inline-flex items-center px-8 py-3 rounded-full text-lg font-medium transition-all duration-300 ${
+                cta.type === 'primary'
+                  ? 'bg-white text-neutral-900 hover:bg-white/90'
+                  : 'bg-white/20 hover:bg-white/30 backdrop-blur-md text-white'
+              }`}
+            >
+              {cta.title}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      class="h-6 w-6 text-white" 
+      fill="none" 
+      viewBox="0 0 24 24" 
+      stroke="currentColor"
+    >
+      <path 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        stroke-width="2" 
+        d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+      />
+    </svg>
+  </div>
+</section>

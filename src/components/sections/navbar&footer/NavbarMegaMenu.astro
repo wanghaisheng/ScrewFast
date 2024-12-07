@@ -1,5 +1,7 @@
 ---
 //Import relevant dependencies
+import { processLiterals } from '@utils/literalProcessor';
+
 import ThemeIcon from "@components/ThemeIcon.astro";
 import NavLink from "@components/ui/links/NavLink.astro";
 import MegaMenuLink from "@components/ui/links/MegaMenuLink.astro";
@@ -42,7 +44,7 @@ interface Props {
 
 strings: Navlinks;
 }
-const { strings  } = Astro.props;
+const { strings  } = processLiterals<Props>(Astro.props);
 
 
 import siteconfig from "@data/site.json";

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",        // Changed from CommonJS to ESNext
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "target": "ES2019",
+    "outDir": "./scripts/dist",
+    "rootDir": "./scripts",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": ["scripts/**/*"],
+  "exclude": ["node_modules", "src"]
+}

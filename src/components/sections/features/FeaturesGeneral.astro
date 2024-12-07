@@ -1,4 +1,6 @@
 ---
+import { processLiterals } from '@utils/literalProcessor';
+
 // Import the necessary dependencies
 import { Image } from "astro:assets";
 import IconBlock from "@components/ui/blocks/IconBlock.astro";
@@ -23,7 +25,7 @@ interface Props {
 
 
 // Define props from Astro
-const { featuredata } = Astro.props;
+const { featuredata } = processLiterals<Props>(Astro.props);
 ---
 
 <section

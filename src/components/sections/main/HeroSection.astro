@@ -1,0 +1,101 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import { Image } from "astro:assets";
+import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
+import SecondaryCTA from "@components/ui/buttons/SecondaryCTA.astro";
+import ReviewComponent from "@components/ui/blocks/ReviewComponent.astro";
+import { processImage } from "@utils/imageProcessing";
+
+interface Props {
+  title: string;
+  subTitle?: string;
+  primaryBtn?: string;
+  primaryBtnURL?: string;
+  secondaryBtn?: string;
+  secondaryBtnURL?: string;
+  withReview?: boolean;
+  avatars?: Array<string>;
+  starCount?: number;
+  rating?: string;
+  reviews?: string;
+  src?: string;
+  alt?: string;
+}
+
+const {
+  title,
+  subTitle,
+  primaryBtn,
+  primaryBtnURL,
+  secondaryBtn,
+  secondaryBtnURL,
+  withReview,
+  avatars,
+  starCount,
+  rating,
+  reviews,
+  src,
+  alt
+} = processLiterals<Props>(Astro.props);
+
+// 处理图片
+const processedImage = processImage(src);
+---
+
+<section
+  class="mx-auto grid max-w-[85rem] gap-4 px-4 py-14 sm:px-6 md:grid-cols-2 md:items-center md:gap-8 lg:px-8 2xl:max-w-full"
+>
+  <!-- Title and description -->
+  <div>
+    <h1
+      class="block text-balance text-3xl font-bold tracking-tight text-neutral-800 dark:text-neutral-200 sm:text-4xl lg:text-6xl lg:leading-tight"
+    >
+      <Fragment set:html={title} />
+    </h1>
+    {subTitle &&
+      <p
+        class="mt-3 text-pretty text-lg leading-relaxed text-neutral-700 dark:text-neutral-400 lg:w-4/5"
+      >
+        {subTitle}
+      </p>
+    }
+    
+    <!-- Action Buttons -->
+    <div class="mt-7 grid w-full gap-3 sm:inline-flex">
+      {primaryBtn &&
+        <PrimaryCTA title={primaryBtn} url={primaryBtnURL} />
+      }
+      {secondaryBtn &&
+        <SecondaryCTA title={secondaryBtn} url={secondaryBtnURL} />
+      }
+    </div>
+
+    <!-- Review Section -->
+    {withReview && 
+      <ReviewComponent 
+        avatars={avatars} 
+        starCount={starCount} 
+        rating={rating} 
+        reviews={reviews} 
+      />
+    }
+  </div>
+
+  <!-- Hero Image Section -->
+  <div class="flex w-full">
+    <div class="top-12 overflow-hidden">
+      {processedImage && alt &&
+        <Image
+          src={processedImage.src}
+          alt={alt}
+          class="h-full w-full scale-110 object-cover object-center"
+          draggable={"false"}
+          loading={"eager"}
+          format={"avif"}
+          width={processedImage.size.width}
+          height={processedImage.size.height}
+        />
+      }
+    </div>
+  </div>
+</section>

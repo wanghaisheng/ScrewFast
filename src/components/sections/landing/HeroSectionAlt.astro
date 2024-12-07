@@ -1,9 +1,10 @@
 ---
+import { processLiterals } from '@utils/literalProcessor';
 // Import the necessary dependencies
 import GithubBtn from "@components/ui/buttons/GithubBtn.astro";
 
 // Define props from Astro
-const { title, subTitle, url } = Astro.props;
+const { title, subTitle, url } = processLiterals<Props>(Astro.props);
 
 const btnTitle = Astro.currentLocale === "fr" ? "Continuer avec Github" : "Continue with Github";
 

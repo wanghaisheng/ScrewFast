@@ -1,0 +1,75 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import { Image } from "astro:assets";
+import { processImage } from "@utils/imageProcessing";
+
+interface Props {
+  title: string;
+  content: string[];
+  signature: string;
+  image?: string;
+}
+
+const { title, content, signature, image } = processLiterals<Props>(Astro.props);
+
+// 如果没有图片，则不渲染组件
+if (!image) return null;
+
+const processedImage = processImage(image);
+if (!processedImage) return null;
+---
+
+<section class="relative min-h-screen flex items-center">
+  <!-- Background Image -->
+  <div class="absolute inset-0">
+    <Image
+      src={processedImage.src}
+      alt="Founder Background"
+      class="w-full h-full object-cover"
+      width={processedImage.width}
+      height={processedImage.height}
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
+  </div>
+
+  <!-- Content directly over the background -->
+  <div class="relative z-10 mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 2xl:max-w-full">
+    <div class="max-w-3xl">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-8">
+          {title}
+        </h2>
+        
+        <div class="space-y-6">
+          {content.map(paragraph => (
+            <p class="text-white/90 text-lg md:text-xl leading-relaxed">
+              {paragraph}
+            </p>
+          ))}
+    </div>
+
+        <div class="mt-12">
+          <div class="flex items-center space-x-4">
+            <span class="h-0.5 w-12 bg-orange-500"></span>
+            <span class="text-2xl text-orange-500 font-bold">{signature}</span>
+  </div>
+        </div>
+      </div>
+    </div>
+  <!-- Scroll Indicator -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <div class="w-8 h-12 rounded-full border-2 border-white/30 flex items-center justify-center">
+      <div class="w-1 h-3 bg-white/80 rounded-full animate-scroll"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes scroll {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(8px); opacity: 0; }
+  }
+
+  .animate-scroll {
+    animation: scroll 1.5s ease-in-out infinite;
+  }
+</style>

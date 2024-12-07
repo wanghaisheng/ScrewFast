@@ -31,17 +31,6 @@ function capitalize(str:string): string {
 
 export { formatDate, capitalize };
 
-export async function loadImage(imagePath: string) {
-    try {
-      const { default: img } = await import(
-        imagePath.replace('@assets', '../assets')
-      );
-      return img;
-    } catch (error) {
-      console.error(`Error loading image: ${imagePath}`, error);
-      return '/fallback-image.jpg'; // Make sure to have a fallback image
-    }
-  }
 
 export function getImageFromFolder(imagefolder:string='/src/images',path: string=""): string {
     // imagefolder  /src/images

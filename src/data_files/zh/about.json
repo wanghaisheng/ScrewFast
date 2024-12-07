@@ -1,0 +1,144 @@
+{
+  "pageTitle": "关于大疆",
+  "subTitle": "为世界带来全新视角",
+  "btnExists": true,
+  "btnTitle": "联系我们",
+  "btnURL": "/contact",
+  "sections": {
+    "intro": {
+      "title": "公司简介",
+      "content": "我们是一家致力于创新的科技公司...",
+      "image": "/src/images/about/founder-bg.avif",
+
+      "stats": [
+        {
+          "number": "100+",
+          "label": "专利"
+        }
+      ]
+    },
+    "mission": {
+      "title": "我们的使命",
+      "content": "通过创新丰富生活..."
+    },
+    "timeline": {
+      "title": "发展历程",
+      "description": "创新与成长的历史",
+      "events": [
+        {
+          "year": "2023",
+          "highlights": [
+            "发布新产品线",
+            "进入新的市场领域"
+          ]
+        }
+      ]
+    },
+    "founderMessage": {
+      "title": "创始人寄语",
+      "content": [
+        "我常常在想，皇帝穿着所谓最美的新衣游街，却只有孩子敢指出真相。",
+        "事实上，没有不需要埋头苦干就能获得的成功，没有只靠夸夸其谈就能成就的事业，没有从天而降的高科技产品。追求卓越，需要无数苦思冥想的深夜，需要愿意向前一步的担当，需要看见真相的智慧，更需要敢于大声说出真相的勇气。",
+        "大疆就是个敢于说真话的孩子。这里由一群从不妥协、极富洞见、坚持梦想的人聚合而成。我们坚信实干而非投机，坚信梦想而非功利。我们愿意做困难但真正有价值的事，创始至今从未改变。",
+        "如今，大疆已经走上跨维度的成长之路，从一家只生产高科技产品的公司，正在进化成一个通过创造极致的产品、不断培养和成就优秀人才的公司。"
+      ],
+      "signature": "Frank",
+      "image": "/src/images/about/founder-bg.avif"
+    },
+    "culturalValues": {
+      "title": "文化理念",
+      "subtitle": "我们的核心价值观念和企业文化",
+      "values": [
+        {
+          "title": "创新精神",
+          "description": "创新是我们的DNA。我们不断突破界限，挑战可能。在这里，每个想法都被重视，每个创新都有机会成长。我们鼓励团队勇于尝试，敢于犯错，因为我们相信，真正的创新来自于不断的探索和尝试。",
+          "image": "/src/images/about/founder-bg.avif",
+          "imageAlt": "创新工作场景",
+          "imagePosition": "right"
+        },
+        {
+          "title": "追求卓越",
+          "description": "卓越不是一个目标，而是一种习惯。我们对细节的执着，对品质的追求，以及对完美的向往，驱动着我们不断前进。每一个产品，每一项服务，都凝聚着我们对卓越的追求。",
+          "image": "/src/images/about/founder-bg.avif",
+          "imageAlt": "追求卓越展示",
+          "imagePosition": "left"
+        },
+        {
+          "title": "协作共赢",
+          "description": "我们相信，真正的成功来自于团队的力量。通过开放、信任和相互尊重，我们建立起强大的团队协作文化。每个人都是团队中不可或缺的一部分，共同创造，共同成长。",
+          "image": "/src/images/about/founder-bg.avif",
+          "imageAlt": "团队协作场景",
+          "imagePosition": "right"
+        }
+      ]
+    },
+    "mainSection": {
+      "title": "关于我们",
+      "subTitle": "为世界带来全新视角",
+      "description": "我们致力于为全球客户提供高质量的解决方案和卓越的服务。",
+      "stats": [
+        {
+          "number": "100+",
+          "label": "覆盖国家和地区"
+        },
+        {
+          "number": "14000+",
+          "label": "全球员工"
+        },
+        {
+          "number": "18",
+          "label": "全球办公室"
+        },
+        {
+          "number": "70%+",
+          "label": "市场份额"
+        }
+      ],
+      "backgroundImage": "/src/images/about/founder-bg.avif",
+      "backgroundImageMobile": "/src/images/about/founder-bg.avif"
+
+    },
+    "team": {
+      "title": "我们的团队",
+      "description": "由充满激情的专业人士组成",
+      "members": [
+        {
+          "name": "张三",
+          "position": "CEO",
+          "bio": "拥有20年行业经验",
+          "image":     "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+
+        }
+      ]
+    },
+    "office": {
+      "title": "办公环境",
+      "description": "现代化的工作空间",
+      "images": [
+        {
+          "src": "/src/images/about/founder-bg.avif",
+          "alt": "总部大楼",
+          "caption": "现代化总部大楼"
+        },
+        {
+          "src": "/src/images/about/founder-bg.avif",
+          "alt": "休闲区",
+          "caption": "员工休闲区"
+        }
+
+
+      ]
+    },
+    "achievements": {
+      "title": "公司成就",
+      "description": "我们的里程碑",
+      "awards": [
+        {
+          "year": "2023",
+          "title": "科技创新奖",
+          "description": "年度最具创新力企业"
+        }
+      ]
+    }
+  }
+}

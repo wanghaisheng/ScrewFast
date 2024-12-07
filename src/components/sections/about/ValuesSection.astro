@@ -1,0 +1,43 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import Icon from "@components/ui/icons/Icon.astro";
+
+interface Props {
+  data: {
+    title: string;
+    description: string;
+    items: Array<{
+      title: string;
+      description: string;
+      icon: string;
+    }>;
+  };
+}
+
+const { data } = processLiterals<Props>(Astro.props);
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full bg-neutral-100 dark:bg-neutral-900">
+  <div class="mx-auto max-w-2xl mb-8 text-center">
+    <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+      {data.title}
+    </h2>
+    <p class="mt-4 text-neutral-600 dark:text-neutral-400">
+      {data.description}
+    </p>
+  </div>
+
+  <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    {data.items.map(item => (
+      <div class="flex flex-col items-center p-6 bg-white dark:bg-neutral-800 rounded-lg shadow-sm">
+        <Icon name={item.icon} class="w-12 h-12 text-orange-500" />
+        <h3 class="mt-4 text-xl font-semibold text-neutral-800 dark:text-neutral-200">
+          {item.title}
+        </h3>
+        <p class="mt-2 text-center text-neutral-600 dark:text-neutral-400">
+          {item.description}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>

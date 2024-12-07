@@ -1,0 +1,91 @@
+---
+import ImageGridSection from "@components/sections/images/ImageGrid.astro";
+
+const sectionData = {
+  title: "Our Projects",
+  subtitle: "Explore our latest work and achievements",
+  rows: [
+    // 单图布局
+    {
+      images: [
+        {
+          // src: "/src/images/product-image-1.avif",
+          src:"https://images.placeholders.dev/?width=1055&height=100&text=Made%20with%20placeholders.dev&bgColor=%23f7f6f6&textColor=%236d6e71",
+          alt: "Main Project",
+          title: "Featured Project",
+          description: "Our flagship project showcasing innovation",
+          textPosition: "top-center",
+          ctas: [
+            {
+              text: "Learn More",
+              url: "/projects/featured",
+              type: "primary"
+            },
+            {
+              text: "View Demo",
+              url: "/projects/demo",
+              type: "secondary"
+            }
+          ]
+        }
+      ]
+    },
+    // 双图布局
+    {
+      images: [
+        {
+          src: "/src/images/product-image-2.avif",
+          alt: "Project 1",
+          title: "Innovation Hub",
+          description: "Creative space for future tech",
+          ctas: [
+            {
+              text: "Explore",
+              url: "/projects/hub",
+              type: "primary"
+            }
+          ]
+        },
+        {
+          src: "/src/images/product-image-3.avif",
+          alt: "Project 2",
+          title: "Smart Living",
+          description: "Connected home solutions",
+          ctas: [
+            {
+              text: "Discover",
+              url: "/projects/smart-living",
+              type: "primary"
+            }
+          ]
+        }
+      ]
+    },
+    // 三图布局
+    {
+      images: [
+        {
+          src: "/src/images/product-image-4.avif",
+          alt: "Small Project 1",
+          title: "Mobile App",
+          description: "Next-gen mobile experience"
+        },
+        {
+          src: "/src/images/product-image-5.avif",
+          alt: "Small Project 2",
+          title: "Cloud Platform",
+          description: "Scalable cloud solutions"
+        },
+        {
+          src: "/src/images/product-image-6.avif",
+          alt: "Small Project 3",
+          title: "AI Research",
+          description: "Cutting-edge AI development"
+        }
+      ]
+    }
+  ]
+};
+---
+
+<ImageGridSection {...sectionData} />

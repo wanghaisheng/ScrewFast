@@ -1,0 +1,60 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import { Image } from "astro:assets";
+import { processImage } from "@utils/imageProcessing";
+
+interface TeamMember {
+  name: string;
+  position: string;
+  bio: string;
+  image: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  members: TeamMember[];
+}
+
+const { title, description, members } = processLiterals<Props>(Astro.props);
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <div class="mx-auto max-w-2xl text-center mb-10">
+    <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+      {title}
+    </h2>
+    <p class="mt-4 text-neutral-600 dark:text-neutral-400">
+      {description}
+    </p>
+  </div>
+
+  <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    {members.map(member => {
+      const processedImage = processImage(member.image);
+      return (
+      <div class="text-center">
+        <div class="relative mb-4 inline-block">
+            {processedImage && (
+        <Image
+                src={processedImage.src}
+          alt={member.name}
+            class="w-32 h-32 rounded-full object-cover"
+                width={processedImage.width}
+                height={processedImage.height}
+        />
+            )}
+            <div class="absolute inset-0 rounded-full bg-gradient-to-b from-transparent to-black/50"></div>
+          </div>
+          <h3 class="text-xl font-semibold text-neutral-800 dark:text-neutral-200">
+            {member.name}
+          </h3>
+          <p class="text-orange-500 font-medium">{member.position}</p>
+          <p class="mt-2 text-neutral-600 dark:text-neutral-400">
+            {member.bio}
+          </p>
+  </div>
+      );
+    })}
+  </div>
+</section>

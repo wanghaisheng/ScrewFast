@@ -1,9 +1,10 @@
 ---
 // Import AvatarTestimonialSection component for use in this module
 import AvatarTestimonialSection from "../../ui/avatars/AvatarTestimonialSection.astro";
+import { processLiterals } from '@utils/literalProcessor';
 
 // Define props from Astro
-const { data } = Astro.props;
+const { data } = processLiterals<Props>(Astro.props);
 
 interface Props{
 

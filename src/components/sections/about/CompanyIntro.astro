@@ -1,0 +1,41 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import { processImage } from "@utils/imageProcessing";
+import { Image } from "astro:assets";
+
+interface Props {
+  title: string;
+  content: string;
+  image?: string;
+
+}
+
+const { title, content,image } = processLiterals<Props>(Astro.props);
+if (!image) return null;
+const processedImage = processImage(image);
+
+if (!processedImage) return null;
+
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+    <div class="prose dark:prose-invert max-w-none">
+      <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+        {title}
+      </h2>
+      <div class="mt-4 text-neutral-600 dark:text-neutral-400">
+        {content}
+      </div>
+    </div>
+    <div class="relative">
+      <Image
+        src={processedImage.src}
+        alt="Company"
+        class="rounded-lg shadow-lg w-full"
+        width={processedImage.width}
+        height={processedImage.height}
+        />
+      </div>
+  </div>
+</section>

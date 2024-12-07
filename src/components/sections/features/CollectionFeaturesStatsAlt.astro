@@ -1,7 +1,8 @@
 ---
+import { processLiterals } from '@utils/literalProcessor';
 import { Image } from "astro:assets";
 // import product5 from "@images/features-image.avif";
-const {data} = Astro.props;
+const {data} = processLiterals<Props>(Astro.props);
 
 // Define props from Astro
 

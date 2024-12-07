@@ -1,10 +1,11 @@
 ---
+import { processLiterals } from '@utils/literalProcessor';
 import { Image,Picture } from 'astro:assets';
 import {getImageFromFolder,getLocalImageSize} from "@utils/utils"
 
 
 // Define props from Astro
-const { trustdata } = Astro.props;
+const { trustdata } = processLiterals<Props>(Astro.props);
 interface Props {
 trustdata:TrustByData
 }

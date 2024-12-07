@@ -1,0 +1,54 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+interface TimelineEvent {
+  year: string;
+  highlights: string[];
+}
+
+interface Props {
+  title: string;
+      description: string;
+  events: TimelineEvent[];
+}
+
+const { title, description, events } = processLiterals<Props>(Astro.props);
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <div class="mx-auto max-w-2xl text-center mb-10">
+    <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+      {title}
+    </h2>
+    <p class="mt-4 text-neutral-600 dark:text-neutral-400">
+      {description}
+    </p>
+  </div>
+  
+  <div class="relative">
+    <!-- Timeline line -->
+    <div class="absolute left-1/2 h-full w-0.5 bg-neutral-300 dark:bg-neutral-600 transform -translate-x-1/2"></div>
+
+    <!-- Timeline events -->
+    <div class="space-y-12">
+      {events.map((event, index) => (
+        <div class="relative flex items-center justify-between">
+          <!-- Year marker -->
+          <div class="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div class="w-12 h-12 rounded-full bg-orange-500 flex items-center justify-center">
+              <span class="text-white font-bold">{event.year}</span>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class={`w-5/12 ${index % 2 === 0 ? 'pr-16 text-right' : 'pl-16 ml-auto'}`}>
+            <ul class="space-y-2">
+              {event.highlights.map(highlight => (
+                <li class="text-neutral-600 dark:text-neutral-400">{highlight}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+    ))}
+  </div>
+  </div>
+</section>

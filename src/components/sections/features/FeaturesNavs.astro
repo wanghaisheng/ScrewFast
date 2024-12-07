@@ -1,11 +1,13 @@
 ---
+import { processLiterals } from '@utils/literalProcessor';
+
 // Import the necessary dependencies
 import TabNav from "@components/ui/blocks/TabNav.astro";
 import TabContent from "@components/ui/blocks/TabContent.astro";
 import Icon from "@components/ui/icons/Icon.astro";
 
 // Define props from Astro
-const { title, tabs } = Astro.props;
+const { title, tabs } = processLiterals<Props>(Astro.props);
 
 // Define TypeScript interface for tab object
 interface Tab {

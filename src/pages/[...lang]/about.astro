@@ -1,0 +1,95 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import AboutMainSection from "@components/sections/about/AboutMainSection.astro";
+import CompanyIntro from "@components/sections/about/CompanyIntro.astro";
+import CulturalValues from "@components/sections/about/CulturalValues.astro";
+import FounderMessage from "@components/sections/about/FounderMessage.astro";
+import TeamSection from "@components/sections/about/TeamSection.astro";
+import OfficeSection from "@components/sections/about/OfficeSection.astro";
+import AchievementsSection from "@components/sections/about/AchievementsSection.astro";
+import TimelineSection from "@components/sections/about/TimelineSection.astro";
+import siteconfig from "@data/site.json";
+
+// 定义静态路径支持多语言
+export async function getStaticPaths() {
+  const supportedLanguages = siteconfig.supportedLanguages;
+  return supportedLanguages.map((lang) => ({
+    params: { lang },
+    props: { lang }
+  }));
+}
+
+const { lang } = Astro.props;
+if (!lang || !siteconfig.supportedLanguages.includes(lang)) {
+  return Astro.redirect(`/${siteconfig.defaultlang}/about`);
+}
+
+// 导入导航数据和about页面数据
+const navlinkData = await import(`../../data_files/${lang}/nav.json`);
+const aboutData = await import(`../../data_files/${lang}/about.json`);
+
+// 打印调试信息
+console.log('About Data:', aboutData);
+
+// 确保使用 .default 访问数据
+const { mainSection, sections } = aboutData.default;
+
+// 打印处理后的数据
+console.log('Processed Data:', { mainSection, sections });
+
+const pageTitle = `About Us | ${siteconfig.SITE.title}`;
+---
+
+<MainLayout
+  navdata={navlinkData}
+  supportedLangLabels={siteconfig.supportedLangLabels}
+  title={pageTitle}
+>
+  {mainSection && (
+    <AboutMainSection {...mainSection} />
+  )}
+  
+  <CompanyIntro 
+    title={sections.intro.title}
+    content={sections.intro.content}
+    image={sections.intro.image}
+  />
+
+  <CulturalValues
+    title={sections.culturalValues.title}
+    subtitle={sections.culturalValues.subTitle}
+
+    values={sections.culturalValues.values}
+  />
+
+  <FounderMessage
+    title={sections.founderMessage.title}
+    content={sections.founderMessage.content}
+    signature={sections.founderMessage.signature}
+    image={sections.founderMessage.image}
+  />
+
+  <TeamSection
+    title={sections.team.title}
+    description={sections.team.description}
+    members={sections.team.members}
+  />
+
+  <OfficeSection
+    title={sections.office.title}
+    description={sections.office.description}
+    images={sections.office.images}
+  />
+
+  <AchievementsSection
+    title={sections.achievements.title}
+    description={sections.achievements.description}
+    awards={sections.achievements.awards}
+  />
+  
+  <TimelineSection
+    title={sections.timeline.title}
+    description={sections.timeline.description}
+    events={sections.timeline.events}
+  />
+</MainLayout>

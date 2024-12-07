@@ -1,13 +1,14 @@
 ---
 import TestimonialItem from "./TestimonialItem.astro";
 import StatsGrid from "../../ui/blocks/StatsGrid.astro";
+import { processLiterals } from '@utils/literalProcessor';
 
 const {
   title,
   subTitle,
   testimonials,
   statistics
-} = Astro.props;
+} = processLiterals<Props>(Astro.props);
 
 interface Props {
   title: string;

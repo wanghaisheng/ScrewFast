@@ -1,0 +1,70 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import { Image } from "astro:assets";
+import { processImage } from "@utils/imageProcessing";
+
+interface Value {
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  imagePosition: "left" | "right";
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  values: Value[];
+}
+
+const { title, subtitle, values } = processLiterals<Props>(Astro.props);
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <!-- Section Header -->
+  <div class="mx-auto max-w-2xl text-center mb-16">
+    <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
+      {title}
+    </h2>
+    <p class="text-lg text-neutral-600 dark:text-neutral-400">
+      {subtitle}
+    </p>
+  </div>
+
+  <!-- Values -->
+  <div class="space-y-20">
+    {values.map((value) => {
+      const processedImage = processImage(value.image);
+      return (
+        <div class={`flex flex-col gap-8 items-center ${
+          value.imagePosition === "right" ? "lg:flex-row" : "lg:flex-row-reverse"
+        }`}>
+          {/* Image Section */}
+          <div class="w-full lg:w-1/2">
+            <div class="relative aspect-[4/3] overflow-hidden rounded-xl">
+              {processedImage && (
+                <Image
+                  src={processedImage.src}
+                  alt={value.imageAlt}
+                  class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  width={processedImage.width}
+                  height={processedImage.height}
+                />
+              )}
+            </div>
+          </div>
+
+          {/* Content Section */}
+          <div class="w-full lg:w-1/2 lg:px-12">
+            <h3 class="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
+              {value.title}
+            </h3>
+            <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              {value.description}
+            </p>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</section>

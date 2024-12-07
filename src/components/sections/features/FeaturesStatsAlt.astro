@@ -1,9 +1,11 @@
 ---
+import { processLiterals } from '@utils/literalProcessor';
+
 import { Image } from "astro:assets";
 import product5 from "@images/features-image.avif";
 
 // Define props from Astro
-const { title, subTitle, benefits } = Astro.props;
+const { title, subTitle, benefits } = processLiterals<Props>(Astro.props);
 
 // Define TypeScript interface for props
 interface Props {

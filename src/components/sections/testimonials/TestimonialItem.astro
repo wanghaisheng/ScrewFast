@@ -1,8 +1,9 @@
 ---
 import { Image } from "astro:assets";
 import Icon from "../../ui/icons/Icon.astro";
+import { processLiterals } from '@utils/literalProcessor';
 
-const { content, author, role, avatarSrc } = Astro.props;
+const { content, author, role, avatarSrc } = processLiterals<Props>(Astro.props);
 
 interface Props {
   content: string;

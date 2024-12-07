@@ -1,0 +1,55 @@
+---
+import Hero from "@components/sections/products/hero/Hero.astro";
+
+const heroData = {
+  title: "大疆 DJI Mavic 3 Pro",
+  slogan: "光影三重奏",
+  description: "三摄多焦段旗舰影像航拍机，开启航拍新视界",
+  highlights: [
+    {
+      icon: "https://www-cdn.djiits.com/cms/uploads/7989c8f82bca8b1cd42855f79c97c1fd.svg",
+      text: "4/3 CMOS 哈苏相机"
+    },
+    {
+      icon: "https://www-cdn.djiits.com/cms/uploads/832ee7f136e81852be954c9af31973ab.svg",
+      text: "双焦段长焦相机"
+    },
+    {
+      icon: "https://www-cdn.djiits.com/cms/uploads/5b72e9c265054b0b291d94fefed0c4b4.svg",
+      text: "Apple ProRes 编码"
+    },
+    {
+      icon: "https://www-cdn.djiits.com/cms/uploads/8fbd84b73d12b440e859ddf3c80c0ab0.svg",
+      text: "43 分钟飞行时间"
+    },
+    {
+      icon: "https://www-cdn.djiits.com/cms/uploads/7989c8f82bca8b1cd42855f79c97c1fd.svg",
+      text: "全向避障"
+    },
+    {
+      icon: "https://www-cdn.djiits.com/cms/uploads/832ee7f136e81852be954c9af31973ab.svg",
+      text: "15 公里高清图传"
+    }
+  ],
+  ctas: [
+    {
+      title: "立即购买",
+      link: "https://store.dji.com/cn/product/dji-mavic-3-pro",
+      type: "primary"
+    },
+    {
+      title: "了解更多",
+      link: "#features",
+      type: "secondary"
+    }
+  ],
+  media: {
+    type: "video",
+    src: "https://www-cdn.djiits.com/uploads/videos/1.mp4",
+    mobileSrc: "https://www-cdn.djiits.com/uploads/videos/mobile.mp4",
+    poster: "https://www-cdn.djiits.com/cms/uploads/15e4079725f066822e37c6e7e2106fb2.png"
+  }
+};
+---
+
+<Hero  {...heroData}/>

@@ -1,0 +1,189 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import { Image } from "astro:assets";
+import { processImage } from "@utils/imageProcessing";
+
+interface OfficeImage {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  images: OfficeImage[];
+}
+
+const { title, description, images } = processLiterals<Props>(Astro.props);
+
+const processedImages = images
+  .map(image => ({
+    ...image,
+    processed: processImage(image.src)
+  }))
+  .filter(image => image.processed !== null);
+---
+
+<section class="w-full bg-neutral-100 dark:bg-neutral-900">
+  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <div class="mx-auto max-w-2xl text-center mb-10">
+    <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+      {title}
+    </h2>
+    <p class="mt-4 text-neutral-600 dark:text-neutral-400">
+      {description}
+    </p>
+  </div>
+        </div>
+
+  <!-- 滑块区域 - 全屏宽度背景 -->
+  <div class="w-full bg-neutral-100 dark:bg-neutral-900">
+    <div class="swiper office-slider">
+      <div class="swiper-wrapper">
+        {processedImages.map(image => {
+          const isRemoteImage = typeof image.processed?.src === 'string';
+          return (
+            <div class="swiper-slide flex justify-center">
+              <div class="relative w-full max-w-[800px] aspect-[16/9] overflow-hidden rounded-lg">
+                {isRemoteImage ? (
+                  <img
+                    src={image.processed?.src}
+                    alt={image.alt}
+                    class="w-full h-full object-cover"
+                    width={image.processed?.width}
+                    height={image.processed?.height}
+                  />
+                ) : (
+                  <Image
+                    src={image.processed?.src}
+                    alt={image.alt}
+                    class="w-full h-full object-cover"
+                    width={image.processed?.width}
+                    height={image.processed?.height}
+                  />
+                )}
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                  <p class="p-6 text-white text-lg font-medium">
+                    {image.caption}
+                  </p>
+      </div>
+    </div>
+  </div>
+          );
+        })}
+      </div>
+      
+      <!-- Navigation buttons -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      
+      <!-- Pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<script>
+  import Swiper from 'swiper/bundle';
+  import 'swiper/css/bundle';
+  // 初始化 Swiper
+  new Swiper('.office-slider', {
+    // 基本配置
+    slidesPerView: 'auto',
+    centeredSlides: true,
+    spaceBetween: 30,
+    loop: true,
+    
+    // 自动播放
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
+    
+    // 导航按钮
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    
+    // 分页器
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+  });
+</script>
+
+<style>
+  /* 自定义 Swiper 样式 */
+  .swiper {
+    padding: 2rem 0 4rem 0;
+  }
+
+  .swiper-slide {
+    width: auto;
+    max-width: 800px;
+  }
+
+  :root {
+    --swiper-theme-color: #f97316;
+  }
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: #f97316;
+    background-color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  }
+
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    font-size: 1.2rem;
+  }
+
+  .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: #f97316;
+  }
+
+  /* 深色模式样式 */
+  :global(.dark) .swiper-button-next,
+  :global(.dark) .swiper-button-prev {
+    background-color: #1f2937;
+    color: #f97316;
+  }
+
+  /* 悬停效果 */
+  .swiper-slide {
+    transition: transform 0.3s ease;
+  }
+
+  .swiper-slide:hover {
+    transform: scale(1.02);
+  }
+
+  /* 移动端优化 */
+  @media (max-width: 640px) {
+    .swiper-button-next,
+    .swiper-button-prev {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      font-size: 1rem;
+    }
+  }
+</style>

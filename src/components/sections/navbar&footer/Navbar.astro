@@ -1,5 +1,7 @@
 ---
 //Import relevant dependencies
+import { processLiterals } from '@utils/literalProcessor';
+
 import ThemeIcon from "@components/ThemeIcon.astro";
 import NavLink from "@components/ui/links/NavLink.astro";
 import Authentication from "../misc/Authentication.astro";
@@ -42,7 +44,7 @@ interface Props {
   navdata: Navlinks;
   supportedLangLabels:{}
 }
-const { navdata,supportedLangLabels  } = Astro.props;
+const { navdata,supportedLangLabels  } = processLiterals<Props>(Astro.props);
 // console.log('0000000',navdata.navBarLinks)
 console.log('----',supportedLangLabels)
 // Select the correct translation based on the page's lang prop:

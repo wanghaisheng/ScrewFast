@@ -2,6 +2,7 @@
 import { processLiterals } from '@utils/literalProcessor';
 import { Image } from "astro:assets";
 import { processImage } from "@utils/imageProcessing";
+import OptimizedImage from '@components/OptimizedImage.astro';
 
 interface TeamMember {
   name: string;
@@ -36,8 +37,8 @@ const { title, description, members } = processLiterals<Props>(Astro.props);
       <div class="text-center">
         <div class="relative mb-4 inline-block">
             {processedImage && (
-        <Image
-                src={processedImage.src}
+        <OptimizedImage
+                src={processedImage}
           alt={member.name}
             class="w-32 h-32 rounded-full object-cover"
                 width={processedImage.width}

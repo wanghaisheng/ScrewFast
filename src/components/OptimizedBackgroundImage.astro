@@ -1,0 +1,37 @@
+---
+import { Image } from 'astro:assets';
+import { isImageMetadata, type ProcessedImage } from '@utils/imageProcessing';
+
+interface Props {
+  image: ProcessedImage | null;
+  class?: string;
+  quality?: number;
+  format?: 'avif' | 'webp' | 'png' | 'jpeg'|'svg'|'jpg'|'gif';
+  
+}
+
+const { 
+  image, 
+  class: className,
+  quality,
+  format: overrideFormat 
+} = Astro.props;
+---
+
+<div 
+  class={className}
+  style={image && !isImageMetadata(image.src) ? `background-image: url(${image.src})` : undefined}
+>
+  {image && isImageMetadata(image.src) && (
+    <Image 
+      src={image.src}
+      width={image.width}
+      height={image.height}
+      alt=""
+      class="w-full h-full object-cover"
+      quality={quality}
+      format={overrideFormat || image.format}
+    />
+  )}
+  <slot />
+</div>

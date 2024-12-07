@@ -1,7 +1,8 @@
 ---
 import { processLiterals } from '@utils/literalProcessor';
-import { processImage } from "@utils/imageProcessing";
+import { processImage,getImageSrc } from "@utils/imageProcessing";
 import { Image } from "astro:assets";
+import OptimizedImage from '@components/OptimizedImage.astro';
 
 interface Props {
   title: string;
@@ -29,8 +30,8 @@ if (!processedImage) return null;
       </div>
     </div>
     <div class="relative">
-      <Image
-        src={processedImage.src}
+      <OptimizedImage
+        src={processedImage}
         alt="Company"
         class="rounded-lg shadow-lg w-full"
         width={processedImage.width}

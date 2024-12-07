@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 
 async function processAstroFiles() {
   try {
-    const files = await glob('src/components/**/*.astro');
+    const files = await glob('src/components/sections/**/*.astro');
 
     for (const file of files) {
       const content = await fs.readFile(file, 'utf-8');

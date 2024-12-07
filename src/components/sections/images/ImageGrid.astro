@@ -4,31 +4,17 @@ import { Image } from "astro:assets";
 import { processImage } from "@utils/imageProcessing";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
 import SecondaryCTA from "@components/ui/buttons/SecondaryCTA.astro";
+import OptimizedImage from '@components/OptimizedImage.astro';
+import type { 
+  GalleryProps, 
+  ProcessedGalleryData, 
+  ValidRowSize,
+  TextPosition 
+} from '@components/sections/gallery/types';
 
-interface CTA {
-  text: string;
-  url: string;
-  type?: 'primary' | 'secondary';
-}
 
-interface ImageBlock {
-  src: string;
-  alt: string;
-  title?: string;
-  description?: string;
-  ctas?: CTA[];
-  textPosition?: 'top-center' | 'bottom-left';
-}
+interface Props extends GalleryProps {}
 
-interface Row {
-  images: ImageBlock[];
-}
-
-interface Props {
-  title: string;
-  subtitle?: string;
-  rows: Row[];
-}
 
 const { title, subtitle, rows } = processLiterals<Props>(Astro.props);
 
@@ -78,16 +64,16 @@ const processedRows = rows.map(row => ({
             {image.processed && (
               <div class="aspect-[16/9]">
                 {typeof image.processed.src === 'string' ? (
-                  <img
-                    src={image.processed.src}
+                  <OptimizedImage
+                    src={image.processed}
                     alt={image.alt}
                     class="w-full h-full object-cover transition duration-300 group-hover:scale-105"
                     width={image.processed.width}
                     height={image.processed.height}
                   />
                 ) : (
-                  <Image
-                    src={image.processed.src}
+                  <OptimizedImage
+                    src={image.processed}
                     alt={image.alt}
                     class="w-full h-full object-cover transition duration-300 group-hover:scale-105"
                     width={image.processed.width}

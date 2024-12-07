@@ -1,7 +1,8 @@
 ---
 import { processLiterals } from '@utils/literalProcessor';
 import { Image } from "astro:assets";
-import { processImage } from "@utils/imageProcessing";
+import { processImage,getImageSrc } from "@utils/imageProcessing";
+import OptimizedImage  from '@/components/OptimizedImage.astro';
 
 interface Props {
   title: string;
@@ -35,16 +36,16 @@ const processedMobileBgImage = processImage(backgroundImageMobile);
       {processedMobileBgImage && (
         <source 
           media="(max-width: 768px)" 
-          srcset={processedMobileBgImage.src}
+          srcset={getImageSrc(processedMobileBgImage.src)}
         />
       )}
       {processedBgImage && (
-        <Image 
-          src={processedBgImage.src}
+        <OptimizedImage 
+        src={processedBgImage}
           alt="Background"
           class="w-full h-full object-cover"
-          width={processedBgImage.size.width}
-          height={processedBgImage.size.height}
+            
+        
         />
       )}
     </picture>

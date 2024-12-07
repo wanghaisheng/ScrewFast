@@ -5,6 +5,7 @@ import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
 import SecondaryCTA from "@components/ui/buttons/SecondaryCTA.astro";
 import ReviewComponent from "@components/ui/blocks/ReviewComponent.astro";
 import { processImage } from "@utils/imageProcessing";
+import OptimizedImage from '@components/OptimizedImage.astro';
 
 interface Props {
   title: string;
@@ -85,15 +86,10 @@ const processedImage = processImage(src);
   <div class="flex w-full">
     <div class="top-12 overflow-hidden">
       {processedImage && alt &&
-        <Image
-          src={processedImage.src}
+        <OptimizedImage
+          src={processedImage}
           alt={alt}
           class="h-full w-full scale-110 object-cover object-center"
-          draggable={"false"}
-          loading={"eager"}
-          format={"avif"}
-          width={processedImage.size.width}
-          height={processedImage.size.height}
         />
       }
     </div>

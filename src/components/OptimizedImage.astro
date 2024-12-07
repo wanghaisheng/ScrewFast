@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import { isImageMetadata, type ProcessedImage } from '@utils/imageProcessing';
+
+interface Props {
+  src?: ProcessedImage | null;
+  // just used to compatible with old call code ,src should be image
+  alt?: string;
+  class?: string;
+  width?: number;
+  height?:number;
+  sizes?: string;
+  quality?: number;
+  format?: 'avif' | 'webp' | 'png' | 'jpeg'|'svg'|'jpg'|'gif';
+}
+
+const { 
+  src, 
+  alt = "", 
+  class: className,
+  width,
+  height,
+  sizes,
+  quality,
+  format
+} = Astro.props;
+---
+
+{src && (
+  isImageMetadata(src.src) ? (
+    <Image 
+      src={src.src}
+      width={src.width}
+      height={src.height}
+      alt={alt}
+      class={className}
+      sizes={sizes}
+      draggable={"false"}
+      loading={"eager"}
+      format={src.format}
+
+      quality={quality}
+      format={format}
+    />
+  ) : (
+    <img 
+      src={src.src}
+      width={src.width}
+      height={src.height}
+      alt={alt}
+      class={className}
+    />
+  )
+)}

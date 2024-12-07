@@ -1,5 +1,6 @@
 ---
 import Hero from "@components/sections/products/hero/Hero.astro";
+import type { HeroProps } from "@components/sections/products/hero/types";
 
 const heroData = {
   title: "大疆 DJI Mavic 3 Pro",
@@ -49,7 +50,8 @@ const heroData = {
     mobileSrc: "https://www-cdn.djiits.com/uploads/videos/mobile.mp4",
     poster: "https://www-cdn.djiits.com/cms/uploads/15e4079725f066822e37c6e7e2106fb2.png"
   }
-};
+} satisfies HeroProps;
+
 ---
 
 <Hero  {...heroData}/>

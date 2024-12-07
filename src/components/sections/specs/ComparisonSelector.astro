@@ -1,0 +1,149 @@
+---
+interface ProductSeries {
+  [key: string]: {
+    id: string;
+    name: string;
+    image: string;
+    description?: string;
+    price?: string;
+    isNew?: boolean;
+  }[];
+}
+
+const productSeries: ProductSeries = {
+  'DJI Mini 系列': [
+    {
+      id: 'mini-4-pro',
+      name: 'DJI Mini 4 Pro',
+      image: 'https://stormsend1.djicdn.com/tpc/uploads/photos/73755/medium_e36c8010-7b8f-46f4-89fd-6d5aef7399b4.png',
+      description: '超轻灵巧 全能之选',
+      price: '4,799',
+      isNew: true
+    },
+    {
+      id: 'mini-3-pro',
+      name: 'DJI Mini 3 Pro',
+      image: 'https://stormsend1.djicdn.com/tpc/uploads/photos/39195/medium_d9c77066-aa26-4631-a876-b112402d55c0.png',
+      description: '小巧便携 专业影像',
+      price: '4,199'
+    }
+  ],
+  'DJI Air 系列': [
+    {
+      id: 'air-3',
+      name: 'DJI Air 3',
+      image: 'https://stormsend1.djicdn.com/tpc/uploads/photos/71595/medium_7c2c3c51-e4e0-4db0-9e6f-e5a04d9c0cfa.png',
+      description: '双光影像旗舰',
+      price: '6,499',
+      isNew: true
+    },
+    {
+      id: 'air-2s',
+      name: 'DJI Air 2S',
+      image: 'https://stormsend1.djicdn.com/tpc/uploads/photos/1892/medium_a7936953-f531-4ae6-a341-3bb84f49dd5d.png',
+      description: '便携式航拍相机',
+      price: '4,999'
+    }
+  ],
+  'DJI Mavic 系列': [
+    {
+      id: 'mavic-3-pro',
+      name: 'DJI Mavic 3 Pro',
+      image: 'https://stormsend1.djicdn.com/tpc/uploads/photos/73197/medium_f5230b59-c671-4fd8-a6c5-a45ed3665600.png',
+      description: '三机全能影像旗舰',
+      price: '13,999'
+    }
+  ]
+};
+---
+
+<div class="comparison-selectors flex items-center gap-4 mb-8">
+  <label class="flex items-center">
+    <input type="checkbox" class="hidden peer" />
+    <span class="cursor-pointer text-sm text-gray-600 flex items-center gap-2 select-none">
+      <span class="w-4 h-4 border border-gray-300 rounded flex items-center justify-center peer-checked:bg-blue-500 peer-checked:border-blue-500">
+        <svg class="w-3 h-3 text-white hidden peer-checked:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </span>
+      隐藏相同选项
+    </span>
+  </label>
+
+  <div class="flex gap-4 flex-1">
+    {[1, 2, 3].map((index) => (
+      <div class="select-group relative w-72">
+        <select class="product-select w-full appearance-none bg-white border border-gray-200 rounded px-4 py-2.5 pr-10 cursor-pointer">
+          <option value="">选择产品 {index}</option>
+          {Object.entries(productSeries).map(([seriesName, products]) => (
+            <optgroup label={seriesName}>
+              {products.map(product => (
+                <option value={product.id}>{product.name}</option>
+              ))}
+            </optgroup>
+          ))}
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .product-select {
+    font-size: 14px;
+    color: #333;
+  }
+
+  .product-select:hover {
+    border-color: #d1d5db;
+  }
+
+  .product-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+
+  /* Style optgroup */
+  .product-select optgroup {
+    font-weight: 600;
+    color: #4b5563;
+    background-color: #f9fafb;
+  }
+
+  /* Style options */
+  .product-select option {
+    padding: 8px;
+    font-weight: normal;
+    color: #1f2937;
+  }
+
+  .product-select option:checked {
+    background-color: #2563eb;
+    color: white;
+  }
+</style>
+
+<script>
+  const productSelects = document.querySelectorAll('.product-select');
+
+  productSelects.forEach((select, index) => {
+    select.addEventListener('change', (e) => {
+      const selectedValue = (e.target as HTMLSelectElement).value;
+      if (selectedValue) {
+        // Dispatch event with selected product and column index
+        window.dispatchEvent(new CustomEvent('productSelected', {
+          detail: {
+            productId: selectedValue,
+            columnIndex: index
+          }
+        }));
+      }
+    });
+  });
+</script>

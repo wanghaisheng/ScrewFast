@@ -1,0 +1,83 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+interface Props {
+  products: {
+    id: string;
+    name: string;
+    image: string;
+    specs: Record<string, string>;
+  }[];
+}
+
+const { products } = processLiterals<Props>(Astro.props);
+---
+
+<div class="comparison-wrapper overflow-x-auto">
+  <table class="w-full min-w-[768px] border-collapse">
+    <thead>
+      <tr class="bg-gray-50">
+        <th class="p-4 w-[200px]"></th> <!-- Empty corner cell -->
+        {products.map(product => (
+          <th class="p-4 text-center border-l border-gray-200">
+            <div class="space-y-4">
+              <img 
+                src={product.image} 
+                alt={product.name}
+                class="h-32 object-contain mx-auto"
+              />
+              <h3 class="text-lg font-medium">{product.name}</h3>
+            </div>
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {Object.entries(products[0].specs).map(([category, _]) => (
+        <tr class="border-t border-gray-200">
+          <td class="p-4 bg-gray-50 font-medium">{category}</td>
+          {products.map(product => (
+            <td class="p-4 border-l border-gray-200 text-center">
+              {product.specs[category]}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .comparison-wrapper {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+
+  .comparison-wrapper::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .comparison-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .comparison-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+  }
+
+  /* Sticky header */
+  thead tr {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+  }
+
+  /* Sticky first column */
+  tbody td:first-child {
+    position: sticky;
+    left: 0;
+    background: rgb(249, 250, 251);
+    z-index: 5;
+  }
+</style>

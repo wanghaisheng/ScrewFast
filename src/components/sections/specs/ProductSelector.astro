@@ -1,0 +1,218 @@
+---
+import { droneProducts } from '@/data/products/drones';
+
+const products = droneProducts;
+
+---
+<section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+<div class="comparison-section max-w-7xl mx-auto px-4">
+  <div class="grid grid-cols-3 gap-6">
+    {[1, 2, 3].map((columnIndex) => (
+      <div class="comparison-column">
+        <!-- Dropdown Container -->
+        <div class="product-selector relative">
+          <button 
+            type="button"
+            class="select-btn w-full p-3  border border-gray-200 rounded flex justify-between items-center hover:border-gray-300"
+            data-column={columnIndex}
+          >
+            <span class="select-text dark:text-neutral-500">选择产品 {columnIndex}</span>
+            <svg class="w-5 h-5 dark:text-neutral-400" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+            </svg>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div class="select-menu hidden absolute left-0 right-0 top-[calc(100%+4px)] border border-gray-200 rounded-lg shadow-lg z-50">
+            <div class="py-1 max-h-[400px] overflow-y-auto">
+              {Object.entries(products).map(([series, items]) => (
+                <div class="series-group">
+                  <div class="series-header px-3 py-2  font-medium text-sm sticky top-0">
+                    {series}
+                  </div>
+                    {items.map(product => (
+                      <button
+                        type="button" 
+                      class="product-item w-full p-3 hover:bg-gray-50 flex items-center gap-3 border-t border-gray-100"
+                        data-product-id={product.id}
+                        data-series={series}
+                      >
+                      <img src={product.image} alt="" class="w-12 h-12 object-contain flex-shrink-0"/>
+                      <div class="flex-1 text-left">
+                        <div class="font-medium dark:text-neutral-400">{product.name}</div>
+                          <div class="text-sm">{product.description}</div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="product-details hidden mt-4" data-column={columnIndex}>
+          <!-- Profile Card -->
+          <div class="profile-card mb-4 p-4  border border-gray-200 rounded-lg">
+            <!-- Profile content will be inserted here -->
+        </div>
+          
+          <!-- Specs List -->
+          <div class="specs-list space-y-4">
+            <!-- Specs content will be inserted here -->
+      </div>
+  </div>
+</div>
+    ))}
+            </div>
+              </div>
+</section>
+
+<script define:vars={{ products }}>
+  class ProductSelector {
+    constructor() {
+          this.activeDropdown = null;
+      this.initializeEventListeners();
+        }
+
+    initializeEventListeners() {
+      // Select button click handlers
+      document.querySelectorAll('.select-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const dropdown = e.currentTarget
+            .closest('.product-selector')
+            ?.querySelector('.select-menu');
+          
+          if (dropdown) {
+            if (this.activeDropdown && this.activeDropdown !== dropdown) {
+        this.activeDropdown.classList.add('hidden');
+  }
+            dropdown.classList.toggle('hidden');
+            this.activeDropdown = dropdown;
+    }
+        });
+      });
+
+      // Product item click handlers
+      document.querySelectorAll('.product-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const button = e.currentTarget;
+          const productId = button.dataset.productId;
+          const series = button.dataset.series;
+          const column = button.closest('.comparison-column')
+            ?.querySelector('.select-btn')
+            ?.getAttribute('data-column');
+
+          if (productId && series && column) {
+            this.handleProductSelection(Number(column), series, productId);
+  }
+        });
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', () => {
+        if (this.activeDropdown) {
+          this.activeDropdown.classList.add('hidden');
+          this.activeDropdown = null;
+        }
+      });
+    }
+
+    handleProductSelection(column, series, productId) {
+      const product = products[series]?.find(p => p.id === productId);
+      if (!product) return;
+
+      // Update select button text
+      const selectBtn = document.querySelector(`.select-btn[data-column="${column}"]`);
+      const selectText = selectBtn?.querySelector('.select-text');
+      if (selectText) {
+        selectText.textContent = product.name;
+        selectText.classList.remove('text-gray-500');
+      }
+
+      // Update product details
+      const detailsContainer = document.querySelector(`.product-details[data-column="${column}"]`);
+      if (detailsContainer) {
+        // Show container
+        detailsContainer.classList.remove('hidden');
+
+        // Update profile card
+        const profileCard = detailsContainer.querySelector('.profile-card');
+        if (profileCard) {
+          profileCard.innerHTML = `
+            <div class="text-center">
+              <img 
+                src="${product.image}" 
+                alt="${product.name}" 
+                class="w-full h-32 object-contain mb-3"
+              />
+              <h3 class="font-medium text-lg dark:text-neutral-400 mb-1">${product.name}</h3>
+              <p class="text-sm dark:text-neutral-200">${product.description}</p>
+            </div>
+          `;
+        }
+
+        // Update specs list
+        const specsList = detailsContainer.querySelector('.specs-list');
+        if (specsList && product.specs) {
+          specsList.innerHTML = product.specs.map(group => `
+            <div class="spec-group">
+              <div class="p-3 rounded-t-lg border border-gray-200">
+                <h4 class="font-medium dark:text-neutral-400">${group.category}</h4>
+              </div>
+              <div class="border border-t-0 border-gray-200 rounded-b-lg">
+                ${group.items.map(spec => `
+                  <div class="p-3 flex border-t border-gray-200 first:border-t-0">
+                    <div class="w-1/3 text-sm dark:text-neutral-500">${spec.label}</div>
+                    <div class="w-2/3 text-sm dark:text-neutral-400">${spec.value}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
+      // Close dropdown
+      if (this.activeDropdown) {
+        this.activeDropdown.classList.add('hidden');
+        this.activeDropdown = null;
+      }
+    }
+  }
+
+  // Initialize
+  new ProductSelector();
+</script>
+
+<style>
+  .select-menu {
+    min-width: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+
+  .select-menu::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .select-menu::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .select-menu::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+  }
+
+  .series-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #f9fafb;
+  }
+</style>

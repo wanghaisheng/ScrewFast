@@ -1,0 +1,108 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+interface ProductHighlight {
+  icon: string;
+  label: string;
+  value: string;
+}
+
+interface Props {
+  products: {
+    id: string;
+    name: string;
+    image: string;
+    price: {
+      amount: string;
+      original?: string;
+      discount?: string;
+    };
+    description: string;
+    highlights: ProductHighlight[];
+    buyLink: string;
+  }[];
+}
+
+const { products } = processLiterals<Props>(Astro.props);
+---
+
+<div class="product-profiles grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+  {products.map(product => (
+    <div 
+      class="product-profile hidden bg-white rounded-lg shadow-sm overflow-hidden"
+      data-product-id={product.id}
+    >
+      <div class="aspect-w-16 aspect-h-9">
+        <img 
+          src={product.image} 
+          alt={product.name} 
+          class="object-contain w-full h-full"
+        />
+      </div>
+      
+      <div class="p-6">
+        <div class="mb-4">
+          <h3 class="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
+          <p class="text-gray-600">{product.description}</p>
+        </div>
+
+        <div class="price-section mb-6">
+          <div class="flex items-baseline gap-2">
+            <span class="text-2xl font-bold text-gray-900">
+              ¥{product.price.amount}
+            </span>
+            {product.price.original && (
+              <span class="text-sm text-gray-500 line-through">
+                ¥{product.price.original}
+              </span>
+            )}
+            {product.price.discount && (
+              <span class="text-sm text-red-500">
+                {product.price.discount}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div class="highlights-grid grid grid-cols-2 gap-4 mb-6">
+          {product.highlights.map(highlight => (
+            <div class="flex items-start space-x-2">
+              <img src={highlight.icon} alt="" class="w-5 h-5 mt-1" />
+              <div>
+                <div class="text-sm font-medium text-gray-900">{highlight.label}</div>
+                <div class="text-sm text-gray-600">{highlight.value}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <a
+          href={product.buyLink}
+          class="block w-full text-center bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          立即购买
+        </a>
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  function updateProfiles(selectedIds: string[]) {
+    const allProfiles = document.querySelectorAll('.product-profile');
+    
+    allProfiles.forEach(profile => {
+      const profileId = profile.getAttribute('data-product-id');
+      if (profileId && selectedIds.includes(profileId)) {
+        profile.classList.remove('hidden');
+      } else {
+        profile.classList.add('hidden');
+      }
+    });
+  }
+
+  window.addEventListener('productsSelected', (event: CustomEvent<string[]>) => {
+    updateProfiles(event.detail);
+  });
+</script>

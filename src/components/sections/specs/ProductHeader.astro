@@ -1,0 +1,167 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+interface Props {
+  products: {
+    id: string;
+    name: string;
+    image: string;
+    price: {
+      amount: string;
+      original?: string;
+      discount?: string;
+    };
+    colors?: {
+      name: string;
+      value: string;
+    }[];
+    buyLink: string;
+  }[];
+}
+
+const { products } = processLiterals<Props>(Astro.props);
+---
+
+<div class="product-headers bg-white rounded-lg mb-8 hidden">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {products.map(product => (
+      <div 
+        class="product-header hidden" 
+        data-product-id={product.id}
+      >
+        <div class="relative">
+          <!-- Image Carousel -->
+          <div class="product-image-wrapper aspect-w-4 aspect-h-3 mb-4">
+            <img 
+              src={product.image} 
+              alt={product.name} 
+              class="object-contain rounded-lg"
+            />
+          </div>
+
+          <!-- Price Section -->
+          <div class="price-section p-4 bg-white rounded-lg">
+            <div class="flex items-baseline gap-2">
+              <span class="text-2xl font-bold text-gray-900">
+                ¥{product.price.amount}
+              </span>
+              {product.price.original && (
+                <span class="text-sm text-gray-500 line-through">
+                  ¥{product.price.original}
+                </span>
+              )}
+              {product.price.discount && (
+                <span class="text-sm text-red-500">
+                  {product.price.discount}
+                </span>
+              )}
+            </div>
+
+            <!-- Color Selection if available -->
+            {product.colors && (
+              <div class="mt-4">
+                <p class="text-sm text-gray-700 mb-2">选择颜色</p>
+                <div class="flex gap-2">
+                  {product.colors.map(color => (
+                    <button
+                      class="color-selector w-8 h-8 rounded-full border-2 border-transparent hover:border-blue-500 focus:border-blue-500 focus:outline-none transition-all"
+                      style={`background-color: ${color.value};`}
+                      title={color.name}
+                      data-color={color.name}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <!-- Buy Button -->
+            <a
+              href={product.buyLink}
+              class="mt-4 block w-full text-center bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              立即购买
+            </a>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+  function updateHeaders(selectedIds: string[]) {
+    const headersContainer = document.querySelector('.product-headers');
+    const allHeaders = document.querySelectorAll('.product-header');
+    
+    if (selectedIds.length === 0) {
+      headersContainer?.classList.add('hidden');
+      return;
+    }
+
+    headersContainer?.classList.remove('hidden');
+    
+    allHeaders.forEach(header => {
+      const headerId = header.getAttribute('data-product-id');
+      if (headerId && selectedIds.includes(headerId)) {
+        header.classList.remove('hidden');
+      } else {
+        header.classList.add('hidden');
+      }
+    });
+  }
+
+  // Handle color selection
+  document.querySelectorAll('.color-selector').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const target = e.currentTarget as HTMLButtonElement;
+      const header = target.closest('.product-header');
+      const colorName = target.getAttribute('data-color');
+      
+      // Update active state
+      header?.querySelectorAll('.color-selector').forEach(btn => {
+        btn.classList.remove('border-blue-500');
+      });
+      target.classList.add('border-blue-500');
+
+      // Here you could also update the product image based on color
+      // This would require additional data mapping colors to images
+    });
+  });
+
+  window.addEventListener('productsSelected', (event: CustomEvent<string[]>) => {
+    updateHeaders(event.detail);
+  });
+</script>
+
+<style>
+  .product-header {
+    transition: all 0.3s ease;
+  }
+
+  .product-image-wrapper img {
+    transition: transform 0.3s ease;
+  }
+
+  .product-image-wrapper:hover img {
+    transform: scale(1.05);
+  }
+
+  .color-selector {
+    cursor: pointer;
+    position: relative;
+  }
+
+  .color-selector::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .color-selector:hover::after {
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+</style>

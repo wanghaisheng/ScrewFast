@@ -1,0 +1,72 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import type { ProductSpecs } from '@/types/product-specs';
+
+interface Props {
+  specs: ProductSpecs;
+  id?: string;
+}
+
+const { specs, id = 'product-specs' } = processLiterals<Props>(Astro.props);
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <div class="mt-4 text-neutral-600 dark:text-neutral-400">
+
+  {specs.groups.map(group => (
+        <div class="specs-group mb-12 last:mb-0 dark:text-neutral-300">
+          <h3 class="text-2xl font-bold mb-8 text-neutral-900 dark:text-neutral-200">
+            
+            {group.title}
+          </h3>
+
+          <div class="specs-table dark:text-neutral-400">
+            {group.specs.map(spec => (
+              <div class="spec-row grid grid-cols-[240px_1fr] gap-8 py-4 items-start">
+                <div class="spec-key">
+                  {spec.key}
+                </div>
+                <div class="spec-value  whitespace-pre-line">
+                  {spec.value.split('\n').map((line, i) => (
+                    <Fragment>
+                      {i > 0 && <br />}
+                      {line.startsWith('<sup>') ? (
+                    <sup class="text-xs">
+                      {line.replace('<sup>', '').replace('</sup>', '')}
+                    </sup>
+                  ) : (
+                    line
+                  )}
+                </Fragment>
+              ))}
+              </div>
+          </div>
+        ))}
+    </div>
+  </div>
+  ))}
+</div>
+</div>
+</section>
+<style>
+  .specs-group:not(:last-child) {
+    /* border-bottom: 1px solid rgb(229 231 235); */
+    padding-bottom: 3rem;
+  }
+
+  .spec-row:hover {
+    background-color: rgb(249 250 251);
+  }
+
+  @media (max-width: 640px) {
+    .spec-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .spec-key {
+      font-weight: 500;
+      /* color: rgb(17 24 39); */
+    }
+  }
+</style>

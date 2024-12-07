@@ -9,6 +9,8 @@ const __dirname = path.dirname(__filename);
   // Create a backup file with the same name and a .bak extension
 
 async function processAstroFiles() {
+  console.log('🎉 try to  preprocessing Astro files for union string field auto ');
+
   try {
     const files = await glob('src/components/sections/**/*.astro');
 

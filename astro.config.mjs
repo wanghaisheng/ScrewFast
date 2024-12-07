@@ -8,6 +8,11 @@ import AstroPWA from '@vite-pwa/astro'
 
 // https://astro.build/config
 export default defineConfig({
+  vite: {
+    build: {
+      charset: 'utf8',
+    },
+  },
   // https://docs.astro.build/en/guides/images/#authorizing-remote-images
   site: "https://astroproduct.borninsea.com",
   image: {
@@ -92,7 +97,6 @@ export default defineConfig({
       },
       pwaAssets:{
         config: true,
-
       },
 
       workbox: {

@@ -1,0 +1,75 @@
+---
+import type { ProductComparison } from '@/types/product-comparison';
+
+interface Props {
+  comparison: ProductComparison;
+  id?: string;
+}
+
+const { comparison, id = 'product-comparison' } = Astro.props;
+---
+
+<section class="comparison-section dark:text-neutral-200" id={id}>
+  <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+    <div class="comparison-content max-w-7xl mx-auto">
+      {comparison.groups.map(group => (
+        <div class="comparison-group mb-12 last:mb-0">
+          <h3 class="group-title text-2xl font-bold mb-6 text-neutral-900 dark:text-neutral-200 border-b pb-4">
+            {group.title}
+          </h3>
+          <div class="specs-table dark:text-neutral-300">
+            {group.specs.map(spec => (
+              <div class="spec-row grid gap-4 mb-6 last:mb-0">
+                <div class="spec-key w-full  p-4 rounded-lg">
+                  <h4 class="text-sm font-medium">
+                    {spec.key}
+                  </h4>
+                </div>
+                <div class="spec-values grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {spec.values.map((value, index) => (
+                    <div class="spec-value  p-4 rounded-lg">
+                      <div class="text-sm text-neutral-900 dark:text-neutral-400 whitespace-pre-line">
+                        {value.split('\n').map((line, i) => (
+                          <Fragment>
+                            {i > 0 && <br />}
+                            {line.startsWith('<sup>') ? (
+                              <sup class="text-xs text-neutral-500">{line.replace('<sup>', '').replace('</sup>', '')}</sup>
+                            ) : (
+                              line
+                            )}
+                          </Fragment>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .comparison-group:not(:last-child) {
+    border-bottom: 1px solid rgb(229 231 235);
+    padding-bottom: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .spec-row {
+      grid-template-columns: 240px 1fr;
+    }
+  }
+
+  .spec-value {
+    transition: all 0.3s ease;
+  }
+
+  .spec-value:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+</style>

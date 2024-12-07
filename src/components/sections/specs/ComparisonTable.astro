@@ -1,0 +1,66 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import type { ProductSpecs } from '@/types/product-specs';
+
+interface Props {
+  products: {
+    id: string;
+    name: string;
+    specs: ProductSpecs;
+  }[];
+}
+
+const { products } = processLiterals<Props>(Astro.props);
+---
+
+<div class="comparison-table bg-white rounded-lg shadow-sm overflow-x-auto">
+  <table class="w-full">
+    <thead>
+      <tr class="bg-gray-50">
+        <th class="p-4 text-left text-sm font-medium text-gray-500 w-[240px]">规格</th>
+        {products.map(product => (
+          <th class="p-4 text-left text-sm font-medium text-gray-900">
+            {product.name}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {products[0].specs.groups.map(group => (
+        <>
+          <tr class="border-t">
+            <td colspan={products.length + 1} class="p-4 bg-gray-50">
+              <h3 class="text-lg font-semibold text-gray-900">{group.title}</h3>
+            </td>
+          </tr>
+          {group.specs.map(spec => (
+            <tr class="border-t hover:bg-gray-50">
+              <td class="p-4 text-sm text-gray-500">{spec.key}</td>
+              {products.map(product => {
+                const matchingSpec = product.specs.groups
+                  .find(g => g.title === group.title)
+                  ?.specs.find(s => s.key === spec.key);
+                return (
+                  <td class="p-4 text-sm text-gray-900 whitespace-pre-line">
+                    {matchingSpec?.value.split('\n').map((line, i) => (
+                      <Fragment>
+                        {i > 0 && <br />}
+                        {line.startsWith('<sup>') ? (
+                          <sup class="text-xs text-gray-500">
+                            {line.replace('<sup>', '').replace('</sup>', '')}
+                          </sup>
+                        ) : (
+                          line
+                        )}
+                      </Fragment>
+                    ))}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </>
+      ))}
+    </tbody>
+  </table>
+</div>

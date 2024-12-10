@@ -1,29 +1,28 @@
 {
   "navBarLinks": [
-    { "name": "Accueil", "url": "/" },
-    { "name": "Produits", "url": "/products" },
+    { "name": "Home", "url": "/" },
+    { "name": "Products", "url": "/products" },
     { "name": "Collections", "url": "/collections" },
-
     { "name": "Services", "url": "/services" },
     { "name": "Blog", "url": "/blog" },
     { "name": "Contact", "url": "/contact" }
   ],
   "footerLinks": [
     {
-      "section": "Écosystème",
+      "section": "Ecosystem",
       "links": [
         { "name": "Documentation", "url": "/welcome-to-docs/" },
-        { "name": "Outils & Équipement", "url": "/products" },
-        { "name": "Services de Construction", "url": "/services" }
+        { "name": "Tools & Equipment", "url": "/products" },
+        { "name": "Construction Services", "url": "/services" }
       ]
     },
     {
-      "section": "Entreprise",
+      "section": "Company",
       "links": [
-        { "name": "À propos", "url": "#" },
+        { "name": "About us", "url": "/about" },
         { "name": "Blog", "url": "/blog" },
-        { "name": "Carrières", "url": "#" },
-        { "name": "Clients", "url": "#" }
+        { "name": "Careers", "url": "#" },
+        { "name": "Customers", "url": "#" }
       ]
     }
   ],
@@ -34,18 +33,21 @@
     "google": "https://www.google.com/",
     "slack": "https://slack.com/"
   },
-  "emailsub":{
-    "section": "Restez informé",
-    "content": "Restez à jour avec les derniers outils et offres exclusives.",
-    "label": "Rechercher",
-    "title": "S'abonner",
-    "placeholder": "Entrez votre email"
-
+  "emailsub": {
+    "section": "Stay up to date",
+    "content": "Stay updated with the latest tools and exclusive deals.",
+    "label": "Search",
+    "title": "Subscribe",
+    "placeholder": "Enter your email"
   },
-  "powerBy":{
-    "text":"AstroProductFast.Powered by",
-    "link":"https://borninsea.com",
-    "linkText":"borninsea"
+  "powerBy": {
+    "text": "AstroProductFast.Powered by",
+    "link": "https://borninsea.com",
+    "linkText": "borninsea"
+  },
+  "config": {
+    "type": "navbar",
+    "defaultType": "navbar",
+    "allowedTypes": ["navbar", "mega", "vertical"]
   }
-  
 }

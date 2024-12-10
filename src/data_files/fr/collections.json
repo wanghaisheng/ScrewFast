@@ -1,27 +1,27 @@
 {
-    "title": "Catégories de Produits",
-    "description": "Découvrez notre gamme complète d'outils et d'équipements professionnels dans différentes catégories.",
+    "title": "All Product Categories",
+    "description": "Explore our comprehensive range of professional tools and equipment across different categories.",
     "categories": [
       {
-        "title": "Outils pour Vélos",
-        "description": "Outils de qualité professionnelle pour l'entretien et la réparation des vélos",
+        "title": "Bike Tools",
+        "description": "Professional-grade tools for bicycle maintenance and repair",
         "image": "/src/images/collections/bike-tools.avif",
         "slug": "bike",
-        "productCount": 12
+        "productCount": 2
       },
       {
-        "title": "Équipement de Restauration",
-        "description": "Outils de haute qualité pour les cuisines commerciales et domestiques",
+        "title": "Food Service Equipment",
+        "description": "High-quality tools for commercial and home kitchens",
         "image": "/src/images/collections/food-service.avif",
         "slug": "food",
-        "productCount": 8
+        "productCount": 0
       },
       {
-        "title": "Outils de Construction",
-        "description": "Outils durables pour la construction et l'entretien",
+        "title": "Construction Tools",
+        "description": "Durable tools for construction and maintenance",
         "image": "/src/images/collections/construction.avif",
         "slug": "tools",
-        "productCount": 15
+        "productCount": 0
       }
     ]
   }

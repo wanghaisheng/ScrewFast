@@ -1,25 +1,180 @@
-{
-  "categories": [
-    {
-      "id": "weekly",
-      "title": "Meilleurs Joueurs de la Semaine",
-      "description": "Meilleures performances de la semaine dernière",
-      "timeFrame": "7 derniers jours",
-      "entries": [
-        {
-          "rank": 1,
-          "name": "Jean Dupont",
-          "score": 15000,
-          "avatar": "/avatars/player1.jpg",
-          "change": "up",
-          "lastUpdated": "2024-02-20T10:00:00Z",
-          "badges": ["champion-hebdo", "étoile-montante"]
-        }
-      ]
-    }
-  ],
-  "lastUpdated": "2024-02-20T10:00:00Z",
-  "totalPlayers": 1234,
-  "activePlayers": 156,
-  "engagementRate": "85%"
+{    "title": "Global Leaderboard",
+    "subTitle": "See who's leading the pack",
+    "stats": {
+      "totalPlayers": 15000,
+      "activePlayers": 8500,
+      "engagementRate": "56.7%",
+      "lastUpdated": "2024-01-20T10:00:00Z",
+      "labels": {
+        "totalPlayers": "Total Players",
+        "activePlayers": "Active Players",
+        "engagementRate": "Engagement Rate",
+        "lastUpdated": "Last Updated"
+      }
+    },
+    "categories": [
+      {
+        "id": "weekly",
+        "entries": [
+          {
+            "rank": 1,
+            "name": "John Doe",
+            "score": 15000,
+            "avatar": "/src/images/avatar/jacob.avif",
+            "change": "up",
+            "badges": ["weekly-champion", "rising-star"]
+          },
+          {
+            "rank": 2,
+            "name": "Jane Smith",
+            "score": 14500,
+            "avatar": "/src/images/avatar/jacob.avif",
+            "change": "down",
+            "badges": ["consistent-player"]
+          },
+          {
+            "rank": 3,
+            "name": "Alex Johnson",
+            "score": 14200,
+            "avatar": "/src/images/avatar/jacob.avif",
+            "change": "up",
+            "badges": ["speed-demon"]
+          },
+          {
+            "rank": 4,
+            "name": "Sarah Wilson",
+            "score": 13800,
+            "avatar": "/src/images/avatar/jacob.avif",
+            "change": "same",
+            "badges": ["strategist"]
+          },
+          {
+            "rank": 5,
+            "name": "Mike Brown",
+            "score": 13500,
+            "avatar": "/src/images/avatar/jacob.avif",
+            "change": "up",
+            "badges": ["team-player"]
+          },
+          {
+            "rank": 6,
+            "name": "Emma Davis",
+            "score": 13200,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "down",
+            "badges": ["quick-learner"]
+}
+    ]
+      },
+      {
+        "id": "allTime",
+        "entries": [
+          {
+            "rank": 1,
+            "name": "Legend Player",
+            "score": 150000,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "same",
+            "badges": ["hall-of-fame", "pioneer"]
+          },
+          {
+            "rank": 2,
+            "name": "Master Chief",
+            "score": 145000,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "same",
+            "badges": ["legendary", "veteran"]
+          },
+          {
+            "rank": 3,
+            "name": "Elite Warrior",
+            "score": 142000,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "up",
+            "badges": ["elite", "master"]
+          },
+          {
+            "rank": 4,
+            "name": "Pro Gamer",
+            "score": 138000,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "down",
+            "badges": ["professional"]
+          },
+          {
+            "rank": 5,
+            "name": "Ultimate Player",
+            "score": 135000,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "same",
+            "badges": ["ultimate"]
+          },
+          {
+            "rank": 6,
+            "name": "Supreme Leader",
+            "score": 132000,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "up",
+            "badges": ["supreme"]
+  }
+        ]
+      },
+      {
+        "id": "daily",
+        "title": "Daily Leaders",
+        "description": "Top performers in the last 24 hours",
+        "timeFrame": "Last 24h",
+        "entries": [
+          {
+            "rank": 1,
+            "name": "Fast Runner",
+            "score": 2500,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "up",
+            "badges": ["daily-champion", "speedster"]
+          },
+          {
+            "rank": 2,
+            "name": "Quick Thinker",
+            "score": 2400,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "up",
+            "badges": ["sharp-mind"]
+          },
+          {
+            "rank": 3,
+            "name": "Smart Player",
+            "score": 2300,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "down",
+            "badges": ["tactician"]
+          },
+          {
+            "rank": 4,
+            "name": "Clever Fox",
+            "score": 2200,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "same",
+            "badges": ["cunning"]
+          },
+          {
+            "rank": 5,
+            "name": "Swift Mover",
+            "score": 2100,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "up",
+            "badges": ["agile"]
+          },
+          {
+            "rank": 6,
+            "name": "Wise Owl",
+            "score": 2000,
+            "avatar": "/src/images/avatar/anna.avif",
+            "change": "down",
+            "badges": ["wise"]
+}
+        ]
+      }
+    ]
+  
 }

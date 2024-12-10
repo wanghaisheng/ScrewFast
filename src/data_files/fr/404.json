@@ -1,7 +1,4 @@
-{
-    "pageTitle": "Page Introuvable",
-    "subTitle": "Oups, ce n'est pas l'outil que vous cherchiez !",
-    "content": "Ne laissez pas ce petit contretemps vous ralentir. Revenons à la création de votre chef-d'œuvre.",
-    "btnTitle": "Retour"
-  }
-  
+{"pageTitle": "Page Not Found",
+"subTitle": "Oops, this isn't the tool you were looking for!",
+"content":"Don't let this hiccup slow you down. Let's get you back to building your masterpiece.",
+"btnTitle": "Go Back"}

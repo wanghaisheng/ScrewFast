@@ -1,38 +1,38 @@
 {
-  "title": "Tarification Simple et Transparente",
-  "subTitle": "Augmentez l'efficacité avec les plans clairs et axés sur la valeur de AstroProductFast.",
-  "badge": "Meilleure valeur",
-  "thirdOption": "Solutions Entreprise?",
-  "btnText": "Obtenez un Devis Personnalisé",
+  "title": "Simple, Transparent Pricing",
+  "subTitle": "Boost efficiency with AstroProductFast's clear, value-driven plans.",
+  "badge": "Best value",
+  "thirdOption": "Enterprise Solutions?",
+  "btnText": "Get a Custom Quote",
 
   "starterKit": {
-    "name": "Kit de Démarrage",
-    "description": "Meilleure option pour les projets de bricolage",
-    "price": "$49",
+    "name": "Starter Kit",
+    "description": "Best option for DIY projects",
+    "price": "49",
     "cents": ".00",
-    "billingFrequency": "USD / mensuel",
+    "billingFrequency": "USD / monthly",
     "features": [
-      "Outils matériels essentiels",
-      "Accès aux guides et tutoriels",
-      "Support standard"
+      "Key hardware tools",
+      "Access to guides & tutorials",
+      "Standard support"
     ],
-    "purchaseBtnTitle": "Obtenez le Kit de Démarrage",
+    "purchaseBtnTitle": "Get the Starter Kit",
     "purchaseLink": "#"
   },
 
   "professionalToolbox": {
-    "name": "Boîte à Outils Professionnelle",
-    "description": "Idéale pour les utilisations à grande échelle",
-    "price": "$89",
+    "name": "Professional Toolbox",
+    "description": "Best for large scale uses",
+    "price": "89",
     "cents": ".00",
-    "billingFrequency": "USD / mensuel",
+    "billingFrequency": "USD / monthly",
     "features": [
-      "Sélection d'outils premium",
-      "Support prioritaire",
-      "Contenu et offres exclusifs",
-      "Remises sur les commandes en gros"
+      "Premium tool selection",
+      "Priority support",
+      "Exclusive content & deals",
+      "Bulk order discounts"
     ],
-    "purchaseBtnTitle": "Obtenez la Boîte à Outils Professionnelle",
+    "purchaseBtnTitle": "Get the Professional Toolbox",
     "purchaseLink": "#"
   }
 }

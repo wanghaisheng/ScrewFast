@@ -1,22 +1,30 @@
+{
+  
+  "title":"Meeting Industry Demands",
+  "subTitle":"At ScrewFast, we tackle the unique challenges encountered in the hardware and construction sectors. From cutting-edge tools to expert services, we're dedicated to helping you overcome obstacles and achieve your goals.",
+  "src":"/src/images/features-image.avif",
+  "alt":"ScrewFast products in floating boxes",
+  "data":
 [
   {
-    "heading": "Équipes dédiées",
-    "content": "Bénéficiez de nos équipes engagées qui veillent à ce que votre réussite soit personnelle. Comptez sur un accompagnement expert et des résultats exceptionnels tout au long de votre parcours de projet.",
+    "heading": "Dedicated Teams",
+    "content": "Benefit from our committed teams who ensure your success is personal. Count on expert guidance and exceptional results throughout your project journey.",
     "svg": "groups"
   },
   {
-    "heading": "Simplicité et accessibilité",
-    "content": "Trouvez des solutions faciles à utiliser et abordables avec la gamme d'outils et d'équipements de AstroProductFast. Nos produits simplifient l'approvisionnement et permettent de respecter les budgets de projet.",
+    "heading": "Simplicity and Affordability",
+    "content": "Find easy-to-use, affordable solutions with AstroProductFast's line of tools and equipment. Our products make procurement simple and keep projects within budget.",
     "svg": "verified"
   },
   {
-    "heading": "Documentation complète",
-    "content": "Intégrez facilement grâce aux guides exhaustifs et aux bibliothèques de AstroProductFast. Réalisez une adoption de produit sans faille avec notre ensemble complet de documentation conçu pour votre succès.",
+    "heading": "Comprehensive Documentation",
+    "content": "Integrate with ease using AstroProductFast's exhaustive guides and libraries. Achieve seamless product adoption with our full suite of documentation designed for your success.",
     "svg": "books"
   },
   {
-    "heading": "Conception centrée sur l'utilisateur",
-    "content": "Faites l'expérience de la différence avec la conception axée sur l'utilisateur de AstroProductFast, où la fonctionnalité rencontre la praticité pour une expérience de travail améliorée.",
+    "heading": "User-Centric Design",
+    "content": "Experience the difference with AstroProductFast's user-focused design — where functionality meets practicality for an enhanced work experience.",
     "svg": "frame"
   }
 ]
+}

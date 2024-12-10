@@ -28,12 +28,14 @@
     {
       "title": "Kit d'Outils pour VTT",
       "description": "Outils de qualité professionnelle pour l'entretien et la réparation des VTT",
+      "category":"bike",
+      "slug":"bike-tool",
+
       "data":{
       "main": {
         "content": "Notre kit complet d'outils pour VTT est conçu pour les mécaniciens professionnels et les passionnés. Chaque outil est conçu avec précision pour répondre aux besoins spécifiques de l'entretien et de la réparation des VTT.",
-        "imgCard": "/src/images/product-image-1.avif",
-
-        "imgMain": "/src/images/product-image-main-1.avif",
+        "imgCard": "/src/images/product-image-5.avif",
+        "imgMain": "/src/images/product-image-main-5.avif",
         "imgAlt": "Kit d'outils professionnel pour VTT présenté dans une mallette personnalisée"
       }}
       ,
@@ -133,12 +135,14 @@
     {
       "title": "Mountain Bike Tool Set",
       "description": "Professional-grade tools for mountain bike maintenance and repair",
+      "category":"bike",
+      "slug":"bike-tool",
+
               "data":{
 "main": {
         "content": "Our comprehensive mountain bike tool set is designed for both professional mechanics and enthusiast riders. Each tool is precision-engineered to meet the specific needs of mountain bike maintenance and repair.",
-        "imgMain": "/src/images/product-image-main-2.avif",
-        "imgCard": "/src/images/product-image-2.avif",
-
+        "imgMain": "/src/images/product-image-main-5.avif",
+        "imgCard": "/src/images/product-image-5.avif",
         "imgAlt": "Professional mountain bike tool set displayed in a custom case"
       }},
       "tabs": [

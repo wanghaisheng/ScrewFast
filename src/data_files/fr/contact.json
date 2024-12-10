@@ -1,20 +1,20 @@
 {
-    "pageTitle": "Contactez-nous",
-    "subTitle": "Vous avez des questions ou souhaitez discuter d'un projet ? Contactez-nous et concevons ensemble la solution idéale grâce à nos outils et services.",
+    "pageTitle": "Contact us",
+    "subTitle": "Have questions or want to discuss a project? Reach out, and let's craft the perfect solution with our tools and services.",
     "form": {
-      "formTitle": "Remplissez le formulaire ci-dessous",
-      "formSubTitle": "Nous vous répondrons sous 1 à 2 jours ouvrables.",
+      "formTitle": "Fill in the form below",
+      "formSubTitle": "We'll get back to you in 1-2 business days.",
       "fields": [
         {
           "type": "text",
           "id": "hs-firstname-contacts",
-          "label": "Prénom",
+          "label": "First Name",
           "name": "hs-firstname-contacts"
         },
         {
           "type": "text",
           "id": "hs-lastname-contacts",
-          "label": "Nom",
+          "label": "Last Name",
           "name": "hs-firstname-contacts"
         },
         {
@@ -28,22 +28,22 @@
         {
           "type": "textarea",
           "id": "hs-about-contacts",
-          "label": "Détails",
+          "label": "Details",
           "name": "hs-about-contacts"
         }
       ],
       "submitButton": {
         "type": "button",
-        "title": "Envoyer le message"
+        "title": "Send Message"
       }
     },
     "contactMethods": [
       {
-        "heading": "Base de connaissances",
-        "content": "Parcourez tous nos articles dans la base de connaissances.",
+        "heading": "Knowledgebase",
+        "content": "Browse through all of our knowledgebase articles.",
         "link": {
           "isVisible": true,
-          "title": "Visitez les guides et tutoriels",
+          "title": "Visit guides & tutorials",
           "url": "#"
         },
         "icon": "question",
@@ -51,27 +51,27 @@
       },
       {
         "heading": "FAQ",
-        "content": "Consultez notre FAQ pour des réponses rapides et claires à vos questions.",
+        "content": "Explore our FAQ for quick, clear answers to common queries.",
         "link": {
           "isVisible": true,
-          "title": "Visitez la FAQ",
+          "title": "Visit FAQ",
           "url": "#"
         },
         "icon": "chatBubble",
         "isArrowVisible": true
       },
       {
-        "heading": "Visitez notre bureau",
-        "content": "AstroProductFast, Royaume-Uni",
+        "heading": "Visit our office",
+        "content": "UK AstroProductFast",
         "address": {
           "isVisible": true,
-          "content": "72 Union Terrace, E10 4PE Londres"
+          "content": "72 Union Terrace, E10 4PE London"
         },
         "icon": "mapPin"
       },
       {
-        "heading": "Contactez-nous par email",
-        "content": "Vous préférez un échange écrit ? Envoyez-nous un email à",
+        "heading": "Contact us by email",
+        "content": "Prefer the written word? Drop us an email at",
         "link": {
           "isVisible": true,
           "title": "support@AstroProductFast.uk",

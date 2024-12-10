@@ -1,81 +1,81 @@
 {
   "pageTitle": "Services",
   "mainSection": {
-    "title": "Allier Expertise et Votre Vision",
-    "subTitle": "Chez AstroProductFast, nous sommes fiers d'offrir des solutions complètes et un service exceptionnel dans le domaine du matériel et de la construction. Notre équipe expérimentée s'engage à soutenir votre projet de sa conception à son achèvement avec une gamme de services spécialisés.",
+    "title": "Uniting Expertise with Your Vision",
+    "subTitle": "At AstroProductFast, we take pride in providing comprehensive solutions and exceptional service in the hardware and construction industry. Our experienced team is dedicated to supporting your project from inception to completion with a range of specialized services.",
     "btnExists": true,
-    "btnTitle": "Planifier une Consultation",
+    "btnTitle": "Schedule a Consultation",
     "btnURL": "#"
   },
   "articles": [
     {
       "isRightSection": true,
-      "title": "Fournir des Conseils d'Expert",
-      "subTitle": "Se lancer dans un projet de construction peut être intimidant. Grâce à nos services de consultation professionnelle, nous vous accompagnons à chaque étape pour vous assurer de prendre des décisions éclairées. Que vous soyez un amateur ou un entrepreneur expérimenté, nos experts sont à votre disposition pour offrir des conseils personnalisés sur le choix des produits, la portée des projets et la conformité aux réglementations locales.",
+      "title": "Delivering Expert Guidance",
+      "subTitle": "Embarking on a construction project can be overwhelming. With our professional consultation services, we guide you through every stage, ensuring you make informed decisions. Whether you are a DIY enthusiast or a skilled contractor, our experts are on hand to offer tailored advice on product selection, project scope, and compliance with local regulations.",
       "single": false,
       "imgOne": "blueprints-image.avif",
-      "imgOneAlt": "Plans et tablette numérique avec des plans de construction.",
+      "imgOneAlt": "Blueprints and digital tablet with construction plans.",
       "imgTwo": "person-working.avif",
-      "imgTwoAlt": "Personne travaillant dans un bureau."
+      "imgTwoAlt": "Person working in the office"
     },
     {
       "isRightSection": false,
-      "title": "Transformer les Conceptions en Réalité",
-      "subTitle": "Nos artisans qualifiés apportent précision et excellence à chaque projet de construction. Des petites installations aux travaux structurels d'envergure, AstroProductFast offre des services de construction fiables pour transformer vos plans en résultats concrets. Nous garantissons les plus hauts standards de sécurité et de qualité, en utilisant des outils et matériaux de premier choix issus de notre vaste inventaire.",
+      "title": "Transforming Designs into Reality",
+      "subTitle": "Our skilled craftsmen bring precision and excellence to every construction project. From minor installations to substantial structural work, AstroProductFast offers reliable construction services to turn your plans into tangible outcomes. We ensure the highest standards of safety and workmanship, utilizing top-quality tools and materials from our extensive inventory.",
       "img": "before-after.avif",
-      "imgAlt": "Site de construction avant et après.",
+      "imgAlt": "Construction site before and after",
       "btnExists": true,
-      "btnTitle": "En Savoir Plus",
+      "btnTitle": "Learn More",
       "btnURL": "#"
     },
     {
       "isRightSection": true,
-      "title": "Gérer les Projets avec une Supervision Professionnelle",
-      "subTitle": "Une gestion efficace des projets est au cœur de tout chantier réussi. AstroProductFast fournit une planification minutieuse et des services de gestion solides qui maintiennent votre projet dans les délais et le budget. Laissez-nous gérer les complexités de la coordination des flux de travail, de l'allocation des ressources et de la communication avec les parties prenantes, pendant que vous vous concentrez sur votre vision.",
+      "title": "Navigating Projects with Professional Oversight",
+      "subTitle": "Effective project management is at the heart of any successful build. AstroProductFast provides thorough planning and robust management services that keep your project on time and within budget. Let us handle the complexities of workflow coordination, resource allocation, and stakeholder communication while you focus on your vision.",
       "single": false,
       "imgOne": "construction-workers.avif",
-      "imgOneAlt": "Ouvriers du bâtiment orchestrant un projet.",
+      "imgOneAlt": "Construction workers orchestrating a project",
       "imgTwo": "aerial-view.avif",
-      "imgTwoAlt": "Vue aérienne d'un chantier géré."
+      "imgTwoAlt": "Aerial view of managed construction"
     },
     {
       "isRightSection": false,
-      "title": "Assurer une Performance Durable",
-      "subTitle": "Notre engagement envers votre projet ne s'arrête pas à son achèvement. AstroProductFast propose des services de maintenance et de support continus pour garantir la longévité et la performance de votre construction. Des contrôles réguliers à l'assistance d'urgence, notre équipe réactive est là pour vous offrir un soutien sans faille.",
+      "title": "Ensuring Long-lasting Performance",
+      "subTitle": "Our commitment to your project doesn't end at completion. AstroProductFast offers ongoing maintenance and support services to ensure your construction's longevity and performance. From regular check-ups to emergency assistance, our responsive team is there to provide seamless support.",
       "img": "using-tools.avif",
-      "imgAlt": "Homme portant un gilet orange et noir et un casque blanc tenant un outil électrique jaune et noir."
+      "imgAlt": "Man in orange and black vest wearing white helmet holding yellow and black power tool"
     },
     {
       "isRightSection": true,
-      "title": "Élaborer des Stratégies sur Mesure pour des Défis Uniques",
-      "subTitle": "Pour nos clients d'entreprise de grande envergure, AstroProductFast propose des solutions personnalisées conçues pour répondre à des défis spécifiques à l'industrie. En comprenant vos besoins uniques, nous concevons des stratégies adaptées visant à optimiser vos opérations, améliorer l'efficacité et faire avancer votre entreprise.",
+      "title": "Crafting Bespoke Strategies for Unique Challenges",
+      "subTitle": "For our larger enterprise clients, AstroProductFast offers custom solutions designed to meet specific industry challenges. By understanding your unique needs, we engineer tailored strategies aimed at optimizing your operations, enhancing efficiency, and driving your business forward.",
       "single": false,
       "imgOne": "progress-building.avif",
-      "imgOneAlt": "Structure de bâtiment en cours de construction.",
+      "imgOneAlt": "In progress building structure",
       "imgTwo": "under-construction.avif",
-      "imgTwoAlt": "Bâtiment marron et gris en construction.",
+      "imgTwoAlt": "Brown and gray building under construction",
       "btnExists": true,
-      "btnTitle": "Lire Plus",
+      "btnTitle": "Read more",
       "btnURL": "#"
     }
   ],
   "featuresStats": {
-    "title": "En Chiffres",
-    "subTitle": "Notre engagement envers la qualité et la fiabilité est évident dans chaque projet que nous entreprenons. Chez AstroProductFast, nous nous consacrons à fournir des services de premier plan pour garantir que vos projets de construction sont conçus pour durer.",
+    "title": "By the Numbers",
+    "subTitle": "Our commitment to quality and reliability is evident in every project we undertake. At AstroProductFast, we are dedicated to delivering industry-leading services that ensure your construction projects are built to last.",
     "mainStatTitle": "96%",
-    "mainStatSubTitle": "de nos clients évaluent leur expérience avec AstroProductFast comme exceptionnelle",
+    "mainStatSubTitle": "of our clients rate their experience with AstroProductFast as exceptional",
     "stats": [
       {
-        "stat": "99,8%",
-        "description": "taux d'achèvement des projets"
+        "stat": "99.8%",
+        "description": "project completion rate"
       },
       {
-        "stat": "5 000+",
-        "description": "installations réussies"
+        "stat": "5,000+",
+        "description": "successful installations"
       },
       {
         "stat": "85%",
-        "description": "croissance des clients d'une année sur l'autre"
+        "description": "client growth year-over-year"
       }
     ]
   }

@@ -1,0 +1,202 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import MainSection from "@components/ui/blocks/MainSection.astro";
+import StatsSmall from "@components/ui/blocks/StatsSmall.astro";
+import { formatDate } from '@utils/utils';
+import type { TableViewProps } from './types';
+
+interface Props extends TableViewProps {}
+
+const { data, layout } = processLiterals<Props>(Astro.props);
+
+// Debug: Log received props
+console.log('TableView Props:', { layout });
+
+// Helper function to get grid class based on layout
+const getGridClass = (layout: Props['layout']) => {
+  // Debug: Log layout value being processed
+  console.log('Processing layout:', layout);
+
+  const gridClasses = {
+    '1': 'grid grid-cols-1 gap-8',
+    '2': 'grid grid-cols-1 lg:grid-cols-2 gap-8',
+    '3': 'grid grid-cols-1 lg:grid-cols-3 gap-8'
+  };
+
+  const result = gridClasses[layout] || gridClasses['1'];
+  console.log('Selected grid class:', result);
+  return result;
+};
+
+const gridClass = getGridClass(layout);
+---
+
+<div class="min-h-screen dark:bg-neutral-900 dark:text-neutral-200">
+  <!-- Debug Panel -->
+
+  <!-- Header Section -->
+  <div class="mb-12">
+    <h1 class="text-4xl font-bold text-white mb-2">
+      {data.title}
+    </h1>
+    <p class="text-neutral-400">
+      {data.subTitle}
+    </p>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+    <StatsSmall 
+      title={data.stats.totalPlayers.toLocaleString()}
+      subTitle="Total Players"
+      titleColor="text-orange-500"
+    />
+    <StatsSmall 
+      title={data.stats.activePlayers.toLocaleString()}
+      subTitle="Active Players"
+      titleColor="text-orange-500"
+    />
+    <StatsSmall 
+      title={data.stats.engagementRate}
+      subTitle="Engagement Rate"
+      titleColor="text-orange-500"
+    />
+    <StatsSmall 
+      title={(data.stats.lastUpdated)}
+      subTitle="Last Updated"
+      titleColor="text-orange-500"
+    />
+  </div>
+
+  <!-- Leaderboard Tables -->
+  <div class={gridClass}>
+    {data.categories.map((category, index) => (
+      <div class="dark:bg-neutral-800 rounded-xl overflow-hidden">
+      
+        <!-- Category Header -->
+        <div class="p-6 border-b dark:border-neutral-700">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="text-xl font-semibold dark:text-white mb-1">
+                {category.title}
+              </h3>
+              {category.description && (
+                <p class="text-sm dark:text-neutral-400">
+                  {category.description}
+                </p>
+              )}
+            </div>
+            {category.timeFrame && (
+              <span class="text-sm dark:text-neutral-400">
+                {category.timeFrame}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="dark:bg-neutral-700/50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider w-[100px]">
+                  Rank
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-neutral-400 uppercase tracking-wider">
+                  Player
+                </th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-neutral-400 uppercase tracking-wider">
+                  Score
+                </th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-neutral-400 uppercase tracking-wider w-[100px]">
+                  Trend
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-neutral-700">
+              {category.entries.map(entry => (
+                <tr class="hover:bg-neutral-700/50 transition-colors">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-neutral-300">
+                    #{entry.rank}
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex items-center">
+                      {entry.avatar && (
+                        <img 
+                          src={entry.avatar} 
+                          alt="" 
+                          class="h-8 w-8 rounded-full mr-3 bg-neutral-700"
+                        />
+                      )}
+                      <div>
+                        <div class="text-sm font-medium text-white">
+                          {entry.name}
+                        </div>
+                        {entry.badges && entry.badges.length > 0 && (
+                          <div class="flex flex-wrap gap-1 mt-1">
+                            {entry.badges.map(badge => (
+                              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-neutral-700 text-neutral-300">
+                                {badge}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-right text-neutral-300">
+                    {entry.score.toLocaleString()}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-right">
+                    {entry.change === 'up' && (
+                      <span class="text-green-500">↑</span>
+                    )}
+                    {entry.change === 'down' && (
+                      <span class="text-red-500">↓</span>
+                    )}
+                    {entry.change === 'same' && (
+                      <span class="text-neutral-500">−</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        {!category.entries.length && (
+          <div class="px-6 py-12 text-center text-neutral-400">
+            <p>No entries available</p>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  /* Custom scrollbar styling */
+  .overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.neutral.600') theme('colors.neutral.800');
+  }
+
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: theme('colors.neutral.800');
+  }
+
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background-color: theme('colors.neutral.600');
+    border-radius: 3px;
+  }
+
+  /* Smooth transitions */
+  .transition-colors {
+    transition: background-color 0.2s ease-in-out;
+  }
+</style>

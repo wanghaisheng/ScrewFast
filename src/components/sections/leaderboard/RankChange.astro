@@ -1,0 +1,44 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+interface Props {
+  change?: 'up' | 'down' | 'same';
+}
+
+const { change } = processLiterals<Props>(Astro.props);
+
+const getChangeIcon = (change: string | undefined) => {
+  switch (change) {
+    case 'up':
+      return {
+        color: 'text-green-600 dark:text-green-400',
+        path: 'M8 7l4-4m0 0l4 4m-4-4v18'
+      };
+    case 'down':
+      return {
+        color: 'text-red-600 dark:text-red-400',
+        path: 'M16 17l-4 4m0 0l-4-4m4 4V3'
+      };
+    default:
+      return {
+        color: 'text-neutral-400 dark:text-neutral-500',
+        path: 'M8 10h8M8 14h8'
+      };
+  }
+};
+
+const icon = getChangeIcon(change);
+---
+
+<span class={icon.color}>
+  <svg 
+    class="inline-block size-4" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    stroke-width="2"
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  >
+    <path d={icon.path} />
+  </svg>
+</span>

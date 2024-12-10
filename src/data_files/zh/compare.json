@@ -1,0 +1,25 @@
+{
+  "title": "产品对比",
+  "description": "对比我们各产品线的功能和规格",
+  "categoryLabels": {
+    "earbuds": "耳机",
+    "drones": "无人机",
+    "accessories": "配件"
+  },
+  "selectProducts": "选择要对比的产品",
+  "features": {
+    "driver": "驱动单元",
+    "anc": "主动降噪",
+    "battery": "电池续航",
+    "flightTime": "飞行时间",
+    "range": "操控范围",
+    "camera": "相机分辨率",
+    "weight": "重量",
+    "dimensions": "尺寸",
+    "connectivity": "连接方式",
+    "controls": "控制方式"
+  },
+  "compareButton": "对比选中产品",
+  "clearSelection": "清除选择",
+  "noProducts": "该类别暂无产品"
+}

@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import siteconfig from "@data/site.json";
+import { getUserLanguagePreference } from '@utils/language';
+
+// Get default language from config or fallback to 'en'
+const defaultLang = siteconfig.defaultlang || 'en';
+
+// Generate paths for default language redirects
+export async function getStaticPaths() {
+  try {
+    // Load collections for default language
+    const { default: collections } = await import(
+      `../../data_files/${defaultLang}/collections/all.json`
+    );
+
+    // Create paths for each collection
+    return collections.map((slug: string) => ({
+      params: { slug },
+    }));
+  } catch (error) {
+    console.error(`Error loading collections for ${defaultLang}:`, error);
+    return [];
+  }
+}
+
+// Get the slug from params
+const { slug } = Astro.params;
+
+// Get user's preferred language
+const userLang = getUserLanguagePreference(Astro.request, siteconfig.supportedLanguages, defaultLang);
+
+// Check if the collection exists in the user's preferred language
+let collectionExists = false;
+try {
+  const { default: collections } = await import(
+    `../../data_files/${userLang}/collections/all.json`
+  );
+  collectionExists = collections.includes(slug);
+} catch (error) {
+  console.error(`Error checking collection existence for ${userLang}:`, error);
+}
+
+// Redirect to the user's preferred language if the collection exists,
+// otherwise fallback to default language
+const redirectLang = collectionExists ? userLang : defaultLang;
+
+return Astro.redirect(`/${redirectLang}/collections/${slug}/`);
+---

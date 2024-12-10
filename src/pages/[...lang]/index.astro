@@ -43,7 +43,7 @@ const ctaData = await import(`../../data_files/${lang}/cta.json`).catch(() => ({
 const navlinkData = await import(`../../data_files/${lang}/nav.json`).catch(() => ({ nav: [] }));
 ---
 
-<MainLayout navdata={navlinkData} supportedLangLabels={siteconfig.supportedLangLabels}>
+<MainLayout lang={lang}navdata={navlinkData} supportedLangLabels={siteconfig.supportedLangLabels}>
   <AnnouncementBanner data={announceData}/>
 
   <HeroSection {...heroData} />

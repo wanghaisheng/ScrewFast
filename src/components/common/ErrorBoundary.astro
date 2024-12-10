@@ -1,0 +1,35 @@
+---
+interface Props {
+  fallback?: string;
+}
+
+const { fallback = "Something went wrong" } = Astro.props;
+---
+
+<div class="error-boundary">
+  <slot>
+    <div class="text-center py-12">
+      <p class="text-red-500">{fallback}</p>
+    </div>
+  </slot>
+</div>
+
+<script>
+  class ErrorBoundary extends HTMLElement {
+    constructor() {
+      super();
+      this.addEventListener('error', this.handleError);
+    }
+
+    handleError(event: ErrorEvent) {
+      console.error('Error in component:', event.error);
+      this.innerHTML = `
+        <div class="text-center py-12">
+          <p class="text-red-500">Something went wrong</p>
+        </div>
+      `;
+    }
+  }
+
+  customElements.define('error-boundary', ErrorBoundary);
+</script>

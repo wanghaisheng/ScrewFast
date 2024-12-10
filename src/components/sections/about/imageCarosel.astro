@@ -1,7 +1,7 @@
 ---
 import { processLiterals } from '@utils/literalProcessor';
 import { Image } from "astro:assets";
-import { processImage } from "@utils/imageProcessing";
+import { processImages, type ProcessedImage } from "@utils/imageProcessing";
 import OptimizedImage from '@components/OptimizedImage.astro';
 
 interface OfficeImage {
@@ -18,13 +18,16 @@ interface Props {
 
 const { title, description, images } = processLiterals<Props>(Astro.props);
 
-// 处理所有图片
-const processedImages = images
-  .map(image => ({
-    ...image,
-    processed: processImage(image.src)
-  }))
-  .filter(image => image.processed !== null);
+// Process images using the utility function
+const processedImages: ProcessedImage[] = await processImages(
+  images.map(img => img.src)
+);
+
+// Combine processed images with original metadata
+const slideImages = images.map((image, index) => ({
+  ...image,
+  processed: processedImages[index]
+})).filter(image => image.processed);
 ---
 
 <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
@@ -41,43 +44,28 @@ const processedImages = images
     <!-- Swiper container -->
     <div class="swiper office-slider">
       <div class="swiper-wrapper">
-        {processedImages.map(image => {
-          const isRemoteImage = typeof image.processed?.src === 'string';
-          return (
-            <div class="swiper-slide">
-              <div class="relative aspect-[16/9] overflow-hidden rounded-lg">
-                {isRemoteImage ? (
-                  <OptimizedImage
-                    src={image.processed}
-          alt={image.alt}
-                    class="w-full h-full object-cover"
-                    width={image.processed?.width}
-                    height={image.processed?.height}
-        />
-                ) : (
-                  <OptimizedImage
-                    src={image.processed}
-                    alt={image.alt}
-                    class="w-full h-full object-cover"
-                    width={image.processed?.width}
-                    height={image.processed?.height}
-                  />
-                )}
-        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                  <p class="p-6 text-white text-lg font-medium">
-            {image.caption}
-          </p>
-        </div>
+        {slideImages.map(image => (
+          <div class="swiper-slide">
+            <div class="relative aspect-[16/9] overflow-hidden rounded-lg">
+              <OptimizedImage
+                src={image.processed.src}
+                alt={image.alt}
+                width={image.processed.width}
+                height={image.processed.height}
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                <p class="p-6 text-white text-lg font-medium">
+                  {image.caption}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-  </div>
-          );
-        })}
-      </div>
-      
       <!-- Navigation buttons -->
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
-      
       <!-- Pagination -->
       <div class="swiper-pagination"></div>
     </div>
@@ -92,22 +80,16 @@ const processedImages = images
   import Swiper from 'swiper';
   import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
-  // 初始化 Swiper
+  // Initialize Swiper
   const swiper = new Swiper('.office-slider', {
     modules: [Navigation, Pagination, Autoplay],
-    
-    // 基本配置
     slidesPerView: 1,
     spaceBetween: 30,
     loop: true,
-    
-    // 自动播放
     autoplay: {
       delay: 5000,
       disableOnInteraction: false,
     },
-    
-    // 响应式配置
     breakpoints: {
       640: {
         slidesPerView: 1,
@@ -119,68 +101,62 @@ const processedImages = images
         slidesPerView: 2,
       },
     },
-    
-    // 导航按钮
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
     },
-    
-    // 分页器
     pagination: {
       el: '.swiper-pagination',
       clickable: true,
     },
   });
+
+  // Clean up on page navigation
+  document.addEventListener('astro:before-swap', () => {
+    swiper.destroy();
+  });
 </script>
 
 <style>
-  /* 自定义 Swiper 样式 */
+  /* Swiper custom styles */
   .swiper {
     padding-bottom: 4rem;
   }
 
   :root {
-    --swiper-theme-color: #f97316; /* 使用橙色主题 */
+    --swiper-theme-color: #f97316;
   }
 
   .swiper-button-next,
   .swiper-button-prev {
-    color: #f97316;
-    background-color: white;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    @apply text-orange-500 bg-white w-12 h-12 rounded-full shadow-md;
   }
 
   .swiper-button-next::after,
   .swiper-button-prev::after {
-    font-size: 1.2rem;
+    @apply text-base;
   }
 
   .swiper-pagination-bullet {
-    width: 10px;
-    height: 10px;
+    @apply w-2.5 h-2.5;
   }
 
   .swiper-pagination-bullet-active {
-    background-color: #f97316;
+    @apply bg-orange-500;
   }
 
-  /* 深色模式样式 */
+  /* Dark mode styles */
   :global(.dark) .swiper-button-next,
   :global(.dark) .swiper-button-prev {
-    background-color: #1f2937;
-    color: #f97316;
+    @apply bg-gray-800 text-orange-500;
   }
 
-  /* 悬停效果 */
+  /* Hover effects */
   .swiper-slide {
-    transition: transform 0.3s ease;
+    @apply transition-transform duration-300;
   }
 
   .swiper-slide:hover {
-    transform: scale(1.02);
+    @apply scale-[1.02];
   }
 </style>

@@ -1,0 +1,52 @@
+{
+  "title": "Product Groups",
+  "description": "Browse our product categories and collections",
+  "groups": {
+    "audio": {
+      "id": "audio",
+      "title": "Audio Products",
+      "description": "High-quality audio devices for every need",
+      "items": [
+        {
+          "id": "earbuds",
+          "title": "Wireless Earbuds",
+          "description": "Premium wireless earbuds with advanced features",
+          "image": "/images/groups/earbuds.jpg",
+          "link": "/products/earbuds",
+          "order": 1
+        },
+        {
+          "id": "headphones",
+          "title": "Headphones",
+          "description": "Professional-grade headphones for immersive audio",
+          "image": "/images/groups/headphones.jpg",
+          "link": "/products/headphones",
+          "order": 2
+        }
+      ]
+    },
+    "drones": {
+      "id": "drones",
+      "title": "Drone Collection",
+      "description": "Advanced drones for professional and recreational use",
+      "items": [
+        {
+          "id": "consumer-drones",
+          "title": "Consumer Drones",
+          "description": "Easy-to-use drones for everyday adventures",
+          "image": "/images/groups/consumer-drones.jpg",
+          "link": "/products/drones/consumer",
+          "order": 1
+        },
+        {
+          "id": "pro-drones",
+          "title": "Professional Drones",
+          "description": "High-end drones for commercial applications",
+          "image": "/images/groups/pro-drones.jpg",
+          "link": "/products/drones/professional",
+          "order": 2
+        }
+      ]
+    }
+  }
+}

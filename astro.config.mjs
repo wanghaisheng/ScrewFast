@@ -4,7 +4,7 @@ import sitemap from "@astrojs/sitemap";
 import compressor from "astro-compressor";
 import starlight from "@astrojs/starlight";
 import { astroImageTools } from "astro-imagetools";
-import AstroPWA from '@vite-pwa/astro'
+import AstroPWA from "@vite-pwa/astro";
 
 // https://astro.build/config
 export default defineConfig({
@@ -97,9 +97,15 @@ export default defineConfig({
       },
       pwaAssets:{
         config: true,
-      },
+        overrideManifestIcons: true,
 
+      },
+      experimental: {
+        directoryAndTrailingSlashHandler: true,
+      },
       workbox: {
+        cleanupOutdatedCaches: true,
+
         navigateFallback: "/404",
         globPatterns: ["**/*.{css,js,html,svg,png,ico,txt}"],
       },

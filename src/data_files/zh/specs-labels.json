@@ -1,0 +1,9 @@
+{
+  "specsTitle": "技术规格",
+  "specsDescription": "详细的技术规格和性能指标",
+  "categories": {
+    "general": "基本信息",
+    "audio": "音频",
+    "battery": "电池"
+  }
+}

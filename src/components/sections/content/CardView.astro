@@ -1,0 +1,155 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import type { CardViewProps } from './types';
+import { processImage, getImageSrc } from '@utils/imageProcessing';
+
+interface Props extends CardViewProps {}
+
+const { cards, cardsPerRow } = processLiterals<Props>(Astro.props);
+
+// Process all thumbnails and avatars
+const processedCards = await Promise.all(cards.map(async (card) => {
+  const thumbnail = await processImage(card.thumbnail, {
+    width: 1200,
+    height: 630,
+    text: `Thumbnail for: ${card.title}`
+  });
+
+  const avatar = await processImage(card.author.avatar, {
+    width: 100,
+    height: 100,
+    text: card.author.name.charAt(0),
+    bgColor: '1a1a1a',
+    textColor: 'ffffff'
+  });
+
+  return {
+    ...card,
+    thumbnail,
+    author: {
+      ...card.author,
+      avatar
+    }
+  };
+}));
+
+// Helper function to get grid class based on cards per row
+const getGridClass = (cardsPerRow: CardViewProps['cardsPerRow']) => {
+  const gridClasses = {
+    1: 'grid-cols-1',
+    2: 'grid-cols-1 sm:grid-cols-2',
+    3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+    4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+  };
+
+  return `grid gap-6 ${gridClasses[cardsPerRow]}`;
+};
+
+// Debug information
+const debugInfo = {
+  cardsPerRow,
+  totalCards: processedCards.length,
+  gridClass: getGridClass(cardsPerRow)
+};
+---
+
+<div>
+  <!-- Debug Panel -->
+  {import.meta.env.DEV && (
+    <div class="fixed top-4 right-4 z-50 bg-black/80 text-white p-4 rounded-lg shadow-lg backdrop-blur-sm">
+      <h3 class="text-sm font-semibold mb-2">CardView Debug</h3>
+      <pre class="text-xs whitespace-pre">
+        {JSON.stringify(debugInfo, null, 2)}
+      </pre>
+    </div>
+  )}
+
+  <!-- Cards Grid -->
+  <div class={getGridClass(cardsPerRow)}>
+    {processedCards.map(card => (
+      <article class="bg-neutral-800 rounded-xl overflow-hidden hover:bg-neutral-700/50 transition-all cursor-pointer group">
+        {card.thumbnail && (
+          <img 
+            src={getImageSrc(card.thumbnail.src)}
+            width={card.thumbnail.width}
+            height={card.thumbnail.height}
+            alt=""
+            class="w-full aspect-video object-cover"
+            loading="lazy"
+          />
+        )}
+
+        {/* Card Header - Author & Date */}
+        <div class="p-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            {card.author.avatar ? (
+              <img 
+                src={getImageSrc(card.author.avatar.src)} 
+                alt="" 
+                class="h-8 w-8 rounded-full"
+                width={card.author.avatar.width}
+                height={card.author.avatar.height}
+              />
+            ) : (
+              <div class="h-8 w-8 rounded-full bg-neutral-700 flex items-center justify-center text-neutral-400">
+                {card.author.name.charAt(0)}
+              </div>
+            )}
+            <div class="flex flex-col">
+              <span class="text-sm font-medium text-neutral-200">
+                {card.author.name}
+              </span>
+              <span class="text-xs text-neutral-400">
+                {card.date} • {card.readTime}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Card Content */}
+        <div class="p-4">
+          <h2 class="text-lg font-semibold text-neutral-100 group-hover:text-white mb-3">
+            {card.title}
+          </h2>
+
+          {/* Tags */}
+          <div class="flex flex-wrap gap-2 mb-4">
+            {card.tags.map(tag => (
+              <span class="px-2 py-0.5 text-xs bg-neutral-700 text-neutral-300 rounded-full">
+                #{tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Metrics */}
+          {card.metrics && (
+            <div class="flex items-center gap-4 text-neutral-400">
+              {card.metrics.likes && (
+                <div class="flex items-center gap-1">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"/>
+                  </svg>
+                  <span class="text-sm">{card.metrics.likes}</span>
+                </div>
+              )}
+              {card.metrics.comments && (
+                <div class="flex items-center gap-1">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+                  </svg>
+                  <span class="text-sm">{card.metrics.comments}</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </article>
+    ))}
+  </div>
+</div>
+
+<style>
+  .transition-all {
+    transition: all 0.2s ease-in-out;
+  }
+</style>

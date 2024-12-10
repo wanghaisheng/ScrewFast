@@ -42,9 +42,9 @@ interface Navlinks {
 }
 interface Props {
 
-strings: Navlinks;
+  items: Navlinks;
 }
-const { strings  } = processLiterals<Props>(Astro.props);
+const { items  } = processLiterals<Props>(Astro.props);
 
 
 import siteconfig from "@data/site.json";
@@ -126,7 +126,7 @@ const homeUrl = Astro.currentLocale === "fr" ? "/fr" : "/";
       >
         <!-- Navigation links and Authentication component -->
         {
-          strings.navBarLinks.map((link) => {
+          items.navBarLinks.map((link) => {
             if (link.name === "Services") {
               return <MegaMenuLink />;
             } else {

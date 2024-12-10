@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { SupportedLanguage } from "@/utils/base";
+import { formatDate } from "@/utils/utils";
+
+interface Props {
+  entry: CollectionEntry<'feed'>;
+  i18n: Record<string, string>;
+  lang: SupportedLanguage;
+}
+
+const { entry, i18n, lang } = Astro.props;
+const { data } = entry;
+---
+
+<article class="group relative bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+  {data.image && (
+    <div class="aspect-w-16 aspect-h-9">
+      <img
+        src={data.image}
+        alt={data.title}
+        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
+    </div>
+  )}
+  
+  <div class="p-6">
+    <h3 class="text-xl font-semibold mb-2">
+      <a href={`/${lang}/feed/${entry.slug}`} class="hover:text-primary-600">
+        {data.title}
+      </a>
+    </h3>
+    
+    <p class="text-gray-600 dark:text-gray-300 mb-4">
+      {data.description}
+    </p>
+    
+    <div class="flex items-center justify-between text-sm text-gray-500">
+      {data.date && (
+        <time datetime={data.date}>
+          {data.date}
+        </time>
+      )}
+      {data.metadata?.readTime && (
+        <span>{data.metadata.readTime} {i18n.readTimeLabel}</span>
+      )}
+    </div>
+  </div>
+</article>

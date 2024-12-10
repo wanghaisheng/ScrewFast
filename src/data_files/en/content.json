@@ -1,0 +1,21 @@
+{
+  "title": "Latest Articles",
+  "description": "Discover the latest articles and tutorials from our community",
+  "cards": [
+    {
+      "author": {
+        "name": "Clean Code Tips",
+        "avatar": "/images/authors/clean-code.jpg"
+      },
+      "title": "How to Write Clean Code – Tips for Developers with Examples",
+      "date": "Nov 06",
+      "readTime": "20m read time",
+      "tags": ["webdev"],
+      "metrics": {
+        "likes": 1600,
+        "comments": 51
+      },
+      "thumbnail": "/images/articles/clean-code.jpg"
+    }
+  ]
+}

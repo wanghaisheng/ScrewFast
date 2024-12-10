@@ -1,0 +1,122 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import type { GroupCardViewProps } from './types';
+import { processImage, getImageSrc } from '@utils/imageProcessing';
+
+interface Props extends GroupCardViewProps {}
+
+const { groups, cardsPerRow, showCategory = false } = processLiterals<Props>(Astro.props);
+
+// Process group icons
+const processedGroups = await Promise.all(groups.map(async (group) => ({
+  ...group,
+  processedIcon: await processImage(group.icon, {
+    width: 80,
+    height: 80,
+    text: group.name.charAt(0)
+  })
+})));
+
+// Helper function to get grid class based on cards per row
+const getGridClass = (cardsPerRow: Props['cardsPerRow']) => {
+  const gridClasses = {
+    1: 'grid-cols-1',
+    2: 'grid-cols-1 sm:grid-cols-2',
+    3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3',
+    4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+  };
+
+  return `grid gap-6 ${gridClasses[cardsPerRow]}`;
+};
+---
+
+<div class={getGridClass(cardsPerRow)}>
+  {processedGroups.map(group => (
+    <article class:list={[
+      "relative group rounded-xl overflow-hidden",
+      "bg-neutral-800/50 hover:bg-neutral-800",
+      "transition-all duration-200 ease-in-out",
+      { "ring-2 ring-primary-500 ring-offset-2 ring-offset-neutral-900": group.featured }
+    ]}>
+      <!-- Featured Badge -->
+      {group.featured && (
+        <div class="absolute top-3 right-3 px-2 py-1 text-xs font-medium bg-primary-500 text-white rounded-full">
+          Featured
+        </div>
+      )}
+
+      <div class="p-6">
+        <!-- Group Header -->
+        <div class="flex items-start gap-4 mb-4">
+          <div class="flex-shrink-0">
+            <img
+              src={getImageSrc(group.processedIcon.src)}
+              alt=""
+              width={40}
+              height={40}
+              class="rounded-lg bg-neutral-700"
+            />
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-xl font-semibold text-white truncate">
+              {group.name}
+            </h3>
+            {showCategory && group.category && (
+              <p class="text-sm text-neutral-400">
+                {group.category}
+              </p>
+            )}
+          </div>
+        </div>
+
+        <!-- Group Description -->
+        <p class="text-neutral-300 text-sm mb-6 line-clamp-2">
+          {group.description}
+        </p>
+
+        <!-- Member Count & Preview -->
+        <div class="flex items-center justify-between">
+          <div class="flex -space-x-2">
+            {group.members.slice(0, 4).map(member => (
+              <img
+                src={member.avatar}
+                alt=""
+                class="w-8 h-8 rounded-full border-2 border-neutral-800 bg-neutral-700"
+              />
+            ))}
+            {group.memberCount > 4 && (
+              <div class="w-8 h-8 rounded-full border-2 border-neutral-800 bg-neutral-700 flex items-center justify-center">
+                <span class="text-xs text-neutral-300">+{group.memberCount - 4}</span>
+              </div>
+            )}
+          </div>
+          <span class="text-sm text-neutral-400">
+            {group.memberCount.toLocaleString()} members
+          </span>
+        </div>
+
+        <!-- Join/View Button -->
+        <a
+          href={`/groups/${group.slug}`}
+          class:list={[
+            "mt-6 w-full inline-flex items-center justify-center px-4 py-2 rounded-lg",
+            "text-sm font-medium transition-colors",
+            "bg-neutral-700 hover:bg-neutral-600",
+            "text-white"
+          ]}
+        >
+          {group.featured ? 'Join Squad' : 'View Squad'}
+        </a>
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

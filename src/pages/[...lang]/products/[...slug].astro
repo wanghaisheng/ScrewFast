@@ -1,135 +1,70 @@
 ---
-// Import section components
 import MainLayout from "@/layouts/MainLayout.astro";
 import ProductTabBtn from "@components/ui/buttons/ProductTabBtn.astro";
 import PrimaryCTA from "@components/ui/buttons/PrimaryCTA.astro";
 import { Image } from "astro:assets";
 import { getCollection, type CollectionEntry } from "astro:content";
 import siteconfig from "@data/site.json";
+import type { SiteConfig } from '@/utils/base';
 
-// Type definitions
-interface SiteConfig {
-  supportedLangLabels: {
-    [key: string]: string;
-  };
-  SITE: {
-    title: string;
-    tagline: string;
-    description: string;
-    description_short: string;
-    url: string;
-    author: string;
-  };
-}
-
+// Props type definition
 interface Props {
-  params: {
-    lang: string;
-    slug: string;
-  };
-  props: {
-    product: CollectionEntry<"products">;
-  };
-}
-
-// Global declaration for gsap animation library
-declare global {
-  interface Window {
-    gsap: any;
-  }
-}
-
-// Language utility functions
-function getLanguageUtils(config: SiteConfig) {
-  return {
-    getSupportedLanguages: () => Object.keys(config.supportedLangLabels),
-    getLanguageLabel: (lang: string) => config.supportedLangLabels[lang],
-    isLanguageSupported: (lang: string) => lang in config.supportedLangLabels,
-    getDefaultLanguage: () => "en",
-  };
+  product: CollectionEntry<"products">;
+  lang: string;
 }
 
 // Get static paths for all products in all languages
 export async function getStaticPaths() {
-  const supportedLanguages = Object.keys(siteconfig.supportedLangLabels);
-  
-  const allProducts = await Promise.all(
-    supportedLanguages.map(async (lang) => {
-      const products = await getCollection("products", ({ id }) =>
-        id.startsWith(`${lang}/`)
-      );
-      return products.map((product) => {
-        const slugWithoutLang = product.slug.replace(`${lang}/`, "");
-        return {
-          params: {
-            lang,
-            slug: slugWithoutLang,
-          },
-          props: { 
-            product 
-          },
-        };
-      });
-    })
+  const allProducts = await getCollection("products");
+  const paths = Object.keys(siteconfig.supportedLangLabels).flatMap(lang => 
+    allProducts
+      .filter(product => product.id.startsWith(`${lang}/`))
+      .map(product => ({
+        params: {
+          lang,
+          slug: product.slug.replace(`${lang}/`, "")
+        },
+        props: {
+          product,
+          lang
+        }
+      }))
   );
-  const fallbackPaths = allProducts.flat().map((product) => ({
-    params: {
-      lang: undefined,
-      slug: product.params.slug,
-    },
-    redirect: `/${siteconfig.defaultlang}/products/${product.params.slug}/`,
-  }));
-  return [...allProducts.flat(), ...fallbackPaths];
 
-  // return allProducts.flat();
+  // Add fallback redirects for default language
+  const fallbackPaths = paths
+    .filter(path => path.params.lang === siteconfig.defaultlang)
+    .map(path => ({
+      params: {
+        lang: undefined,
+        slug: path.params.slug
+      },
+      redirect: `/${siteconfig.defaultlang}/products/${path.params.slug}/`
+    }));
+  return [...paths, ...fallbackPaths];
 }
+const { lang } = Astro.props;
 
+// Component props
+const { slug } = Astro.params;
 
-// Component logic
-const { lang = "en", slug } = Astro.params;
-const currentLang = lang || "en";
+// Get navigation data
+const navlinkData = await import(`../../../data_files/${lang}/nav.json`);
+const products = await getCollection("products");
+const product = products.find(p => p.slug === `${lang}/${slug}`);
 
-// Validate language
-const langUtils = getLanguageUtils(siteconfig as SiteConfig);
-if (!langUtils.isLanguageSupported(currentLang)) {
-  return Astro.redirect(`/${langUtils.getDefaultLanguage()}/404`);
-}
-
-// Get navigation data and product information
-const navlinkData = await import(`../../../data_files/${currentLang}/nav.json`);
-
-
-const allProducts = await getCollection("products", ({ id }) =>
-id.startsWith(`${currentLang}/`)
-);
-
-const product = allProducts.find((prod) => prod.slug === `${currentLang}/${slug}`);
-
-interface Props {
-  params: {
-    lang: string;
-    slug: string;
-  };
-  props: {
-    product: CollectionEntry<"products">; // Add the product type here
-  };
-}
-
-// Accessing product safely
-// const { product } = Astro.props;
-
+// Set page title
+const pageTitle = product && `${product.data.title} | ${siteconfig.SITE.title}`;
 if (!product) {
-  return Astro.redirect(`/404`);
+  return Astro.redirect(`/${lang}/404`);
 }
-if (!product) {
-  return Astro.redirect(`/404`);
-}
-console.log('=======',product)
 
-const pageTitle: string = `${product.data.title} | ${siteconfig.SITE.title}`;
+
+
 ---
 
 <MainLayout
+  lang={lang}
   navdata={navlinkData}
   supportedLangLabels={siteconfig.supportedLangLabels}
   title={pageTitle}
@@ -334,7 +269,6 @@ const pageTitle: string = `${product.data.title} | ${siteconfig.SITE.title}`;
   </div>
 </MainLayout>
 
-  
 <script>
   import { gsap } from "gsap";
 

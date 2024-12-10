@@ -1,0 +1,121 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import { processImage, getImageSrc } from "@utils/imageProcessing";
+import { Image } from "astro:assets";
+import OptimizedImage from '@components/OptimizedImage.astro';
+
+interface Props {
+  title: string;
+  content: string;
+  image?: string;
+}
+
+const { title, content, image } = processLiterals<Props>(Astro.props);
+
+// Early return if no image
+if (!image) return null;
+
+// Process image with error handling
+const processedImage = await processImage(image).catch(() => null);
+if (!processedImage) return null;
+
+// Get image source
+const imageSrc = getImageSrc(processedImage.src);
+---
+
+<section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
+  <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+    <!-- Content -->
+    <div 
+      class="prose dark:prose-invert max-w-none"
+      data-aos="fade-right"
+      data-aos-duration="1000"
+    >
+      <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+        {title}
+      </h2>
+      <div class="mt-4 text-neutral-600 dark:text-neutral-400">
+        {content}
+      </div>
+    </div>
+
+    <!-- Image -->
+    <div 
+      class="relative"
+      data-aos="fade-left"
+      data-aos-duration="1000"
+    >
+      <OptimizedImage
+        src={imageSrc}
+        alt={title}
+        class="rounded-lg shadow-lg w-full transition-transform duration-300 hover:scale-105"
+        width={processedImage.width}
+        height={processedImage.height}
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Loading state */
+  .relative:not(:has(img)) {
+    @apply bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg;
+    aspect-ratio: 16/9;
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    img {
+      @apply transition-none transform-none;
+    }
+  }
+
+  /* Dark mode adjustments */
+  :global(.dark) .prose {
+    @apply prose-invert;
+  }
+
+  /* Optional: Add gradient background */
+  section {
+    position: relative;
+    overflow: hidden;
+  }
+
+  section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.03) 100%);
+    pointer-events: none;
+  }
+
+  :global(.dark) section::before {
+    background: radial-gradient(circle at center, transparent 0%, rgba(255,255,255,0.03) 100%);
+  }
+</style>
+
+<script>
+  // Optional: Add intersection observer for lazy loading
+  const images = document.querySelectorAll('img[loading="lazy"]');
+  
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
+          img.classList.remove('opacity-0');
+          observer.unobserve(img);
+        }
+      });
+    });
+
+    images.forEach(img => {
+      img.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+      imageObserver.observe(img);
+    });
+  }
+</script>

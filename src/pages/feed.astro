@@ -1,0 +1,47 @@
+---
+import PageContent from "./[...lang]/feed.astro";
+import siteconfig from "@data/site.json";
+import type { SupportedLanguage } from "@/utils/base";
+import { getCollection } from "astro:content";
+
+// Get default language with fallback
+const defaultLang = (siteconfig.defaultlang || 'en') as SupportedLanguage;
+
+// Get language from props with type safety
+const { lang = defaultLang } = Astro.props;
+
+// Validate language
+const isValidLang = siteconfig.supportedLanguages.includes(lang as SupportedLanguage);
+if (!isValidLang) {
+  console.warn(`Invalid language "${lang}", falling back to ${defaultLang}`);
+}
+
+// Get all feed entries for the current language
+const entries = await getCollection('feed', (entry) => {
+  // Filter out drafts in production
+  if (import.meta.env.PROD && entry.data.draft) {
+    return false;
+  }
+  // Filter by language
+  return entry.id.startsWith(`${isValidLang ? lang : defaultLang}/`);
+});
+
+console.log(`[Feed Root] Resolved language: ${isValidLang ? lang : defaultLang}`);
+console.log(`[Feed Root] Found ${entries.length} entries`);
+---
+
+<PageContent 
+  lang={isValidLang ? lang : defaultLang} 
+  entries={entries}
+/>
+
+<script>
+  // Optional: Track page views or handle client-side functionality
+  document.addEventListener('astro:page-load', () => {
+    console.log('Feed page loaded');
+  });
+</script>
+
+<style>
+  /* Add any global feed styles here */
+</style>

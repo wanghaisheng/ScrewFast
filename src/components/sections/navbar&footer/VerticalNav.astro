@@ -1,0 +1,199 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import type { MenuItem } from './types';
+import Icon from "@components/ui/icons/Icon.astro";
+
+interface Props {
+  items: MenuItem[];
+  currentPath: string;
+}
+
+const { items, currentPath } = processLiterals<Props>(Astro.props);
+
+// Group items by category
+const categories = items.reduce((acc, item) => {
+  const category = item.category || 'Other';
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(item);
+  return acc;
+}, {} as Record<string, MenuItem[]>);
+
+// Helper function to check if path is active
+const isActivePath = (path: string) => {
+  if (path === '/') return currentPath === path;
+  return currentPath.startsWith(path);
+};
+---
+
+<!-- Mobile Menu Toggle -->
+<button
+  type="button"
+  class="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-neutral-800 text-white hover:bg-neutral-700"
+  aria-label="Toggle menu"
+  data-hs-overlay="#mobile-menu"
+>
+  <svg
+    class="w-6 h-6"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M4 6h16M4 12h16M4 18h16"
+    />
+  </svg>
+</button>
+
+<!-- Desktop Navigation -->
+<div class="hidden lg:block fixed left-0 top-0 bottom-0 w-64 bg-[#151618] border-r border-neutral-800">
+  <div class="flex flex-col h-full">
+    <!-- Logo Section -->
+    <div class="h-16 flex items-center px-4 border-b border-neutral-800">
+      <a href="/" class="text-white font-bold text-xl">Logo</a>
+    </div>
+
+    <!-- Navigation Menu -->
+    <div class="flex-1 overflow-y-auto">
+      {Object.entries(categories).map(([category, categoryItems]) => (
+        <div class="py-4">
+          <div class="px-4 mb-2">
+            <h3 class="text-sm font-medium text-neutral-500">{category}</h3>
+          </div>
+          <div class="space-y-1">
+            {categoryItems.map(item => (
+              <div class="px-2">
+                <a
+                  href={item.href}
+                  class:list={[
+                    "flex items-center gap-3 px-2 py-2 rounded-lg text-sm",
+                    {
+                      "bg-primary-500/10 text-primary-500": isActivePath(item.href),
+                      "text-neutral-300 hover:bg-neutral-800/50 hover:text-white": !isActivePath(item.href)
+                    }
+                  ]}
+                >
+                  {item.icon && <Icon name={item.icon} class="w-5 h-5 flex-shrink-0" />}
+                  <span class="flex-1">{item.label}</span>
+                  {item.badge && (
+                    <span class:list={[
+                      "px-2 py-0.5 text-xs rounded-full",
+                      item.badge.variant === 'primary' ? 'bg-primary-500 text-white' :
+                      'bg-neutral-700 text-neutral-300'
+                    ]}>
+                      {item.badge.text}
+                    </span>
+                  )}
+                </a>
+                {item.submenu && (
+                  <div class="ml-7 mt-1 space-y-1 border-l border-neutral-800 pl-4">
+                    {/* Submenu items */}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Navigation Overlay -->
+<div
+  id="mobile-menu"
+  class="hs-overlay hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform fixed top-0 start-0 bottom-0 z-[60] w-64 bg-[#151618] border-r border-neutral-800 lg:hidden"
+  tabindex="-1"
+>
+  <div class="flex flex-col h-full">
+    <!-- Mobile Header -->
+    <div class="flex justify-between items-center py-3 px-4 border-b border-neutral-800">
+      <h3 class="font-bold text-white">Menu</h3>
+      <button
+        type="button"
+        class="inline-flex flex-shrink-0 justify-center items-center h-8 w-8 rounded-lg text-neutral-500 hover:text-neutral-400"
+        data-hs-overlay="#mobile-menu"
+      >
+        <span class="sr-only">Close menu</span>
+        <svg
+          class="w-4 h-4"
+          width="8"
+          height="8"
+          viewBox="0 0 8 8"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0.258206 1.00652C0.351976 0.912791 0.479126 0.860131 0.611706 0.860131C0.744296 0.860131 0.871447 0.912791 0.965207 1.00652L3.61171 3.65302L6.25822 1.00652C6.30432 0.958771 6.35952 0.920671 6.42052 0.894471C6.48152 0.868271 6.54712 0.854471 6.61352 0.853901C6.67992 0.853321 6.74572 0.865971 6.80722 0.891111C6.86862 0.916251 6.92442 0.953381 6.97142 1.00032C7.01832 1.04727 7.05552 1.1031 7.08062 1.16454C7.10572 1.22599 7.11842 1.29183 7.11782 1.35822C7.11722 1.42461 7.10342 1.49022 7.07722 1.55122C7.05102 1.61222 7.01292 1.6674 6.96522 1.71352L4.31871 4.36002L6.96522 7.00648C7.05632 7.10078 7.10672 7.22708 7.10552 7.35818C7.10442 7.48928 7.05182 7.61468 6.95912 7.70738C6.86642 7.80018 6.74102 7.85268 6.60992 7.85388C6.47882 7.85498 6.35252 7.80458 6.25822 7.71348L3.61171 5.06702L0.965207 7.71348C0.870907 7.80458 0.744606 7.85498 0.613506 7.85388C0.482406 7.85268 0.357007 7.80018 0.264297 7.70738C0.171597 7.61468 0.119017 7.48928 0.117877 7.35818C0.116737 7.22708 0.167126 7.10078 0.258206 7.00648L2.90471 4.36002L0.258206 1.71352C0.164476 1.61976 0.111816 1.4926 0.111816 1.36002C0.111816 1.22744 0.164476 1.10028 0.258206 1.00652Z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Content -->
+    <div class="overflow-y-auto flex-1">
+      {Object.entries(categories).map(([category, categoryItems]) => (
+        <div class="py-4">
+          <div class="px-4 mb-2">
+            <h3 class="text-sm font-medium text-neutral-500">{category}</h3>
+          </div>
+          <div class="space-y-1">
+            {categoryItems.map(item => (
+              <div class="px-2">
+                <a
+                  href={item.href}
+                  class:list={[
+                    "flex items-center gap-3 px-2 py-2 rounded-lg text-sm",
+                    {
+                      "bg-primary-500/10 text-primary-500": isActivePath(item.href),
+                      "text-neutral-300 hover:bg-neutral-800/50 hover:text-white": !isActivePath(item.href)
+                    }
+                  ]}
+                >
+                  {item.icon && <Icon name={item.icon} class="w-5 h-5 flex-shrink-0" />}
+                  <span class="flex-1">{item.label}</span>
+                  {item.badge && (
+                    <span class:list={[
+                      "px-2 py-0.5 text-xs rounded-full",
+                      item.badge.variant === 'primary' ? 'bg-primary-500 text-white' :
+                      'bg-neutral-700 text-neutral-300'
+                    ]}>
+                      {item.badge.text}
+                    </span>
+                  )}
+                </a>
+                {item.submenu && (
+                  <div class="ml-7 mt-1 space-y-1 border-l border-neutral-800 pl-4">
+                    {/* Submenu items */}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<!-- Overlay Backdrop -->
+<div
+  class="hs-overlay-backdrop transition-all duration-300 fixed top-0 start-0 end-0 bottom-0 bg-black/80 opacity-0 hidden z-[59] hs-overlay-backdrop-open:opacity-100 hs-overlay-backdrop-open:block lg:hidden"
+  data-hs-overlay="#mobile-menu"
+></div>
+
+<style>
+  /* Hide scrollbar but maintain functionality */
+  .overflow-y-auto {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .overflow-y-auto::-webkit-scrollbar {
+    display: none;
+  }
+</style>

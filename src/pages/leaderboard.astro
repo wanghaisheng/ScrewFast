@@ -1,0 +1,14 @@
+---
+import PageContent from "./[...lang]/leaderboard.astro";
+import siteconfig from "@data/site.json";
+let defaultLang = siteconfig.defaultlang;
+
+if (!defaultLang) {
+    defaultLang = 'en'
+}
+
+const { lang = defaultLang } = Astro.props;
+console.log("leaderboard root Resolved language:", lang);
+---
+
+<PageContent lang={lang} />

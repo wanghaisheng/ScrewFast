@@ -1,8 +1,7 @@
 ---
-import type { ProductComparison } from '@/types/product-comparison';
-
+import type { ComparisonData } from '@/types/comparison';
 interface Props {
-  comparison: ProductComparison;
+  comparison: ComparisonData;
   id?: string;
 }
 
@@ -12,42 +11,33 @@ const { comparison, id = 'product-comparison' } = Astro.props;
 <section class="comparison-section dark:text-neutral-200" id={id}>
   <div class="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
     <div class="comparison-content max-w-7xl mx-auto">
-      {comparison.groups.map(group => (
-        <div class="comparison-group mb-12 last:mb-0">
-          <h3 class="group-title text-2xl font-bold mb-6 text-neutral-900 dark:text-neutral-200 border-b pb-4">
-            {group.title}
-          </h3>
-          <div class="specs-table dark:text-neutral-300">
-            {group.specs.map(spec => (
-              <div class="spec-row grid gap-4 mb-6 last:mb-0">
-                <div class="spec-key w-full  p-4 rounded-lg">
-                  <h4 class="text-sm font-medium">
-                    {spec.key}
-                  </h4>
-                </div>
-                <div class="spec-values grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {spec.values.map((value, index) => (
-                    <div class="spec-value  p-4 rounded-lg">
-                      <div class="text-sm text-neutral-900 dark:text-neutral-400 whitespace-pre-line">
-                        {value.split('\n').map((line, i) => (
-                          <Fragment>
-                            {i > 0 && <br />}
-                            {line.startsWith('<sup>') ? (
-                              <sup class="text-xs text-neutral-500">{line.replace('<sup>', '').replace('</sup>', '')}</sup>
-                            ) : (
-                              line
-                            )}
-                          </Fragment>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead>
+            <tr>
+              {comparison.headers.map(header => (
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+            {comparison.features.map(feature => (
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                  {feature.name}
+                </td>
+                {feature.values.map(value => (
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    {value}
+                  </td>
+                ))}
+              </tr>
             ))}
-          </div>
-        </div>
-      ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>

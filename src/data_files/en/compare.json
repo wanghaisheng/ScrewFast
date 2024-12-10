@@ -1,0 +1,25 @@
+{
+  "title": "Product Comparison",
+  "description": "Compare features and specifications across our product lines",
+  "categoryLabels": {
+    "earbuds": "Earbuds",
+    "drones": "Drones",
+    "accessories": "Accessories"
+  },
+  "selectProducts": "Select products to compare",
+  "features": {
+    "driver": "Driver Type",
+    "anc": "Active Noise Cancellation",
+    "battery": "Battery Life",
+    "flightTime": "Flight Time",
+    "range": "Operating Range",
+    "camera": "Camera Resolution",
+    "weight": "Weight",
+    "dimensions": "Dimensions",
+    "connectivity": "Connectivity",
+    "controls": "Controls"
+  },
+  "compareButton": "Compare Selected",
+  "clearSelection": "Clear Selection",
+  "noProducts": "No products available in this category"
+}

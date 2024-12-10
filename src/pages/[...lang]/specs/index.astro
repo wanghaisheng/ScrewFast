@@ -1,0 +1,146 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import MainSection from '@/components/sections/main/HeroSection.astro';
+import { getCollection, type CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import siteconfig from "@data/site.json";
+
+interface Props {
+  specs: CollectionEntry<'specs'>[];
+  lang: string;
+}
+
+// Generate static paths for all supported languages
+export async function getStaticPaths() {
+  const allSpecs = await getCollection('specs');
+  
+  return siteconfig.supportedLanguages.map(lang => ({
+    params: { lang },
+    props: { 
+      specs: allSpecs.filter(spec => spec.id.startsWith(`${lang}/`)),
+      lang 
+    }
+  }));
+}
+
+const { specs, lang } = Astro.props;
+
+// Load navigation data
+const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
+  .catch(() => ({ nav: [] }));
+
+// Load localized strings
+const { default: i18n } = await import(`../../../data_files/${lang}/specs.json`)
+  .catch(() => ({ 
+    title: "Product Specifications",
+    description: "Technical specifications for all our products",
+    categoryLabels: {},
+    viewSpecs: "View Specifications",
+    compareProducts: "Compare Products"
+  }));
+
+// Group products by category
+const productsByCategory = specs.reduce((acc, spec) => {
+  const category = spec.data.category;
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(spec);
+  return acc;
+}, {} as Record<string, CollectionEntry<'specs'>[]>);
+
+// Set page title
+const pageTitle = `${i18n.title} | ${siteconfig.SITE.title}`;
+---
+
+<MainLayout
+  lang={lang}
+  navdata={navlinkData}
+  supportedLangLabels={siteconfig.supportedLangLabels}
+  title={pageTitle}
+  meta={i18n.description}
+
+>
+  <MainSection 
+    title={i18n.title}
+    subTitle={i18n.description}
+  />
+
+  <!-- Category Sections -->
+  {Object.entries(productsByCategory).map(([category, products]) => (
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-16">
+      <h2 class="text-2xl font-bold mb-8 dark:text-white">
+        {i18n.categoryLabels[category] || category}
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {products.map(product => (
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+            {product.data.image && (
+              <div class="aspect-w-16 aspect-h-9">
+                <Image
+                  src={product.data.image}
+                  alt={product.data.title}
+                  width={600}
+                  height={338}
+                  class="object-cover w-full h-full"
+                />
+              </div>
+            )}
+
+            <div class="p-6">
+              <h3 class="text-xl font-semibold mb-2 dark:text-white">
+                {product.data.title}
+              </h3>
+              
+              <p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                {product.data.description}
+              </p>
+
+              <!-- Key Specs Preview -->
+              <div class="mb-6 space-y-2">
+                {product.data.keySpecs?.map(spec => (
+                  <div class="flex justify-between text-sm">
+                    <span class="text-gray-500 dark:text-gray-400">{spec.label}</span>
+                    <span class="font-medium dark:text-gray-300">{spec.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex gap-4">
+                <a
+                  href={`/${lang}/specs/${product.slug.replace(`${lang}/`, '')}`}
+                  class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                >
+                  {i18n.viewSpecs}
+                </a>
+                <a
+                  href={`/${lang}/compare#${product.data.productId}`}
+                  class="flex-1 inline-flex justify-center items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                >
+                  {i18n.compareProducts}
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+</MainLayout>
+
+<style>
+  .aspect-w-16 {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+  }
+
+  .aspect-w-16 img {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+  }
+</style>

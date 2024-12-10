@@ -1,0 +1,20 @@
+{
+  "title": "产品规格",
+  "description": "所有产品的详细技术规格",
+  "categoryLabels": {
+    "earbuds": "无线耳机",
+    "drones": "无人机及配件",
+    "accessories": "配件"
+  },
+  "viewSpecs": "查看规格",
+  "compareProducts": "对比产品",
+  "featuredLabel": "精选产品",
+  "newLabel": "新品",
+  "filters": {
+    "title": "筛选产品",
+    "categories": "类别",
+    "features": "功能",
+    "clearAll": "清除全部"
+  },
+  "noProducts": "未找到符合条件的产品"
+}

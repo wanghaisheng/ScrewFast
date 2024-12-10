@@ -1,7 +1,7 @@
 ---
 import { processLiterals } from '@utils/literalProcessor';
 import { Image } from "astro:assets";
-import { processImage } from "@utils/imageProcessing";
+import { processImage, type ProcessedImage, getImageSrc } from "@utils/imageProcessing";
 import OptimizedImage from '@components/OptimizedImage.astro';
 
 interface Value {
@@ -19,6 +19,20 @@ interface Props {
 }
 
 const { title, subtitle, values } = processLiterals<Props>(Astro.props);
+
+// Process all images
+const processedValues = await Promise.all(
+  values.map(async (value) => ({
+    ...value,
+    processedImage: await processImage(value.image, {
+      width: 800,
+      height: 600, // 4:3 aspect ratio
+      text: value.imageAlt,
+      bgColor: 'f7f6f6',
+      textColor: '6d6e71'
+    })
+  }))
+);
 ---
 
 <section class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
@@ -34,38 +48,114 @@ const { title, subtitle, values } = processLiterals<Props>(Astro.props);
 
   <!-- Values -->
   <div class="space-y-20">
-    {values.map((value) => {
-      const processedImage = processImage(value.image);
-      return (
-        <div class={`flex flex-col gap-8 items-center ${
-          value.imagePosition === "right" ? "lg:flex-row" : "lg:flex-row-reverse"
-        }`}>
-          {/* Image Section */}
-          <div class="w-full lg:w-1/2">
-            <div class="relative aspect-[4/3] overflow-hidden rounded-xl">
-              {processedImage && (
-                <OptimizedImage
-                  src={processedImage}
-                  alt={value.imageAlt}
-                  class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                  width={processedImage.width}
-                  height={processedImage.height}
-                />
-              )}
-            </div>
-          </div>
-
-          {/* Content Section */}
-          <div class="w-full lg:w-1/2 lg:px-12">
-            <h3 class="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
-              {value.title}
-            </h3>
-            <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed">
-              {value.description}
-            </p>
+    {processedValues.map((value, index) => (
+      <div 
+        class:list={[
+          "flex flex-col gap-8 items-center",
+          value.imagePosition === "right" ? "lg:flex-row" : "lg:flex-row-reverse",
+          "opacity-0 translate-y-8"
+        ]}
+        data-aos="fade-up"
+        data-aos-delay={index * 200}
+      >
+        {/* Image Section */}
+        <div class="w-full lg:w-1/2">
+          <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-neutral-100 dark:bg-neutral-800">
+            {value.processedImage && (
+              <OptimizedImage
+                src={getImageSrc(value.processedImage.src)}
+                alt={value.imageAlt}
+                width={value.processedImage.width}
+                height={value.processedImage.height}
+                format={value.processedImage.format}
+                class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+            )}
           </div>
         </div>
-      );
-    })}
+
+        {/* Content Section */}
+        <div class="w-full lg:w-1/2 lg:px-12">
+          <h3 class="text-2xl font-bold text-neutral-800 dark:text-neutral-200 mb-4">
+            {value.title}
+          </h3>
+          <p class="text-lg text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            {value.description}
+          </p>
+        </div>
+      </div>
+    ))}
   </div>
 </section>
+
+<script>
+  // Initialize AOS (Animate On Scroll)
+  import AOS from 'aos';
+  import 'aos/dist/aos.css';
+
+  const initAOS = () => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-cubic'
+    });
+  };
+
+  // Initialize on page load
+  document.addEventListener('astro:page-load', initAOS);
+</script>
+
+<style>
+  /* Base animations */
+  [data-aos] {
+    transition-property: opacity, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.8s;
+  }
+
+  [data-aos="fade-up"] {
+    transform: translateY(2rem);
+    opacity: 0;
+  }
+
+  [data-aos="fade-up"].aos-animate {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Image hover effect */
+  .aspect-[4/3] {
+    position: relative;
+    padding-bottom: 75%; /* 4:3 aspect ratio */
+  }
+
+  .aspect-[4/3] img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    .space-y-20 > div {
+      margin-bottom: 4rem;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    [data-aos] {
+      transition: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    .hover\:scale-105:hover {
+      transform: none !important;
+    }
+  }
+</style>

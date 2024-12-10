@@ -1,51 +1,53 @@
 {
-    "navBarLinks": [
-      { "name": "Home", "url": "/" },
-      { "name": "Products", "url": "/products" },
-      { "name": "Collections", "url": "/collections" },
-
-      { "name": "Services", "url": "/services" },
-      { "name": "Blog", "url": "/blog" },
-      { "name": "Contact", "url": "/contact" }
-    ],
-    "footerLinks": [
-      {
-        "section": "Ecosystem",
-        "links": [
-          { "name": "Documentation", "url": "/welcome-to-docs/" },
-          { "name": "Tools & Equipment", "url": "/products" },
-          { "name": "Construction Services", "url": "/services" }
-        ]
-      },
-      {
-        "section": "Company",
-        "links": [
-          { "name": "About us", "url": "/about" },
-          { "name": "Blog", "url": "/blog" },
-          { "name": "Careers", "url": "#" },
-          { "name": "Customers", "url": "#" }
-        ]
-      }
-    ],
-    "socialLinks": {
-      "facebook": "https://www.facebook.com/",
-      "x": "https://twitter.com/",
-      "github": "https://github.com/mearashadowfax/AstroProductFast",
-      "google": "https://www.google.com/",
-      "slack": "https://slack.com/"
+  "navBarLinks": [
+    { "name": "Home", "url": "/" },
+    { "name": "Products", "url": "/products" },
+    { "name": "Collections", "url": "/collections" },
+    { "name": "Services", "url": "/services" },
+    { "name": "Blog", "url": "/blog" },
+    { "name": "Contact", "url": "/contact" }
+  ],
+  "footerLinks": [
+    {
+      "section": "Ecosystem",
+      "links": [
+        { "name": "Documentation", "url": "/welcome-to-docs/" },
+        { "name": "Tools & Equipment", "url": "/products" },
+        { "name": "Construction Services", "url": "/services" }
+      ]
     },
-    "emailsub":{
-      "section":  "Stay up to date"      ,
-      "content":  "Stay updated with the latest tools and exclusive deals."      ,
-      "label":"Search",
-      "title":"Subscribe",
-      "placeholder":"Enter your email"
-    },
-    "powerBy":{
-      "text":"AstroProductFast.Powered by",
-      "link":"https://borninsea.com",
-      "linkText":"borninsea"
+    {
+      "section": "Company",
+      "links": [
+        { "name": "About us", "url": "/about" },
+        { "name": "Blog", "url": "/blog" },
+        { "name": "Careers", "url": "#" },
+        { "name": "Customers", "url": "#" }
+      ]
     }
+  ],
+  "socialLinks": {
+    "facebook": "https://www.facebook.com/",
+    "x": "https://twitter.com/",
+    "github": "https://github.com/mearashadowfax/AstroProductFast",
+    "google": "https://www.google.com/",
+    "slack": "https://slack.com/"
+  },
+  "emailsub": {
+    "section": "Stay up to date",
+    "content": "Stay updated with the latest tools and exclusive deals.",
+    "label": "Search",
+    "title": "Subscribe",
+    "placeholder": "Enter your email"
+  },
+  "powerBy": {
+    "text": "AstroProductFast.Powered by",
+    "link": "https://borninsea.com",
+    "linkText": "borninsea"
+  },
+  "config": {
+    "type": "navbar",
+    "defaultType": "navbar",
+    "allowedTypes": ["navbar", "mega", "vertical"]
   }
-
-  
+}

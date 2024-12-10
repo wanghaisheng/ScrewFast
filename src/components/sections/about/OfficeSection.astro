@@ -1,7 +1,7 @@
 ---
 import { processLiterals } from '@utils/literalProcessor';
 import { Image } from "astro:assets";
-import { processImage } from "@utils/imageProcessing";
+import { processImage, type ProcessedImage, getImageSrc } from "@utils/imageProcessing";
 import OptimizedImage from '@components/OptimizedImage.astro';
 
 interface OfficeImage {
@@ -18,61 +18,65 @@ interface Props {
 
 const { title, description, images } = processLiterals<Props>(Astro.props);
 
-const processedImages = images
-  .map(image => ({
-    ...image,
-    processed: processImage(image.src)
-  }))
-  .filter(image => image.processed !== null);
+// Process images with proper async handling
+const processedImages = await Promise.all(
+  images.map(async (image) => {
+    const processed = await processImage(image.src, {
+      width: 800,
+      height: 450, // 16:9 aspect ratio
+      text: image.alt,
+      bgColor: 'f7f6f6',
+      textColor: '6d6e71'
+    });
+    
+    return processed ? {
+      ...image,
+      processed
+    } : null;
+  })
+).then(results => results.filter((result): result is { 
+  src: string; 
+  alt: string; 
+  caption: string; 
+  processed: ProcessedImage; 
+}  => result !== null));
 ---
 
 <section class="w-full bg-neutral-100 dark:bg-neutral-900">
   <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 2xl:max-w-full">
-  <div class="mx-auto max-w-2xl text-center mb-10">
-    <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
-      {title}
-    </h2>
-    <p class="mt-4 text-neutral-600 dark:text-neutral-400">
-      {description}
-    </p>
+    <div class="mx-auto max-w-2xl text-center mb-10">
+      <h2 class="text-3xl font-bold text-neutral-800 dark:text-neutral-200">
+        {title}
+      </h2>
+      <p class="mt-4 text-neutral-600 dark:text-neutral-400">
+        {description}
+      </p>
+    </div>
   </div>
-        </div>
 
-  <!-- 滑块区域 - 全屏宽度背景 -->
+  <!-- Slider Section - Full Width Background -->
   <div class="w-full bg-neutral-100 dark:bg-neutral-900">
     <div class="swiper office-slider">
       <div class="swiper-wrapper">
-        {processedImages.map(image => {
-          const isRemoteImage = typeof image.processed?.src === 'string';
-          return (
-            <div class="swiper-slide flex justify-center">
-              <div class="relative w-full max-w-[800px] aspect-[16/9] overflow-hidden rounded-lg">
-                {isRemoteImage ? (
-                  <OptimizedImage
-                    src={image.processed}
-                    alt={image.alt}
-                    class="w-full h-full object-cover"
-                    width={image.processed?.width}
-                    height={image.processed?.height}
-                  />
-                ) : (
-                  <OptimizedImage
-                    src={image.processed}
-                    alt={image.alt}
-                    class="w-full h-full object-cover"
-                    width={image.processed?.width}
-                    height={image.processed?.height}
-                  />
-                )}
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
-                  <p class="p-6 text-white text-lg font-medium">
-                    {image.caption}
-                  </p>
-      </div>
-    </div>
-  </div>
-          );
-        })}
+        {processedImages.map(image => (
+          <div class="swiper-slide flex justify-center">
+            <div class="relative w-full max-w-[800px] aspect-[16/9] overflow-hidden rounded-lg">
+              <OptimizedImage
+                src={getImageSrc(image.processed.src)}
+                alt={image.alt}
+                width={image.processed.width}
+                height={image.processed.height}
+                format={image.processed.format}
+                class="w-full h-full object-cover transition-transform duration-300"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+                <p class="p-6 text-white text-lg font-medium">
+                  {image.caption}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
       
       <!-- Navigation buttons -->
@@ -91,36 +95,55 @@ const processedImages = images
 <script>
   import Swiper from 'swiper/bundle';
   import 'swiper/css/bundle';
-  // 初始化 Swiper
-  new Swiper('.office-slider', {
-    // 基本配置
-    slidesPerView: 'auto',
-    centeredSlides: true,
-    spaceBetween: 30,
-    loop: true,
-    
-    // 自动播放
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
-    
-    // 导航按钮
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    
-    // 分页器
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
-  });
+
+  // Initialize Swiper
+  const initSwiper = () => {
+    new Swiper('.office-slider', {
+      // Basic configuration
+      slidesPerView: 'auto',
+      centeredSlides: true,
+      spaceBetween: 30,
+      loop: true,
+      
+      // Autoplay
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+      },
+      
+      // Navigation
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      
+      // Pagination
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      
+      // Responsive breakpoints
+      breakpoints: {
+        640: {
+          spaceBetween: 20,
+        },
+        768: {
+          spaceBetween: 30,
+        },
+        1024: {
+          spaceBetween: 40,
+        },
+      },
+    });
+  };
+
+  // Initialize when the document is ready
+  document.addEventListener('astro:page-load', initSwiper);
 </script>
 
 <style>
-  /* 自定义 Swiper 样式 */
+  /* Swiper Custom Styles */
   .swiper {
     padding: 2rem 0 4rem 0;
   }
@@ -128,6 +151,7 @@ const processedImages = images
   .swiper-slide {
     width: auto;
     max-width: 800px;
+    transition: transform 0.3s ease;
   }
 
   :root {
@@ -142,6 +166,13 @@ const processedImages = images
     height: 3rem;
     border-radius: 50%;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .swiper-button-next:hover,
+  .swiper-button-prev:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 8px -1px rgb(0 0 0 / 0.2);
   }
 
   .swiper-button-next::after,
@@ -152,29 +183,30 @@ const processedImages = images
   .swiper-pagination-bullet {
     width: 10px;
     height: 10px;
+    transition: transform 0.2s ease;
+  }
+
+  .swiper-pagination-bullet:hover {
+    transform: scale(1.2);
   }
 
   .swiper-pagination-bullet-active {
     background-color: #f97316;
   }
 
-  /* 深色模式样式 */
+  /* Dark Mode Styles */
   :global(.dark) .swiper-button-next,
   :global(.dark) .swiper-button-prev {
     background-color: #1f2937;
     color: #f97316;
   }
 
-  /* 悬停效果 */
-  .swiper-slide {
-    transition: transform 0.3s ease;
-  }
-
+  /* Hover Effects */
   .swiper-slide:hover {
     transform: scale(1.02);
   }
 
-  /* 移动端优化 */
+  /* Mobile Optimization */
   @media (max-width: 640px) {
     .swiper-button-next,
     .swiper-button-prev {
@@ -185,6 +217,16 @@ const processedImages = images
     .swiper-button-next::after,
     .swiper-button-prev::after {
       font-size: 1rem;
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .swiper-slide,
+    .swiper-button-next,
+    .swiper-button-prev,
+    .swiper-pagination-bullet {
+      transition: none;
     }
   }
 </style>

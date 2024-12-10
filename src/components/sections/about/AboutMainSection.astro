@@ -1,76 +1,101 @@
 ---
 import { processLiterals } from '@utils/literalProcessor';
 import { Image } from "astro:assets";
-import { processImage,getImageSrc } from "@utils/imageProcessing";
-import OptimizedImage  from '@/components/OptimizedImage.astro';
+import { processImage, getImageSrc, type ProcessedImage } from "@utils/imageProcessing";
+import OptimizedImage from '@/components/OptimizedImage.astro';
+
+interface Stat {
+  number: string;
+  label: string;
+}
 
 interface Props {
   title: string;
   subTitle: string;
   description: string;
-  stats: {
-    number: string;
-    label: string;
-  }[];
+  stats: Stat[];
   backgroundImage: string;
   backgroundImageMobile: string;
 }
 
-const { 
-  title, 
-  subTitle, 
+const {
+  title,
+  subTitle,
   description,
   stats,
   backgroundImage,
-  backgroundImageMobile 
+  backgroundImageMobile
 } = processLiterals<Props>(Astro.props);
 
-const processedBgImage = processImage(backgroundImage);
-const processedMobileBgImage = processImage(backgroundImageMobile);
+// Process images with proper error handling
+const [processedBgImage, processedMobileBgImage] = await Promise.all([
+  processImage(backgroundImage, {
+    width: 1920,
+    height: 1080,
+    format: 'webp',
+  }).catch(() => null),
+  processImage(backgroundImageMobile, {
+    width: 768,
+    height: 1024,
+    format: 'webp',
+  }).catch(() => null)
+]);
 ---
 
-<section class="relative min-h-[90vh] flex items-center">
+<section 
+  class="relative min-h-[90vh] flex items-center"
+  data-aos="fade"
+  data-aos-duration="1000"
+>
   <!-- Background Image -->
   <div class="absolute inset-0 z-0">
     <picture>
       {processedMobileBgImage && (
-        <source 
-          media="(max-width: 768px)" 
+        <source
+          media="(max-width: 768px)"
           srcset={getImageSrc(processedMobileBgImage.src)}
+          width={processedMobileBgImage.width}
+          height={processedMobileBgImage.height}
         />
       )}
       {processedBgImage && (
-        <OptimizedImage 
-        src={processedBgImage}
+        <OptimizedImage
+          src={getImageSrc(processedBgImage.src)}
           alt="Background"
           class="w-full h-full object-cover"
-            
-        
+          width={processedBgImage.width}
+          height={processedBgImage.height}
+          format={processedBgImage.format}
         />
       )}
     </picture>
-    <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
+    <div 
+      class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"
+      aria-hidden="true"
+    ></div>
   </div>
 
   <!-- Content -->
   <div class="relative z-10 w-full mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 2xl:max-w-full">
-    <div class="max-w-3xl">
+    <div class="max-w-3xl" data-aos="fade-up" data-aos-delay="200">
       <h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
         {title}
       </h1>
-      
       <h2 class="text-orange-500 text-2xl md:text-3xl font-semibold mb-6 animate-fade-in-delay-1">
         {subTitle}
       </h2>
-      
       <p class="text-white/90 text-lg md:text-xl leading-relaxed mb-12 animate-fade-in-delay-2">
         {description}
       </p>
 
       <!-- Stats -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 animate-fade-in-delay-3">
-        {stats.map(stat => (
-          <div class="text-center">
+        {stats.map((stat, index) => (
+          <div 
+            class="text-center"
+            data-aos="fade-up"
+            data-aos-delay={300 + (index * 100)}
+          >
             <div class="text-3xl md:text-4xl font-bold text-white mb-2">
               {stat.number}
             </div>
@@ -83,7 +108,12 @@ const processedMobileBgImage = processImage(backgroundImageMobile);
     </div>
 
     <!-- Scroll Indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <div 
+      class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+      onclick="window.scrollTo({top: window.innerHeight, behavior: 'smooth'})"
+      role="button"
+      aria-label="Scroll down"
+    >
       <div class="w-8 h-12 rounded-full border-2 border-white/30 flex items-center justify-center">
         <div class="w-1 h-3 bg-white/80 rounded-full animate-scroll"></div>
       </div>
@@ -93,13 +123,25 @@ const processedMobileBgImage = processImage(backgroundImageMobile);
 
 <style>
   @keyframes fade-in {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
   }
 
   @keyframes scroll {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(8px); opacity: 0; }
+    0% { 
+      transform: translateY(0); 
+      opacity: 1; 
+    }
+    100% { 
+      transform: translateY(8px); 
+      opacity: 0; 
+    }
   }
 
   .animate-fade-in {
@@ -124,4 +166,52 @@ const processedMobileBgImage = processImage(backgroundImageMobile);
   .animate-scroll {
     animation: scroll 1.5s ease-in-out infinite;
   }
+
+  /* Loading state */
+  .absolute.inset-0:not(:has(img)) {
+    @apply bg-gray-900 animate-pulse;
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-fade-in-delay-1,
+    .animate-fade-in-delay-2,
+    .animate-fade-in-delay-3,
+    .animate-scroll,
+    .animate-bounce {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 </style>
+
+<script>
+  // Smooth scroll functionality
+  document.querySelector('.animate-bounce')?.addEventListener('click', () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: 'smooth'
+    });
+  });
+
+  // Optional: Parallax effect
+  const handleParallax = () => {
+    const scrolled = window.scrollY;
+    const background = document.querySelector('.absolute.inset-0 img');
+    if (background instanceof HTMLElement) {
+      background.style.transform = `translateY(${scrolled * 0.5}px)`;
+    }
+  };
+
+  // Add parallax if not reduced motion
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.addEventListener('scroll', handleParallax);
+  }
+
+  // Cleanup
+  document.addEventListener('astro:before-swap', () => {
+    window.removeEventListener('scroll', handleParallax);
+  });
+</script>

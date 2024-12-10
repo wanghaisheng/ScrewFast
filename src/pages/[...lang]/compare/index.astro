@@ -1,0 +1,228 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import ComparisonTable from '@/components/comparison/ComparisonTable.astro';
+import ProductSelector from '@/components/sections/specs/ProductSelector.astro';
+import MainSection from '@/components/sections/main/HeroSection.astro';
+import { getCollection, type CollectionEntry } from "astro:content";
+import siteconfig from "@data/site.json";
+import { validateCategory } from '@/utils/validation';
+
+interface Props {
+  lang: string;
+}
+
+// Generate static paths for all supported languages
+export async function getStaticPaths() {
+  return siteconfig.supportedLanguages.map((lang) => ({
+    params: { lang },
+    props: { lang }
+  }));
+}
+
+const { lang } = Astro.props;
+
+// Validate language support
+if (!Object.keys(siteconfig.supportedLangLabels).includes(lang)) {
+  return Astro.redirect(`/${siteconfig.defaultlang}/compare`);
+}
+
+// Load all specs for this language
+const allSpecs = await getCollection('specs', ({ id }) => id.startsWith(`${lang}/`));
+
+// Load navigation data
+const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
+  .catch(() => ({ nav: [] }));
+
+// Load localized strings
+const { default: i18n } = await import(`../../../data_files/${lang}/compare.json`)
+  .catch(() => ({ 
+    title: "Product Comparison",
+    description: "Compare all our products",
+    categoryLabels: {},
+    features: {} 
+  }));
+
+// Group products by category
+const productsByCategory = allSpecs.reduce((acc, spec) => {
+  const category = spec.data.category;
+  if (!acc[category]) {
+    acc[category] = [];
+  }
+  acc[category].push(spec);
+  return acc;
+}, {} as Record<string, CollectionEntry<'specs'>[]>);
+
+// Common features to compare for each category
+const categoryFeatures = {
+  earbuds: [
+    { label: i18n.features?.driver || "Driver", path: "audio.driver" },
+    { label: i18n.features?.anc || "ANC", path: "features.anc" },
+    { label: i18n.features?.battery || "Battery Life", path: "battery.playbackTime" }
+  ],
+  drones: [
+    { label: i18n.features?.flightTime || "Flight Time", path: "performance.flightTime" },
+    { label: i18n.features?.range || "Range", path: "performance.range" },
+    { label: i18n.features?.camera || "Camera", path: "camera.resolution" }
+  ]
+  // Add more categories as needed
+};
+
+// Helper function to get nested object values
+function getNestedValue(obj: any, path: string) {
+  return path.split('.').reduce((acc, part) => acc?.[part], obj) || '-';
+}
+
+// Function to create comparison data for a category
+function createComparisonData(products: CollectionEntry< 'specs'>[], features: any[]) {
+  return {
+    headers: ["Feature", ...products.map(p => p.data.title)],
+    features: features.map(feature => ({
+      name: feature.label,
+      values: products.map(product => 
+        getNestedValue(product.data.specs, feature.path)
+      )
+    }))
+  };
+}
+
+// Set page title
+const pageTitle = `${i18n.title} | ${siteconfig.SITE.title}`;
+
+// Get and validate category
+const category = validateCategory(Astro.url.searchParams.get('category'));
+const features = categoryFeatures[category];
+---
+
+<MainLayout
+  lang={lang}
+  navdata={navlinkData}
+  supportedLangLabels={siteconfig.supportedLangLabels}
+  title={pageTitle}
+  meta={ i18n.description}
+>
+  <MainSection 
+    title={i18n.title}
+    subTitle={i18n.description}
+  />
+
+  <!-- Category Tabs -->
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-8">
+    <div class="border-b border-gray-200 dark:border-gray-700">
+      <nav class="-mb-px flex space-x-8" aria-label="Categories">
+        {Object.keys(productsByCategory).map((category, index) => (
+          <button
+            class:list={[
+              "category-tab whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm",
+              index === 0 
+                ? "border-primary-500 text-primary-600 dark:text-primary-500" 
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            ]}
+            data-category={category}
+          >
+            {i18n.categoryLabels[category] || category}
+          </button>
+        ))}
+      </nav>
+    </div>
+  </div>
+
+  <!-- Product Selectors and Comparison Tables -->
+    {Object.entries(productsByCategory).map(([category, products], index) => (
+      <div 
+        class:list={[
+        "category-section mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mb-12",
+          index !== 0 && "hidden"
+        ]}
+        data-category={category}
+      >
+      <!-- Product Selector -->
+      <ProductSelector 
+          products={products}
+        />
+      <!-- Comparison Table -->
+      <div class="comparison-wrapper">
+      <ComparisonTable 
+        comparison={createComparisonData(
+          products,
+          features || []
+        )}
+      />
+    </div>
+    </div>
+  ))}
+</MainLayout>
+
+<script>
+  // Handle category tab switching
+  function initializeTabs() {
+  const tabs = document.querySelectorAll('.category-tab');
+    const sections = document.querySelectorAll('.category-section');
+
+    function switchTab(targetCategory: string) {
+      // Update tab styles
+      tabs.forEach(tab => {
+        const isActive = tab.getAttribute('data-category') === targetCategory;
+        tab.classList.toggle('border-primary-500', isActive);
+        tab.classList.toggle('text-primary-600', isActive);
+        tab.classList.toggle('border-transparent', !isActive);
+        tab.classList.toggle('text-gray-500', !isActive);
+      });
+
+      // Show/hide sections
+      sections.forEach(section => {
+        section.classList.toggle('hidden', 
+          section.getAttribute('data-category') !== targetCategory
+        );
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+      const category = tab.getAttribute('data-category');
+        if (category) switchTab(category);
+      });
+    });
+  }
+
+  // Handle product selection
+  function initializeProductSelection() {
+    const sections = document.querySelectorAll('.category-section');
+    sections.forEach(section => {
+      const checkboxes = section.querySelectorAll('.product-selector');
+      const table = section.querySelector('.comparison-wrapper table');
+      
+      checkboxes.forEach((checkbox, index) => {
+        checkbox.addEventListener('change', () => {
+          const isChecked = (checkbox as HTMLInputElement).checked;
+          const columnIndex = index + 2; // Skip first column (feature names)
+          
+          if (table) {
+            const cells = table.querySelectorAll(
+              `th:nth-child(${columnIndex}), td:nth-child(${columnIndex})`
+            );
+            cells.forEach(cell => {
+              cell.classList.toggle('hidden', !isChecked);
+      });
+          }
+    });
+  });
+    });
+  }
+
+  // Initialize when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeTabs();
+    initializeProductSelection();
+  });
+</script>
+
+<style>
+  /* Add any custom styles here */
+  .category-tab {
+    @apply transition-colors duration-200;
+  }
+
+  .comparison-wrapper {
+    @apply mt-8 overflow-x-auto;
+  }
+</style>

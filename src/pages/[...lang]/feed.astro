@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { SupportedLanguage } from "@/utils/base";
+import MainLayout from "@/layouts/MainLayout.astro";
+import FeedList from "@/components/feed/FeedList.astro";
+import FeedHeader from "@/components/feed/FeedHeader.astro";
+
+interface Props {
+  lang: SupportedLanguage;
+  entries: CollectionEntry<'feed'>[];
+}
+
+const { lang, entries } = Astro.props;
+
+// Load i18n data
+const i18n = await import(`@/i18n/${lang}/feed.json`)
+  .then(module => module.default)
+  .catch(() => ({
+    title: "Feed",
+    description: "Latest updates and news",
+    // ... other fallback translations
+  }));
+
+// Sort entries by date
+const sortedEntries = entries.sort((a, b) => {
+  const dateA = new Date(a.data.date || '').getTime();
+  const dateB = new Date(b.data.date || '').getTime();
+  return dateB - dateA;
+});
+
+// Get featured entries
+const featuredEntries = sortedEntries.filter(entry => entry.data.featured);
+---
+
+<MainLayout title={i18n.title} lang={lang}>
+  <FeedHeader 
+    title={i18n.title}
+    description={i18n.description}
+    featuredPosts={featuredEntries}
+  />
+
+  <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <FeedList 
+      entries={sortedEntries}
+      i18n={i18n}
+      lang={lang}
+    />
+  </main>
+</MainLayout>

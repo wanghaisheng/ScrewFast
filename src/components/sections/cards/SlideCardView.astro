@@ -1,0 +1,163 @@
+---
+import { processLiterals } from '@utils/literalProcessor';
+import type { SlideCardViewProps, ContentCard } from './types';
+import { processImage, getImageSrc } from '@utils/imageProcessing';
+
+interface Props extends SlideCardViewProps {}
+const { title, cards, seeAllUrl, seeAllLayout = 3 } = processLiterals<Props>(Astro.props);
+
+// Process card images
+const processedCards = await Promise.all(cards.map(async (card) => ({
+  ...card,
+  processedImage: card.thumbnail ? await processImage(card.thumbnail, {
+    width: 400,
+    height: 225
+  }) : null
+})));
+---
+
+<section class="relative">
+  <!-- Header with See All -->
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-bold text-white">
+      {title}
+    </h2>
+    <div class="flex items-center gap-4">
+      <!-- Navigation Buttons -->
+      <button
+        class="slide-prev p-2 rounded-full bg-neutral-800 text-white hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        aria-label="Previous"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        class="slide-next p-2 rounded-full bg-neutral-800 text-white hover:bg-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        aria-label="Next"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+      <a
+        href={`${seeAllUrl}?layout=${seeAllLayout}`}
+        class="text-sm font-medium text-neutral-400 hover:text-white"
+      >
+        See all
+      </a>
+    </div>
+  </div>
+
+  <!-- Scrollable Card Container -->
+  <div class="relative overflow-hidden">
+    <div class="slide-container flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+      {processedCards.map(card => (
+        <article class="flex-none w-[300px] snap-start bg-neutral-800 rounded-xl overflow-hidden hover:bg-neutral-700/50 transition-all">
+          {card.processedImage && (
+            <div class="aspect-video">
+              <img
+                src={getImageSrc(card.processedImage.src)}
+                alt=""
+                width={card.processedImage.width}
+                height={card.processedImage.height}
+                class="w-full h-full object-cover"
+              />
+            </div>
+          )}
+          <div class="p-4">
+            <div class="flex items-center gap-3 mb-3">
+              {card.author.avatar ? (
+                <img
+                  src={card.author.avatar}
+                  alt=""
+                  class="w-8 h-8 rounded-full"
+                />
+              ) : (
+                <div class="w-8 h-8 rounded-full bg-neutral-700 flex items-center justify-center">
+                  <span class="text-sm text-neutral-400">{card.author.name.charAt(0)}</span>
+                </div>
+              )}
+              <div>
+                <p class="text-sm font-medium text-white">{card.author.name}</p>
+                <p class="text-xs text-neutral-400">{card.date} • {card.readTime}</p>
+              </div>
+            </div>
+            <h3 class="text-base font-semibold text-white mb-2 line-clamp-2">
+              {card.title}
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {card.tags.map(tag => (
+                <span class="px-2 py-0.5 text-xs bg-neutral-700 text-neutral-300 rounded-full">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  // Initialize slider functionality
+  function initSlider() {
+    const containers = document.querySelectorAll<HTMLDivElement>('.slide-container');
+    containers.forEach(container => {
+      const prevBtn = container.parentElement?.querySelector<HTMLButtonElement>('.slide-prev');
+      const nextBtn = container.parentElement?.querySelector<HTMLButtonElement>('.slide-next');      
+      if (!prevBtn || !nextBtn) return;
+
+      // Initial button state
+      updateButtonStates();
+
+      // Scroll by one card width
+      nextBtn.addEventListener('click', () => {
+        container.scrollBy({ left: 300 + 24, behavior: 'smooth' }); // card width + gap
+      });
+
+      prevBtn.addEventListener('click', () => {
+        container.scrollBy({ left: -(300 + 24), behavior: 'smooth' }); // card width + gap
+      });
+
+      // Update button states on scroll
+      container.addEventListener('scroll', () => {
+        updateButtonStates();
+      });
+
+      function updateButtonStates() {
+        if (!prevBtn || !nextBtn) return;
+
+        const scrollLeft = container.scrollLeft;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+
+        prevBtn.disabled = scrollLeft <= 0;
+        nextBtn.disabled = scrollLeft >= maxScroll;
+      }
+    });
+  }
+
+  // Initialize on page load
+  initSlider();
+
+  // Initialize on client-side navigation (if using View Transitions)
+  document.addEventListener('astro:page-load', initSlider);
+</script>

@@ -1,0 +1,125 @@
+---
+// Importing necessary components
+import Meta from "@components/Meta.astro";
+import NavbarMegaMenu from "@components/sections/navbar&footer/NavbarMegaMenu.astro";
+import siteconfig from "@data/site.json";
+import type { Navlinks } from "@utils/navigation"
+import { pwaInfo } from 'virtual:pwa-info';
+import { pwaAssetsHead } from 'virtual:pwa-assets/head';
+
+interface Props {
+  title?: string;
+  meta?: string;
+  structuredData?: object;
+  lang: string;
+  navdata?: Navlinks;
+  supportedLangLabels?: {};
+}
+
+const { 
+  title = siteconfig.SITE.title, 
+  meta, 
+  structuredData, 
+  lang = "en",
+  navdata,
+  supportedLangLabels 
+} = Astro.props;
+
+const navlinkData = await import(`../data_files/${lang}/nav.json`);
+const currentPath = Astro.url.pathname;
+---
+
+<html lang={lang} class="scrollbar-hide lenis lenis-smooth">
+  <head>
+    <meta charset="UTF-8">
+    <Meta meta={meta} structuredData={structuredData} />
+    <title>{title}</title>
+    <script src="/src/pwa.ts"></script>
+    { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
+    { pwaAssetsHead.themeColor && <meta name="theme-color" content={pwaAssetsHead.themeColor.content} /> }
+    { pwaAssetsHead.links.map(link => (
+      <link {...link} />
+    )) }
+    <script is:inline>
+      if (
+        localStorage.getItem("hs_theme") === "dark" ||
+        (!("hs_theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+    <script>
+      import "@scripts/lenisSmoothScroll.js";
+    </script>
+  </head>
+  <body class="bg-neutral-900 text-white">
+    <div class="flex min-h-screen">
+      <!-- Vertical Navigation -->
+      <NavbarMegaMenu 
+        items={navlinkData.navBarLinks} 
+      />
+
+      <!-- Main Content Area -->
+      <div class="flex-1 lg:ml-64">
+        <div class="min-h-screen">
+          <!-- Top utility bar (optional) -->
+          <div class="h-16 border-b border-neutral-800 flex items-center justify-end px-4">
+            <!-- Add your utility items here (theme toggle, notifications, etc.) -->
+            <div class="flex items-center gap-4">
+              <!-- Language Picker -->
+              <div class="relative">
+                <select
+                  class="appearance-none bg-transparent border border-neutral-700 rounded-lg px-3 py-1.5 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                >
+                  {Object.entries(supportedLangLabels || {}).map(([code, label]) => (
+                    <option value={code} selected={code === lang}>{label}</option>
+                  ))}
+                </select>
+              </div>
+
+              <!-- Theme Toggle -->
+              <button
+                type="button"
+                class="p-2 text-neutral-400 hover:text-white rounded-lg"
+                data-hs-theme-switch
+              >
+                <span class="dark:hidden">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                  </svg>
+                </span>
+                <span class="hidden dark:inline">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Page Content -->
+          <main class="p-4 sm:p-6 lg:p-8">
+            <slot />
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+
+    <script>
+      import '@preline/overlay';
+    </script>
+  </body>
+</html>

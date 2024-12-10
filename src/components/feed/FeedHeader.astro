@@ -1,0 +1,89 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  title: string;
+  description: string;
+  featuredPosts: CollectionEntry<'feed'>[]; // Add this prop
+}
+
+const { title, description, featuredPosts } = Astro.props;
+import ErrorBoundary from '@/components/common/ErrorBoundary.astro';
+---
+
+<ErrorBoundary>
+  <section class="relative bg-gray-900 dark:bg-gray-800 py-16 sm:py-24">
+    <div class="mx-auto max-w-7xl px-4 pt-16 pb-12 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          {title}
+        </h1>
+        <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-400">
+          {description}
+        </p>
+        
+        {/* Optional: Display featured posts */}
+        {featuredPosts.length > 0 && (
+          <div class="mt-8">
+            <h2 class="text-2xl font-semibold text-white mb-4">Featured Posts</h2>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {featuredPosts.map((post) => (
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h3 class="text-white font-medium">{post.data.title}</h3>
+                  {post.data.description && (
+                    <p class="text-gray-400 mt-2">{post.data.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</ErrorBoundary>
+
+<style>
+  section {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  h1 {
+    animation: fadeInDown 0.6s ease-out;
+  }
+  
+  p {
+    animation: fadeInUp 0.6s ease-out 0.2s forwards;
+    opacity: 0;
+  }
+  
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    h1, p {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>

@@ -1,54 +1,40 @@
 ---
 import { Image } from 'astro:assets';
-import { isImageMetadata, type ProcessedImage } from '@utils/imageProcessing';
+import type { ImageMetadata } from 'astro';
+import { isImageMetadata, getImageSrc } from '@/utils/imageProcessing';
 
 interface Props {
-  src?: ProcessedImage | null;
-  // just used to compatible with old call code ,src should be image
-  alt?: string;
+  src: ImageMetadata | string;
+  alt: string;
+  width: number;
+  height: number;
+  format?: string;
   class?: string;
-  width?: number;
-  height?:number;
-  sizes?: string;
-  quality?: number;
-  format?: 'avif' | 'webp' | 'png' | 'jpeg'|'svg'|'jpg'|'gif';
+  loading?: "eager" |"lazy"  ;
 }
 
-const { 
-  src, 
-  alt = "", 
-  class: className,
-  width,
-  height,
-  sizes,
-  quality,
-  format
-} = Astro.props;
+const { src, alt, width, height, format,loading='lazy', class: className = '' } = Astro.props;
+
+// Get the actual source URL
+const imageSrc = getImageSrc(src);
 ---
 
-{src && (
-  isImageMetadata(src.src) ? (
-    <Image 
-      src={src.src}
-      width={src.width}
-      height={src.height}
-      alt={alt}
-      class={className}
-      sizes={sizes}
-      draggable={"false"}
-      loading={"eager"}
-      format={src.format}
-
-      quality={quality}
-      format={format}
-    />
-  ) : (
-    <img 
-      src={src.src}
-      width={src.width}
-      height={src.height}
-      alt={alt}
-      class={className}
-    />
-  )
+{isImageMetadata(src) ? (
+  <Image
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    format={format}
+    class={className}
+    loading={loading}
+  />
+) : (
+  <img
+    src={imageSrc}
+    alt={alt}
+    width={width}
+    height={height}
+    class={className}
+  />
 )}

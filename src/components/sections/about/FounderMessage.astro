@@ -1,7 +1,7 @@
 ---
 import { processLiterals } from '@utils/literalProcessor';
 import { Image } from "astro:assets";
-import { processImage } from "@utils/imageProcessing";
+import { processImage, type ProcessedImage, getImageSrc } from "@utils/imageProcessing";
 import OptimizedImage from '@components/OptimizedImage.astro';
 
 interface Props {
@@ -13,64 +13,183 @@ interface Props {
 
 const { title, content, signature, image } = processLiterals<Props>(Astro.props);
 
-// 如果没有图片，则不渲染组件
+// Early return if no image
 if (!image) return null;
 
-const processedImage = processImage(image);
+// Process image
+const processedImage = await processImage(image, {
+  width: 1920,
+  height: 1080,
+  text: 'Founder Background',
+  bgColor: '1a1a1a',
+  textColor: 'ffffff'
+});
+
+// Early return if image processing failed
 if (!processedImage) return null;
+
+// Get the actual image source
+const imageSrc = getImageSrc(processedImage.src);
 ---
 
 <section class="relative min-h-screen flex items-center">
   <!-- Background Image -->
   <div class="absolute inset-0">
     <OptimizedImage
-      src={processedImage}
+      src={imageSrc}
       alt="Founder Background"
-      class="w-full h-full object-cover"
       width={processedImage.width}
       height={processedImage.height}
+      format={processedImage.format}
+      class="w-full h-full object-cover"
     />
     <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
   </div>
 
-  <!-- Content directly over the background -->
-  <div class="relative z-10 mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 2xl:max-w-full">
+  <!-- Content -->
+  <div 
+    class="relative z-10 mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 2xl:max-w-full"
+    data-aos="fade-up"
+    data-aos-duration="1000"
+  >
     <div class="max-w-3xl">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-8">
-          {title}
-        </h2>
-        
-        <div class="space-y-6">
-          {content.map(paragraph => (
-            <p class="text-white/90 text-lg md:text-xl leading-relaxed">
-              {paragraph}
-            </p>
-          ))}
-    </div>
+      <h2 
+        class="text-3xl md:text-4xl font-bold text-white mb-8 opacity-0 translate-y-4"
+        data-aos="fade-up"
+        data-aos-delay="200"
+      >
+        {title}
+      </h2>
+      
+      <div class="space-y-6">
+        {content.map((paragraph, index) => (
+          <p 
+            class="text-white/90 text-lg md:text-xl leading-relaxed opacity-0 translate-y-4"
+            data-aos="fade-up"
+            data-aos-delay={300 + (index * 100)}
+          >
+            {paragraph}
+          </p>
+        ))}
+      </div>
 
-        <div class="mt-12">
-          <div class="flex items-center space-x-4">
-            <span class="h-0.5 w-12 bg-orange-500"></span>
-            <span class="text-2xl text-orange-500 font-bold">{signature}</span>
-  </div>
+      <div 
+        class="mt-12 opacity-0 translate-y-4"
+        data-aos="fade-up"
+        data-aos-delay={400 + (content.length * 100)}
+      >
+        <div class="flex items-center space-x-4">
+          <span class="h-0.5 w-12 bg-orange-500"></span>
+          <span class="text-2xl text-orange-500 font-bold">{signature}</span>
         </div>
       </div>
     </div>
+  </div>
+
   <!-- Scroll Indicator -->
-  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+  <div 
+    class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce opacity-0"
+    data-aos="fade-up"
+    data-aos-delay="1000"
+    data-aos-anchor-placement="top-bottom"
+  >
     <div class="w-8 h-12 rounded-full border-2 border-white/30 flex items-center justify-center">
       <div class="w-1 h-3 bg-white/80 rounded-full animate-scroll"></div>
     </div>
   </div>
 </section>
 
+<script>
+  import AOS from 'aos';
+  import 'aos/dist/aos.css';
+
+  const initAOS = () => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 50,
+      easing: 'ease-out-cubic',
+      disable: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    });
+  };
+
+  // Initialize on page load
+  document.addEventListener('astro:page-load', initAOS);
+</script>
+
 <style>
+  /* Scroll Animation */
   @keyframes scroll {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(8px); opacity: 0; }
+    0% { 
+      transform: translateY(0); 
+      opacity: 1; 
+    }
+    100% { 
+      transform: translateY(8px); 
+      opacity: 0; 
+    }
   }
 
   .animate-scroll {
     animation: scroll 1.5s ease-in-out infinite;
+  }
+
+  /* Content Animations */
+  [data-aos] {
+    transition-property: opacity, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 0.8s;
+  }
+
+  /* Parallax Effect */
+  .absolute.inset-0 img {
+    transform: scale(1.1);
+    transition: transform 0.5s ease-out;
+  }
+
+  section:hover .absolute.inset-0 img {
+    transform: scale(1.05);
+  }
+
+  /* Gradient Animation */
+  .bg-gradient-to-r {
+    background-size: 200% 100%;
+    animation: gradient 15s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-scroll,
+    .animate-bounce,
+    [data-aos],
+    .bg-gradient-to-r,
+    .absolute.inset-0 img {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+    }
+  }
+
+  /* Loading State */
+  .image-loading {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+
+  @keyframes loading {
+    0% { background-position: 200% 50%; }
+    100% { background-position: -200% 50%; }
   }
 </style>

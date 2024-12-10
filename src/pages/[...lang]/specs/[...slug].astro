@@ -1,0 +1,66 @@
+---
+import ProductSpecs from '@/components/sections/ProductSpecs.astro';
+import MainLayout from "@/layouts/MainLayout.astro";
+import siteconfig from "@data/site.json";
+import { getCollection, type CollectionEntry } from "astro:content";
+import type { SupportedLanguage } from "@/utils/base";
+
+interface Props {
+  lang: SupportedLanguage;
+  entry: CollectionEntry<'specs'>;
+}
+
+// Generate static paths for all supported languages and specs
+export async function getStaticPaths() {
+  const allSpecs = await getCollection('specs');
+  
+  return siteconfig.supportedLanguages.flatMap(lang => 
+    allSpecs
+      .filter(entry => entry.id.startsWith(`${lang}/`))
+      .map(entry => ({
+        params: { 
+          lang,
+          slug: entry.slug.replace(`${lang}/`, '')
+        },
+        props: { 
+          lang,
+          entry
+        }
+      }))
+  );
+}
+
+// Get and validate parameters
+const { lang, entry } = Astro.props;
+const { slug } = Astro.params;
+
+// Validate language support
+if (!Object.keys(siteconfig.supportedLangLabels).includes(lang)) {
+  return Astro.redirect(`/${siteconfig.defaultlang}/specs/${slug}`);
+}
+
+// Load navigation data for current language
+const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
+  .catch(() => ({ nav: [] }));
+
+// Render the markdown content
+const { Content } = await entry.render();
+// Set page title
+const pageTitle = `${entry.data.title} | ${siteconfig.SITE.title}`;
+---
+
+<MainLayout
+  lang={lang}
+  navdata={navlinkData}
+  supportedLangLabels={siteconfig.supportedLangLabels}
+  title={pageTitle}
+  meta={ entry.data.description}
+>
+  <ProductSpecs 
+    specs={entry.data.specs}
+    title={entry.data.title}
+    description={entry.data.description}
+  >
+    <Content />
+  </ProductSpecs>
+</MainLayout>

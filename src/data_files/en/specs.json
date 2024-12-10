@@ -1,0 +1,20 @@
+{
+  "title": "Product Specifications",
+  "description": "Detailed technical specifications for all our products",
+  "categoryLabels": {
+    "earbuds": "Wireless Earbuds",
+    "drones": "Drones & Accessories",
+    "accessories": "Accessories"
+  },
+  "viewSpecs": "View Specifications",
+  "compareProducts": "Compare Products",
+  "featuredLabel": "Featured Product",
+  "newLabel": "New",
+  "filters": {
+    "title": "Filter Products",
+    "categories": "Categories",
+    "features": "Features",
+    "clearAll": "Clear All"
+  },
+  "noProducts": "No products found matching your criteria"
+}

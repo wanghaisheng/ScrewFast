@@ -1,97 +1,75 @@
 ---
 import { processLiterals } from '@utils/literalProcessor';
-interface ProductHighlight {
-  icon: string;
-  label: string;
-  value: string;
-}
-
+import type { Product, SpecEntry } from '@/types/products';
 interface Props {
-  products: {
-    id: string;
-    name: string;
-    image: string;
-    price: string;
-    description: string;
-    highlights: ProductHighlight[];
-  }[];
+  products: Product[] | SpecEntry[];
 }
 
 const { products } = processLiterals<Props>(Astro.props);
+
+function isSpecEntry(product: Product | SpecEntry): product is SpecEntry {
+  return 'collection' in product;
+}
+
+function getProductData(product: Product | SpecEntry) {
+  if (isSpecEntry(product)) {
+    return {
+      id: product.data.productId,
+      name: product.data.title,
+      image: product.data.image || '',
+      description: product.data.description,
+      keySpecs: product.data.keySpecs || [],
+      highlights: product.data.highlights || [],
+    };
+  }
+  return {
+    id: product.id,
+    name: product.name,
+    image: product.image,
+    description: product.description,
+    keySpecs: product.keySpecs || [],
+    highlights: product.highlights,
+  };
+}
 ---
 
-<div class="product-profiles bg-white rounded-lg mb-8 hidden">
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {products.map(product => (
-      <div 
-        class="product-profile hidden" 
-        data-product-id={product.id}
-      >
-        <div class="relative aspect-w-16 aspect-h-9 mb-4">
-          <img 
-            src={product.image} 
-            alt={product.name} 
-            class="object-cover rounded-lg"
-          />
-        </div>
-        <div class="p-4">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
-          <p class="text-gray-600 mb-4">{product.description}</p>
-          <div class="text-2xl font-bold text-gray-900 mb-6">{product.price}</div>
-          
-          <div class="grid grid-cols-2 gap-4">
-            {/* {product.highlights.map(highlight => ( */}
-              <div class="flex items-start space-x-2">
-                <div class="w-5 h-5 mt-1 text-blue-500">
-                  {/* <img src={highlight.icon} alt="" class="w-full h-full" /> */}
-                </div>
-                <div>
-                  {/* <div class="text-sm font-medium text-gray-900">{highlight.label}</div> */}
-                  {/* <div class="text-sm text-gray-600">{highlight.value}</div> */}
-                </div>
-              </div>
-            {/* ))} */}
+<div class="product-profiles">
+  {products.map(product => {
+    const data = getProductData(product);
+    return (
+      <div class="product-profile">
+        <h3>{data.name}</h3>
+        {data.image && <img src={data.image} alt={data.name} />}
+        <p>{data.description}</p>
+        
+        {data.keySpecs.length > 0 && (
+          <div class="key-specs">
+            <h4>Key Specifications</h4>
+            <ul>
+              {data.keySpecs.map(spec => (
+                <li>
+                  <span>{spec.label}:</span> {spec.value}
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        )}
+
+        {data.highlights.length > 0 && (
+          <div class="highlights">
+            <h4>Highlights</h4>
+            <ul>
+              {data.highlights.map(highlight => (
+                <li>
+                  <span class="icon">{highlight.icon}</span>
+                  <h5>{highlight.title}</h5>
+                  <p>{highlight.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
-    ))}
-  </div>
+    );
+  })}
 </div>
-
-<script>
-  function updateProfiles(selectedIds: string[]) {
-    const profilesContainer = document.querySelector('.product-profiles');
-    const allProfiles = document.querySelectorAll('.product-profile');
-    
-    if (selectedIds.length === 0) {
-      profilesContainer?.classList.add('hidden');
-      return;
-    }
-
-    profilesContainer?.classList.remove('hidden');
-    
-    allProfiles.forEach(profile => {
-      const profileId = profile.getAttribute('data-product-id');
-      if (profileId && selectedIds.includes(profileId)) {
-        profile.classList.remove('hidden');
-      } else {
-        profile.classList.add('hidden');
-      }
-    });
-  }
-
-  window.addEventListener('productsSelected', (event: CustomEvent<string[]>) => {
-    updateProfiles(event.detail);
-  });
-</script>
-
-<style>
-  .product-profile {
-    transition: all 0.3s ease;
-  }
-
-  .product-profile:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  }
-</style>

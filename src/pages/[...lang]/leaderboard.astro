@@ -1,0 +1,71 @@
+---
+import Layout from '@/layouts/MainLayout.astro';
+import TableView from '@components/sections/leaderboard/TableView.astro';
+import type { LeaderboardData, LayoutType } from '@components/sections/leaderboard/types';
+import siteconfig from "@data/site.json";
+
+const { lang = 'en' } = Astro.params;
+const data: LeaderboardData = await import(`../../data_files/${lang}/leaderboard.json`).then(m => m.default);
+
+export async function getStaticPaths() {
+  const supportedLanguages = siteconfig.supportedLanguages;
+  return supportedLanguages.map((lang) => ({
+    params: { lang },
+    props: { lang }
+  }));
+}
+
+if (!lang || !siteconfig.supportedLanguages.includes(lang)) {
+  return Astro.redirect(`/${siteconfig.defaultlang}/tableboard`);
+}
+
+// Layout configuration
+const layouts = [
+  { value: '1', label: 'Single Column', class: 'rounded-l-lg' },
+  { value: '2', label: 'Two Columns', class: '' },
+  { value: '3', label: 'Three Columns', class: 'rounded-r-lg' }
+] as const;
+---
+
+<Layout lang={lang} title={`${data.title} - Table View`}>
+  <div class="mx-auto max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8">
+    <!-- Layout Controls -->
+  
+
+    <!-- Layout Sections -->
+    <div class="space-y-16">
+      <!-- Single Column Layout -->
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Single Column Layout</h2>
+        <TableView
+          data={data}
+          layout="1"
+        />
+      </section>
+
+      <!-- Two Columns Layout -->
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Two Columns Layout</h2>
+        <TableView
+          data={data}
+          layout="2"
+        />
+      </section>
+
+      <!-- Three Columns Layout -->
+      <section>
+        <h2 class="text-2xl font-bold mb-6">Three Columns Layout</h2>
+        <TableView
+          data={data}
+          layout="3"
+        />
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  section {
+    scroll-margin-top: 2rem;
+  }
+</style>

@@ -1,0 +1,13 @@
+---
+interface Props {
+  message?: string;
+}
+
+const { message = "Failed to load content" } = Astro.props;
+---
+
+<div class="flex items-center justify-center p-8 bg-red-50 dark:bg-red-900/10 rounded-lg">
+  <p class="text-red-600 dark:text-red-400">
+    {message}
+  </p>
+</div>

@@ -11,6 +11,14 @@
       "@scripts/*": ["src/assets/scripts/*"],
       "@styles/*": ["src/assets/styles/*"],
       "@utils/*": ["src/utils/*"]
-    }
+    },
+    "types": [
+      "astro/client",
+
+      "vite/client",
+      "vite-plugin-pwa/vanillajs",
+      "vite-plugin-pwa/info",
+      "vite-plugin-pwa/pwa-assets"
+    ]
   }
 }

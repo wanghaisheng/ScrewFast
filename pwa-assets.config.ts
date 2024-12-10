@@ -2,7 +2,7 @@ import {
   createAppleSplashScreens,
   defineConfig,
   minimal2023Preset,
-} from '@vite-pwa/assets-generator/config'
+} from "@vite-pwa/assets-generator/config";
 
 export default defineConfig({
   headLinkOptions: {

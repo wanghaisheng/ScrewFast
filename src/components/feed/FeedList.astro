@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from "astro:content";
+import type { SupportedLanguage } from "@/utils/base";
+import FeedCard from "./FeedCard.astro";
+
+interface Props {
+  entries: CollectionEntry<'feed'>[];
+  i18n: Record<string, string>;
+  lang: SupportedLanguage;
+}
+
+const { entries, i18n, lang } = Astro.props;
+---
+
+<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+  {entries.map((entry) => (
+    <FeedCard 
+      entry={entry}
+      i18n={i18n}
+      lang={lang}
+    />
+  ))}
+</div>

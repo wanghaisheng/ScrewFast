@@ -1,0 +1,134 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import ComparisonTable from '@/components/comparison/ComparisonTable.astro';
+import ComparisonSelector from '@/components/sections/specs/ProductSelector.astro';
+import ProductProfile from '@/components/sections/specs/ProductProfile.astro';
+import MainSection from '@/components/sections/main/HeroSection.astro';
+import { getCollection, type CollectionEntry } from "astro:content";
+import siteconfig from "@data/site.json";
+import type { Product } from '@/types/products';
+import type { ProductCategory, CategoryFeatures, ComparisonFeature } from '@/types/comparison';
+import { validateCategory } from '@/utils/validation';
+
+interface Props {
+  entry: CollectionEntry<'comparisons'>;
+  products: Product[];
+  lang: string;
+}
+
+// Define category features with proper typing
+const categoryFeatures: CategoryFeatures = {
+  earbuds: [
+    { label: "Driver Type", path: "specs.audio.driver" },
+    { label: "Active Noise Cancellation", path: "specs.features.anc" },
+    { label: "Battery Life", path: "specs.battery.playbackTime" }
+  ],
+  drones: [
+    { label: "Flight Time", path: "specs.performance.flightTime" },
+    { label: "Range", path: "specs.performance.range" },
+    { label: "Camera", path: "specs.camera.resolution" }
+  ]
+};
+
+// Helper function to safely get nested object value
+function getNestedValue(obj: any, path: string): string {
+  return path.split('.')
+    .reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : '-'), obj) as string;
+}
+// Helper function to get comparison data
+function createComparisonData(products: Product[], features: ComparisonFeature[]) {
+  return {
+    headers: ["Feature", ...products.map(p => p.name)],
+    features: features.map(feature => ({
+      name: feature.label,
+      values: products.map(product => 
+        getNestedValue(product.specs, feature.path)
+      )
+    }))
+  };
+}
+
+// Generate static paths for all supported languages and comparisons
+export async function getStaticPaths() {
+  const allComparisons = await getCollection('comparisons');
+  const allSpecs = await getCollection('specs');
+  
+  return siteconfig.supportedLanguages.flatMap(lang => 
+    allComparisons
+      .filter(entry => entry.id.startsWith(`${lang}/`))
+      .map(entry => {
+        // Get specs for this language and filter by productIds
+        const specsEntries = allSpecs.filter(spec => 
+          spec.id.startsWith(`${lang}/`) &&
+          entry.data.productIds.includes(spec.id.split('/').pop()?.replace('.md', '') || '')
+        );
+
+        const products = specsEntries.map(spec => ({
+          id: spec.data.productId,
+          name: spec.data.title,
+          image: spec.data.image || '',
+          price: spec.data.price || '',
+          description: spec.data.description,
+          highlights: spec.data.highlights || [],
+          keySpecs: spec.data.keySpecs,
+          specs: spec.data.specs,
+          category: spec.data.category,
+          order: spec.data.order,
+          featured: spec.data.featured
+        }));
+
+        return {
+          params: { 
+            lang,
+            slug: entry.slug.replace(`${lang}/`, '')
+          },
+          props: { 
+            entry,
+            products,
+            lang
+          }
+        };
+      })
+  );
+}
+
+const { entry, products, lang } = Astro.props;
+const { Content } = await entry.render();
+
+// Load navigation data
+const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
+  .catch(() => ({ nav: [] }));
+
+// Load i18n data
+const { default: i18n } = await import(`../../../data_files/${lang}/compare.json`)
+  .catch(() => ({ 
+    title: "Product Comparison",
+    description: "Compare features across products",
+    features: {}
+  }));
+
+// Get specs entries directly without transformation
+const specsEntries = await getCollection('specs', ({ id }) => 
+  id.startsWith(`${lang}/`) && 
+  entry.data.productIds.includes(id.split('/').pop()?.replace('.md', '') || '')
+);
+
+// Get the category from the first product and validate it
+const productCategory = products[0]?.category as ProductCategory;
+const features = categoryFeatures[productCategory] || [];
+
+// Transform specs data into comparison format
+const comparisonData = createComparisonData(products, features);
+
+// Set page title
+const pageTitle = `${entry.data.title} | ${siteconfig.SITE.title}`;
+
+// Layout props
+const layoutProps = {
+  lang,
+  navdata: navlinkData,
+  supportedLangLabels: siteconfig.supportedLangLabels,
+  title: pageTitle,
+  meta:  entry.data.description,
+  
+};

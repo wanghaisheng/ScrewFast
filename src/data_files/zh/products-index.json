@@ -1,0 +1,27 @@
+{
+  "page": {
+    "title": "探索所有产品",
+    "subTitle": "探索AstroProductFast工具的耐用性和精确性，专为专业人士和爱好者设计。"
+  },
+  "features": {
+    "title": "为什么选择AstroProductFast？",
+    "subTitle": "使用AstroProductFast工具将您的想法转化为切实的成果。",
+    "benefits": [
+      "坚固可靠的工具，持久的性能表现。",
+      "适应现代建筑需求的创新解决方案。",
+      "致力于项目成功的客户支持。"
+    ]
+  },
+  "testimonials": {
+    "title": "客户评价",
+    "items": [
+      {
+        "content": "\"自从使用AstroProductFast的硬件工具以来...\"",
+        "author": "杰森·克拉克",
+        "role": "工地主管 | TopBuild",
+        "avatarSrc": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80",
+        "avatarAlt": "图片描述"
+      }
+    ]
+  }
+}

@@ -1,0 +1,260 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+import MainSection from '@/components/sections/main/HeroSection.astro';
+import { getCollection } from "astro:content";
+import siteconfig from "@data/site.json";
+import type { SupportedLanguage } from "@/utils/base";
+import { Image } from "astro:assets";
+
+// Define interfaces for group data
+interface GroupItem {
+  id: string;
+  title: string;
+  description: string;
+  image?: string;
+  link?: string;
+  order?: number;
+  metadata?: {
+    products?: number;
+    featured?: boolean;
+  };
+}
+
+interface Group {
+  id: string;
+  title: string;
+  description: string;
+  items: GroupItem[];
+  metadata?: {
+    order?: number;
+    featured?: boolean;
+  };
+}
+
+interface GroupsI18n {
+  title: string;
+  description: string;
+  learnMore: string;
+  groups: Record<string, Group>;
+  metadata: {
+    productsLabel: string;
+    featuredLabel: string;
+  };
+}
+
+interface Props {
+  lang: SupportedLanguage;
+}
+
+// Type guard for Group
+function isGroup(value: unknown): value is Group {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    'id' in value &&
+    'title' in value &&
+    'description' in value &&
+    'items' in value &&
+    Array.isArray((value as Group).items)
+  );
+}
+
+// Generate static paths for all supported languages
+export async function getStaticPaths() {
+  return siteconfig.supportedLanguages.map(lang => ({
+    params: { lang },
+    props: { lang }
+  }));
+}
+
+const { lang } = Astro.props;
+
+// Load navigation data
+interface NavData {
+  nav: Array<{
+    id: string;
+    title: string;
+    items: Array<{
+      id: string;
+      title: string;
+      href: string;
+    }>;
+  }>;
+}
+
+const navlinkData = await import(`../../data_files/${lang}/nav.json`)
+  .catch((): NavData => ({ nav: [] }));
+
+// Load groups data with type assertion
+const { default: i18n } = await import(`../../data_files/${lang}/groups.json`)
+  .catch((): GroupsI18n => ({
+    title: "Groups",
+    description: "Browse our product groups",
+    learnMore: "Learn more",
+    groups: {},
+    metadata: {
+      productsLabel: "products",
+      featuredLabel: "Featured"
+    }
+  }));
+
+// Sort and filter groups with proper typing
+const sortedGroups: Group[] = Object.values(i18n.groups)
+  .filter(isGroup)
+  .sort((a, b) => {
+    const orderA = a.metadata?.order ?? Number.MAX_SAFE_INTEGER;
+    const orderB = b.metadata?.order ?? Number.MAX_SAFE_INTEGER;
+    return orderA - orderB;
+  });
+
+// Set page title and meta
+const pageTitle = `${i18n.title} | ${siteconfig.SITE.title}`;
+
+// Layout props
+interface LayoutProps {
+  lang: SupportedLanguage;
+  navdata: NavData;
+  supportedLangLabels: Record<string, string>;
+  title: string;
+  meta: string;
+}
+
+const layoutProps: LayoutProps = {
+  lang,
+  navdata: navlinkData,
+  supportedLangLabels: siteconfig.supportedLangLabels,
+  title: pageTitle,
+  meta:  i18n.description,
+ 
+};
+---
+
+<MainLayout {...layoutProps}>
+  <MainSection 
+    title={i18n.title}
+    subTitle={i18n.description}
+  />
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    {sortedGroups.map((group) => (
+      <section class="mb-16">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-2xl font-bold dark:text-white">
+            {group.title}
+            {group.metadata?.featured && (
+              <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-800 dark:text-primary-100">
+                {i18n.metadata.featuredLabel}
+              </span>
+            )}
+          </h2>
+        </div>
+
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+          {group.description}
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {group.items
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+            .map((item) => (
+              <div class="group relative bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                {item.image && (
+                  <div class="aspect-w-16 aspect-h-9 overflow-hidden">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      class="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div class="p-6">
+                  <div class="flex items-center justify-between mb-2">
+                    <h3 class="text-xl font-semibold dark:text-white">
+                      {item.title}
+                    </h3>
+                    {item.metadata?.featured && (
+                      <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-800 dark:text-primary-100">
+                        {i18n.metadata.featuredLabel}
+                      </span>
+                    )}
+                  </div>
+
+                  <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    {item.description}
+                  </p>
+
+                  <div class="flex items-center justify-between">
+                    {item.metadata?.products && (
+                      <span class="text-sm text-gray-500 dark:text-gray-400">
+                        {item.metadata.products} {i18n.metadata.productsLabel}
+                      </span>
+                    )}
+                    
+                    {item.link && (
+                      <a
+                        href={item.link}
+                        class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:underline"
+                      >
+                        {i18n.learnMore}
+                        <svg 
+                          class="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
+                          <path 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                            stroke-width="2" 
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</MainLayout>
+
+<style>
+  .aspect-w-16 {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+  }
+
+  .aspect-w-16 img {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    object-fit: cover;
+  }
+
+  /* Hover effects */
+  .group:hover .group-hover\:scale-105 {
+    transform: scale(1.05);
+  }
+
+  .group:hover .group-hover\:translate-x-1 {
+    transform: translateX(0.25rem);
+  }
+
+  /* Dark mode transitions */
+  .dark .dark\:bg-gray-800 {
+    transition: background-color 0.3s ease;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .grid-cols-1 > * {
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>

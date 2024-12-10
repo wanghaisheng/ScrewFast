@@ -48,6 +48,8 @@ const navlinkData = await import(`../../../data_files/${lang}/nav.json`)
 ---
 
 <MainLayout
+lang={lang}
+
   title={`${categoriesData.title} | ${siteconfig.SITE.title}`}
   navdata={navlinkData}
   supportedLangLabels={siteconfig.supportedLangLabels}

@@ -1,0 +1,117 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { ProcessedImage } from "@utils/imageProcessing";
+import { getImageSrc } from "@utils/imageProcessing";
+import OptimizedImage from '@/components/OptimizedImage.astro';
+import { formatDate } from '@/utils/utils';
+
+interface Props {
+  post: CollectionEntry<'feed'>;
+  image: ProcessedImage | null;
+  isMain?: boolean;
+}
+
+const { post, image, isMain = false } = Astro.props;
+
+const postUrl = `/feed/${post.slug}`;
+---
+
+<a 
+  href={postUrl}
+  class:list={[
+    "group relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900",
+    "px-8 pb-8",
+    isMain ? "pt-64 sm:pt-80 lg:pt-96" : "pt-32 sm:pt-48 lg:pt-40",
+    "transition-transform duration-300 hover:-translate-y-1"
+  ]}
+>
+  {image && (
+    <OptimizedImage
+      src={getImageSrc(image.src)}
+      alt={post.data.title}
+      width={image.width}
+      height={image.height}
+      class="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      loading={isMain ? "eager" : "lazy"}
+    />
+  )}
+  
+  <!-- Gradient overlay -->
+  <div 
+    class="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40"
+    aria-hidden="true"
+  ></div>
+  
+  <!-- Post metadata -->
+  <div class="flex flex-wrap items-center gap-y-1 overflow-hidden text-sm leading-6 text-gray-300">
+    {post.data.date && (
+      <time datetime={post.data.date} class="mr-8">
+        {(post.data.date)}
+      </time>
+    )}
+    {post.data.author && (
+      <div class="flex items-center gap-x-4">
+        <span class="relative z-10">
+          {post.data.author}
+        </span>
+      </div>
+    )}
+  </div>
+
+  <!-- Post title -->
+  <h3 
+    class:list={[
+      "mt-3 font-semibold leading-6 text-white group-hover:text-primary-400 transition-colors",
+      isMain ? "text-2xl" : "text-lg"
+    ]}
+  >
+    <span class="absolute inset-0"></span>
+    {post.data.title}
+  </h3>
+  
+  <!-- Post description -->
+  <p class="mt-2 text-sm text-gray-300 line-clamp-2">
+    {post.data.description}
+  </p>
+
+  <!-- Optional metadata -->
+  {post.data.metadata && (
+    <div class="mt-4 flex items-center gap-4 text-sm text-gray-400">
+      {post.data.metadata.readTime && (
+        <span class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          {post.data.metadata.readTime} min read
+        </span>
+      )}
+      {post.data.metadata.views && (
+        <span class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+          {post.data.metadata.views.toLocaleString()} views
+        </span>
+      )}
+    </div>
+  )}
+</a>
+
+<style>
+  /* Loading state */
+  .absolute.inset-0:not(:has(img)) {
+    @apply bg-gray-800 animate-pulse;
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .group {
+      @apply transition-none transform-none;
+    }
+
+    .group img {
+      @apply transition-none transform-none;
+    }
+  }
+</style>

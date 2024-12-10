@@ -1,0 +1,10 @@
+---
+import siteconfig from "@data/site.json";
+import { getUserLanguagePreference } from '@utils/language';
+
+const defaultLang = siteconfig.defaultlang || 'en';
+const userLang = getUserLanguagePreference(Astro.request, siteconfig.supportedLanguages, defaultLang);
+
+// Redirect to localized version
+return Astro.redirect(`/${userLang}/specs`);
+---

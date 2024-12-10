@@ -1,0 +1,27 @@
+{
+  "page": {
+    "title": "Découvrez Tous Nos Produits",
+    "subTitle": "Explorez la durabilité et la précision des outils AstroProductFast, conçus pour les professionnels et les passionnés."
+  },
+  "features": {
+    "title": "Pourquoi Choisir AstroProductFast?",
+    "subTitle": "Transformez vos idées en résultats tangibles avec les outils AstroProductFast.",
+    "benefits": [
+      "Des outils robustes et fiables pour des performances durables.",
+      "Des solutions innovantes adaptées aux besoins de la construction moderne.",
+      "Un support client dédié au succès de votre projet."
+    ]
+  },
+  "testimonials": {
+    "title": "Ce Que Disent Nos Clients",
+    "items": [
+      {
+        "content": "\"Depuis que nous utilisons les outils AstroProductFast...\"",
+        "author": "Jason Clark",
+        "role": "Chef de Chantier | TopBuild",
+        "avatarSrc": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80",
+        "avatarAlt": "Description de l'image"
+      }
+    ]
+  }
+}

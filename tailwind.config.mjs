@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import colors from 'tailwindcss/colors';
+import typography from '@tailwindcss/typography';
 export default {
   content: [
     "./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}",
@@ -32,11 +33,33 @@ export default {
       red: colors.red, // Used for bookmark icon
       zinc: colors.zinc, // Used mainly for box-shadow
     },
-    extend: {},
+    extend: {
+      typography: ({ theme }) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-body': theme('colors.neutral.700'),
+            '--tw-prose-headings': theme('colors.neutral.900'),
+            '--tw-prose-links': theme('colors.primary.500'),
+            '--tw-prose-bold': theme('colors.neutral.900'),
+            color: 'var(--tw-prose-body)',
+            maxWidth: '65ch',
+          }
+        },
+        dark: {
+          css: {
+            '--tw-prose-body': theme('colors.neutral.300'),
+            '--tw-prose-headings': theme('colors.neutral.100'),
+            '--tw-prose-links': theme('colors.primary.400'),
+            '--tw-prose-bold': theme('colors.neutral.100'),
+          }
+        }
+      })
+    },
   },
   plugins: [
     require("tailwindcss/nesting"),
     require("preline/plugin"),
     require("@tailwindcss/forms"),
+    typography
   ],
 };

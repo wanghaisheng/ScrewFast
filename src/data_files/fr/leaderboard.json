@@ -1,0 +1,25 @@
+{
+  "categories": [
+    {
+      "id": "weekly",
+      "title": "Meilleurs Joueurs de la Semaine",
+      "description": "Meilleures performances de la semaine dernière",
+      "timeFrame": "7 derniers jours",
+      "entries": [
+        {
+          "rank": 1,
+          "name": "Jean Dupont",
+          "score": 15000,
+          "avatar": "/avatars/player1.jpg",
+          "change": "up",
+          "lastUpdated": "2024-02-20T10:00:00Z",
+          "badges": ["champion-hebdo", "étoile-montante"]
+        }
+      ]
+    }
+  ],
+  "lastUpdated": "2024-02-20T10:00:00Z",
+  "totalPlayers": 1234,
+  "activePlayers": 156,
+  "engagementRate": "85%"
+}

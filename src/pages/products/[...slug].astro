@@ -9,7 +9,8 @@ const defaultLang = siteconfig.defaultlang || 'en';
 // Generate paths for default language redirects
 export async function getStaticPaths() {
   const products = await getCollection('products');
-  
+  const defaultLang = siteconfig.defaultlang || 'en';
+
   // Get all products in default language
   const defaultLangProducts = products.filter(product => 
     product.id.startsWith(`${defaultLang}/`)

@@ -9,6 +9,7 @@ const defaultLang = siteconfig.defaultlang || 'en';
 // Generate paths for default language redirects
 export async function getStaticPaths() {
   const insights = await getCollection('insights');
+  const defaultLang = siteconfig.defaultlang || 'en';
   
   // Get all insights in default language
   const defaultLanginsights = insights.filter(insight => 

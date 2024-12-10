@@ -8,6 +8,8 @@ const defaultLang = siteconfig.defaultlang || 'en';
 
 // Generate paths for default language redirects
 export async function getStaticPaths() {
+  const defaultLang = siteconfig.defaultlang || 'en';
+
   try {
     // Load collections for default language
     const { default: collections } = await import(

@@ -8,6 +8,7 @@ const defaultLang = siteconfig.defaultlang || 'en';
 
 // Generate paths for default language redirects
 export async function getStaticPaths() {
+  console.log('in blog root lang',defaultLang)
   const blog = await getCollection('blog');
   
   // Get all blog in default language

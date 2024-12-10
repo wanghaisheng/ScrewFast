@@ -4,11 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "generate-pwa-assets": "pwa-assets-generator",
-    "restore-literals": "pnpm run build-processor && node scripts/dist/restoreProcessLiterals.js",
+    "restore-literals": "npm run build-processor && node scripts/dist/restoreProcessLiterals.js",
     "build-processor": "tsc -p tsconfig.scripts.json",
-    "dev": "pnpm run build-processor && node scripts/dist/processAstroFiles.js && astro dev",
+    "dev": "npm run build-processor && node scripts/dist/processAstroFiles.js && astro dev",
     "start": "astro dev",
-    "build": "pnpm run build-processor && node scripts/dist/processAstroFiles.js && astro check && astro build && node process-html.mjs",
+    "build": "npm run build-processor && node scripts/dist/processAstroFiles.js && astro check && astro build && node process-html.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "process-astro": "npm run build-processor && node scripts/dist/processAstroFiles.js"
